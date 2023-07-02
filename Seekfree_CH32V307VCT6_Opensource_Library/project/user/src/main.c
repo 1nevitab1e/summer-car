@@ -34,7 +34,7 @@
 ********************************************************************************************************************/
 #include "zf_common_headfile.h"
 
-uint8 imustate;
+uint8 state;
 
 int main (void)
 {
@@ -43,19 +43,25 @@ int main (void)
     debug_init();    // 初始化默认 Debug UART
 
     // 此处编写用户代码 例如外设初始化代码等
-    adc_init(ADC1_IN0_A0, ADC_12BIT);
 
     uart_init(UART_3, 115200, UART3_MAP0_TX_B10, UART3_MAP0_RX_B11);
     uart_rx_interrupt(UART_3,ZF_ENABLE);
-    imustate=imu963ra_init();
-    if(imustate) printf("error");
-    pit_ms_init(TIM4_PIT,5);
+    state=mt9v03x_init();
+    if(state)
+        {
+            oled_show_string(1, 1, "Error");
+        }
+//    mt9v03x_set_exposure_time(90);
+    oled_init();
+    oled_clear();
+    //pit_ms_init(TIM4_PIT,5);
 
     // 此处编写用户代码 例如外设初始化代码等
 
     while(1)
     {
         // 此处编写需要循环执行的代码
+        oled_displayimage03x(mt9v03x_image[0], 200);
         // 此处编写需要循环执行的代码
     }
 }

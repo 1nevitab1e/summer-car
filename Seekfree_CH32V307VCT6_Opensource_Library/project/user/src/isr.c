@@ -305,11 +305,9 @@ void TIM3_IRQHandler(void)
     }
 }
 
-extern uint8 imustate;
 
 void TIM4_IRQHandler(void)
 {
-//    imustate=0;
     float gyro_x,gyro_y,gyro_z,acc_x,acc_y,acc_z;
     if(TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
     {
