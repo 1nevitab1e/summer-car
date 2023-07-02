@@ -295,9 +295,6 @@ void TIM2_IRQHandler(void)
 
 void TIM3_IRQHandler(void)
 {
-//    uint8 adc1,adc2;
-//    uint8 i,sumcheck=0,addcheck=0;
-//    u8 Data_to_Send[6]={0xaa,0xff,0xf1,0x02,0,0};
     float adct;
     if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
     {
@@ -305,26 +302,6 @@ void TIM3_IRQHandler(void)
        adc=adc_convert(ADC1_IN0_A0);
        adct=3.3*adc/4096;
        printf("%f\r\n",adct);
-//       adc1=adc>>8;
-//       adc2=(adc<<8)>>8;
-//
-//       Data_to_Send[4]=adc2;
-//       Data_to_Send[5]=adc1;
-//
-//       uart_write_byte(UART_3, Data_to_Send[0]);
-//       uart_write_byte(UART_3, Data_to_Send[1]);
-//       uart_write_byte(UART_3, Data_to_Send[2]);
-//       uart_write_byte(UART_3, Data_to_Send[3]);
-//       uart_write_byte(UART_3, Data_to_Send[4]);
-//       uart_write_byte(UART_3, Data_to_Send[5]);
-//
-//       for(i = 0; i < 6; i++)
-//           {
-//               sumcheck += Data_to_Send[i];
-//               addcheck += sumcheck;
-//           }
-//       uart_write_byte(UART_3, sumcheck);
-//       uart_write_byte(UART_3, addcheck);
     }
 }
 
@@ -337,12 +314,19 @@ void TIM4_IRQHandler(void)
     if(TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
     {
        TIM_ClearITPendingBit(TIM4, TIM_IT_Update );
-       if(!imustate)
-       {
+           imu963ra_get_gyro();
            gyro_x=imu963ra_gyro_transition(imu963ra_gyro_x);
-           printf("%f\r\n",gyro_x);
+           gyro_y=imu963ra_gyro_transition(imu963ra_gyro_y);
+           gyro_z=imu963ra_gyro_transition(imu963ra_gyro_z);
 
-       }
+           imu963ra_get_acc();
+           acc_x=imu963ra_acc_transition(imu963ra_acc_x);
+           acc_y=imu963ra_acc_transition(imu963ra_acc_y);
+           acc_z=imu963ra_acc_transition(imu963ra_acc_z);
+
+           printf("%f %f %f\r\n",gyro_x,gyro_y,gyro_z);
+           printf("%f %f %f\r\n",acc_x,acc_y,acc_z);
+
 
     }
 }

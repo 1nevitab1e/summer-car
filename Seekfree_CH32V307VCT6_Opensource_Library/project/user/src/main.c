@@ -32,8 +32,7 @@
 * 日期                                      作者                             备注
 * 2022-09-15        大W            first version
 ********************************************************************************************************************/
-#include "zf_common_hea
-dfile.h"
+#include "zf_common_headfile.h"
 
 uint8 imustate;
 
@@ -45,10 +44,12 @@ int main (void)
 
     // 此处编写用户代码 例如外设初始化代码等
     adc_init(ADC1_IN0_A0, ADC_12BIT);
-    pit_ms_init(TIM4_PIT,5);
+
     uart_init(UART_3, 115200, UART3_MAP0_TX_B10, UART3_MAP0_RX_B11);
     uart_rx_interrupt(UART_3,ZF_ENABLE);
     imustate=imu963ra_init();
+    if(imustate) printf("error");
+    pit_ms_init(TIM4_PIT,5);
 
     // 此处编写用户代码 例如外设初始化代码等
 
