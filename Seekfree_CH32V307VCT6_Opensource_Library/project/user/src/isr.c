@@ -1,93 +1,90 @@
 /*********************************************************************************************************************
-* COPYRIGHT NOTICE
-* Copyright (c) 2019,逐飞科技
-* All rights reserved.
+* CH32V307VCT6 Opensourec Library 即（CH32V307VCT6 开源库）是一个基于官方 SDK 接口的第三方开源库
+* Copyright (c) 2022 SEEKFREE 逐飞科技
 *
-* 以下所有内容版权均属逐飞科技所有，未经允许不得用于商业用途，
-* 欢迎各位使用并传播本程序，修改内容时必须保留逐飞科技的版权声明。
+* 本文件是CH32V307VCT6 开源库的一部分
 *
-* @file             isr
-* @company          成都逐飞科技有限公司
-* @author           逐飞科技(QQ790875685)
-* @version          查看doc内version文件 版本说明
-* @Software         MounRiver Studio V1.51
-* @Target core      CH32V307VCT6
-* @Taobao           https://seekfree.taobao.com/
-* @date             2021-11-25
-*                   V1.1 2022.01.11  对调ch1和ch2的蓝牙回调函数位置
+* CH32V307VCT6 开源库 是免费软件
+* 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
+* 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
+*
+* 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
+* 甚至没有隐含的适销性或适合特定用途的保证
+* 更多细节请参见 GPL
+*
+* 您应该在收到本开源库的同时收到一份 GPL 的副本
+* 如果没有，请参阅<https://www.gnu.org/licenses/>
+*
+* 额外注明：
+* 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
+* 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
+* 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
+* 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
+*
+* 文件名称          isr
+* 公司名称          成都逐飞科技有限公司
+* 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
+* 开发环境          MounRiver Studio V1.8.1
+* 适用平台          CH32V307VCT6
+* 店铺链接          https://seekfree.taobao.com/
+*
+* 修改记录
+* 日期                                      作者                             备注
+* 2022-09-15        大W            first version
 ********************************************************************************************************************/
 
 #include "zf_common_headfile.h"
-#include "daojishi.h"
-#include "SpeedControl.h"
 
-extern uint16_t tim,Num;
+uint16 adc;
 
-int16 Temp=0;
-int16 speed;
-extern int16 setspeed;                       //设定的速度
-float error=0;                             //当前误差
-float previous_error=0;                    //上一时刻误差，用来计算D
-float pre2_error=0;                        //上上一时刻的误差
-extern float kp;                              //10
-extern float ki;                              //0.05
-extern float kd;                              //200
-float P,I,D, PID;
-//float kiIndex=0;
-uint8 cmdf[2] = {0x03,0xFC};    //串口调试 使用的前命令
-uint8 cmdr[2] = {0xFC,0x03};    //串口调试 使用的后命令
-uint8 speed_l,speed_h;
-uint8 setspeed_l,setspeed_h;
+void NMI_Handler(void)       __attribute__((interrupt()));
+void HardFault_Handler(void) __attribute__((interrupt()));
 
-uint16 adc_read;
+void USART1_IRQHandler(void) __attribute__((interrupt()));
+void USART2_IRQHandler(void) __attribute__((interrupt()));
+void USART3_IRQHandler(void) __attribute__((interrupt()));
+void UART4_IRQHandler (void) __attribute__((interrupt()));
+void UART5_IRQHandler (void) __attribute__((interrupt()));
+void UART6_IRQHandler (void) __attribute__((interrupt()));
+void UART7_IRQHandler (void) __attribute__((interrupt()));
+void UART8_IRQHandler (void) __attribute__((interrupt()));
+void DVP_IRQHandler (void) __attribute__((interrupt()));
+//void TIM1_BRK_IRQHandler        (void)  __attribute__((interrupt()));
+void TIM1_UP_IRQHandler         (void)  __attribute__((interrupt()));
+//void TIM1_TRG_COM_IRQHandler    (void)  __attribute__((interrupt()));
+//void TIM1_CC_IRQHandler         (void)  __attribute__((interrupt()));
+void TIM2_IRQHandler            (void)  __attribute__((interrupt()));
+void TIM3_IRQHandler            (void)  __attribute__((interrupt()));
+void TIM4_IRQHandler            (void)  __attribute__((interrupt()));
+void TIM5_IRQHandler            (void)  __attribute__((interrupt()));
+void TIM6_IRQHandler            (void)  __attribute__((interrupt()));
+void TIM7_IRQHandler            (void)  __attribute__((interrupt()));
+//void TIM8_BRK_IRQHandler        (void)  __attribute__((interrupt()));
+void TIM8_UP_IRQHandler         (void)  __attribute__((interrupt()));
+//void TIM8_TRG_COM_IRQHandler    (void)  __attribute__((interrupt()));
+//void TIM8_CC_IRQHandler         (void)  __attribute__((interrupt()));
+//void TIM9_BRK_IRQHandler        (void)  __attribute__((interrupt()));
+void TIM9_UP_IRQHandler         (void)  __attribute__((interrupt()));
+//void TIM9_TRG_COM_IRQHandler    (void)  __attribute__((interrupt()));
+//void TIM9_CC_IRQHandler         (void)  __attribute__((interrupt()));
+//void TIM10_BRK_IRQHandler       (void)  __attribute__((interrupt()));
+void TIM10_UP_IRQHandler        (void)  __attribute__((interrupt()));
+//void TIM10_TRG_COM_IRQHandler   (void)  __attribute__((interrupt()));
+//void TIM10_CC_IRQHandler        (void)  __attribute__((interrupt()));
 
-void NMI_Handler(void)       __attribute__((interrupt("WCH-Interrupt-fast")));
-void HardFault_Handler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
-
-void USART1_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void USART2_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void USART3_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void UART4_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void UART5_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void UART6_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void UART7_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void UART8_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void DVP_IRQHandler (void) __attribute__((interrupt("WCH-Interrupt-fast")));
-//void TIM1_BRK_IRQHandler        (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-void TIM1_UP_IRQHandler         (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-//void TIM1_TRG_COM_IRQHandler    (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-//void TIM1_CC_IRQHandler         (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-void TIM2_IRQHandler            (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-void TIM3_IRQHandler            (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-void TIM4_IRQHandler            (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-void TIM5_IRQHandler            (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-void TIM6_IRQHandler            (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-void TIM7_IRQHandler            (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-//void TIM8_BRK_IRQHandler        (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-void TIM8_UP_IRQHandler         (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-//void TIM8_TRG_COM_IRQHandler    (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-//void TIM8_CC_IRQHandler         (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-//void TIM9_BRK_IRQHandler        (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-void TIM9_UP_IRQHandler         (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-//void TIM9_TRG_COM_IRQHandler    (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-//void TIM9_CC_IRQHandler         (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-//void TIM10_BRK_IRQHandler       (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-void TIM10_UP_IRQHandler        (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-//void TIM10_TRG_COM_IRQHandler   (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-//void TIM10_CC_IRQHandler        (void)  __attribute__((interrupt("WCH-Interrupt-fast")));
-
-void EXTI0_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void EXTI1_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void EXTI2_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void EXTI3_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void EXTI4_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void EXTI9_5_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
-void EXTI15_10_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+void EXTI0_IRQHandler(void) __attribute__((interrupt()));
+void EXTI1_IRQHandler(void) __attribute__((interrupt()));
+void EXTI2_IRQHandler(void) __attribute__((interrupt()));
+void EXTI3_IRQHandler(void) __attribute__((interrupt()));
+void EXTI4_IRQHandler(void) __attribute__((interrupt()));
+void EXTI9_5_IRQHandler(void) __attribute__((interrupt()));
+void EXTI15_10_IRQHandler(void) __attribute__((interrupt()));
 
 void USART1_IRQHandler(void)
 {
     if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
     {
+
         USART_ClearITPendingBit(USART1, USART_IT_RXNE);
     }
 }
@@ -95,57 +92,18 @@ void USART2_IRQHandler(void)
 {
     if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
     {
-        if(wireless_type == WIRELESS_UART)
-        {
-            wireless_uart_callback();
-        }
-        else if(wireless_type == BLUETOOTH_CH9141)
-        {
-            bluetooth_ch9141_uart_callback_ch2();
-        }
-        else if(wireless_type == WIRELESS_CH573)
-        {
-            wireless_ch573_callback();
-        }
+
+
         USART_ClearITPendingBit(USART2, USART_IT_RXNE);
     }
 }
 void USART3_IRQHandler(void)
 {
-    static uint8 state=0;
-    static uint8 p=0;
-    uint8 i;
     if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)
     {
-//        if(uart_query_byte(UART_3,&i) == 1)
-//        {
-//            if(state==0)
-//            {
-//                if(i=='@') state=1;
-//            }
-//            else if(state==1)
-//            {
-//                if(i=='#')
-//                {
-//                    state=2;
-//                }
-//                else
-//                {
-//                    RX_Data[p]=i;
-//                    p++;
-//                }
-//
-//            }
-//            else if(state==2)
-//            {
-//                if(i=='#')
-//                {
-//                    state=0;
-//                    uart_flag=1;
-//                    RX_Data[p]='\0';
-//                }
-//            }
-//        }
+#if DEBUG_UART_USE_INTERRUPT                                                    // 如果开启 debug 串口中断
+        debug_interrupr_handler();                                              // 调用 debug 串口接收处理函数 数据会被 debug 环形缓冲区读取
+#endif                                                                          // 如果修改了 DEBUG_UART_INDEX 那这段代码需要放到对应的串口中断去
         USART_ClearITPendingBit(USART3, USART_IT_RXNE);
     }
 }
@@ -177,14 +135,7 @@ void UART7_IRQHandler (void)
 {
     if(USART_GetITStatus(UART7, USART_IT_RXNE) != RESET)
     {
-        if(wireless_type == WIRELESS_UART)
-        {
-
-        }
-        else if(wireless_type == BLUETOOTH_CH9141)
-        {
-            bluetooth_ch9141_uart_callback_ch1();
-        }
+        wireless_module_uart_handler();
         USART_ClearITPendingBit(UART7, USART_IT_RXNE);
     }
 }
@@ -192,10 +143,10 @@ void UART8_IRQHandler (void)
 {
     if(USART_GetITStatus(UART8, USART_IT_RXNE) != RESET)
     {
-//        extern void uart_handler (void);
-//        uart_handler();
+        gps_uart_callback();
         USART_ClearITPendingBit(UART8, USART_IT_RXNE);
     }
+
 }
 
 
@@ -252,6 +203,8 @@ void EXTI4_IRQHandler(void)
 
     }
 }
+
+
 void EXTI9_5_IRQHandler(void)
 {
     if(SET == EXTI_GetITStatus(EXTI_Line5))
@@ -306,13 +259,17 @@ void EXTI15_10_IRQHandler(void)
     }
     if(SET == EXTI_GetITStatus(EXTI_Line14))
     {
+        // -----------------* DM1XA 光信号 预置中断处理函数 *-----------------
+        dm1xa_light_callback();
+        // -----------------* DM1XA 光信号 预置中断处理函数 *-----------------
         EXTI_ClearITPendingBit(EXTI_Line14);
-
     }
     if(SET == EXTI_GetITStatus(EXTI_Line15))
     {
+        // -----------------* DM1XA 声/反馈信号 预置中断处理函数 *-----------------
+        dm1xa_sound_callback();
+        // -----------------* DM1XA 声/反馈信号 预置中断处理函数 *-----------------
         EXTI_ClearITPendingBit(EXTI_Line15);
-
     }
 }
 
@@ -330,35 +287,50 @@ void TIM2_IRQHandler(void)
 {
     if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
     {
-//       TIM_ClearITPendingBit(TIM2, TIM_IT_Update );
-//       Num++;
-       oled_show_uint(2, 1, Num, 3);
+       TIM_ClearITPendingBit(TIM2, TIM_IT_Update );
+
+
     }
 }
 
 void TIM3_IRQHandler(void)
 {
+    char key;
     if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
     {
        TIM_ClearITPendingBit(TIM3, TIM_IT_Update );
-       adc_read=adc_convert(ADC_IN1_A1, ADC_12BIT);
-       uart_write_byte(UART_1,0x01);
+//       adc=adc_convert(ADC1_IN0_A0);
+//       adct=3.3*adc/4096;
+//       printf("%f\r\n",adct);
+       key=key_scan();
+       if(key)
+       {
+           MenuCmd(key);
+       }
     }
 }
 
+
 void TIM4_IRQHandler(void)
 {
+    float gyro_x,gyro_y,gyro_z,acc_x,acc_y,acc_z;
     if(TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
     {
        TIM_ClearITPendingBit(TIM4, TIM_IT_Update );
-       //oled_show_uint(0, 0, Num, 3);
-       keypros();
-       Num++;
-       if(Num==tim)
-       {
-           Num=0;
-           modepros();
-       }
+           imu963ra_get_gyro();
+           gyro_x=imu963ra_gyro_transition(imu963ra_gyro_x);
+           gyro_y=imu963ra_gyro_transition(imu963ra_gyro_y);
+           gyro_z=imu963ra_gyro_transition(imu963ra_gyro_z);
+
+           imu963ra_get_acc();
+           acc_x=imu963ra_acc_transition(imu963ra_acc_x);
+           acc_y=imu963ra_acc_transition(imu963ra_acc_y);
+           acc_z=imu963ra_acc_transition(imu963ra_acc_z);
+
+           printf("%f %f %f\r\n",gyro_x,gyro_y,gyro_z);
+           printf("%f %f %f\r\n",acc_x,acc_y,acc_z);
+
+
     }
 }
 
@@ -372,46 +344,12 @@ void TIM5_IRQHandler(void)
     }
 }
 
-void TIM6_IRQHandler(void)//编码器电机数值获取
+void TIM6_IRQHandler(void)
 {
     if(TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET)
     {
-
-
        TIM_ClearITPendingBit(TIM6, TIM_IT_Update );
-//       Speed=Get_Encoder();
-//       Speed=Speed*20*60/44;
 
-////       //Temp=10*PID_Inc();
-////       //Temp=5000;
-//       //pwm_set_duty(TIM1_PWM_CH2_A9,outPut);
-
-       speed=Get_Encoder()*3000/44;
-
-               error =setspeed-speed;
-               P = kp*(error-previous_error);
-               I=ki*error;
-               D=kd*(error-2*previous_error+pre2_error);
-               PID+=(P + I + D);                        //PID
-
-               //if (PID<1200){PID=1200;}
-               pre2_error=previous_error;
-               previous_error=error;
-               //sent_data(speed);
-              pwm_set_duty(TIM1_PWM_CH2_A9,PID);
-             Wave_Dis(speed);
-//       speed_l=speed%256;
-//       speed_h=speed/256;
-//       setspeed_h=setspeed/256;
-//       setspeed_l=setspeed%256;
-//       uart_write_byte(UART_3, cmdf[0]);
-//       uart_write_byte(UART_3, cmdf[1]);
-//       uart_write_byte(UART_3, speed_l);
-//       uart_write_byte(UART_3, speed_h);
-//       uart_write_byte(UART_3, setspeed_l);
-//       uart_write_byte(UART_3, setspeed_h);
-//       uart_write_byte(UART_3, cmdr[0]);
-//       uart_write_byte(UART_3, cmdr[1]);
     }
 }
 

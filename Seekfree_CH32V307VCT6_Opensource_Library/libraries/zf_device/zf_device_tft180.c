@@ -1,125 +1,189 @@
 /*********************************************************************************************************************
-* COPYRIGHT NOTICE
-* Copyright (c) 2019,Öğ·É¿Æ¼¼
-* All rights reserved.
+* CH32V307VCT6 Opensourec Library å³ï¼ˆCH32V307VCT6 å¼€æºåº“ï¼‰æ˜¯ä¸€ä¸ªåŸºäºå®˜æ–¹ SDK æ¥å£çš„ç¬¬ä¸‰æ–¹å¼€æºåº“
+* Copyright (c) 2022 SEEKFREE é€é£ç§‘æŠ€
 *
-* ÒÔÏÂËùÓĞÄÚÈİ°æÈ¨¾ùÊôÖğ·É¿Æ¼¼ËùÓĞ£¬Î´¾­ÔÊĞí²»µÃÓÃÓÚÉÌÒµÓÃÍ¾£¬
-* »¶Ó­¸÷Î»Ê¹ÓÃ²¢´«²¥±¾³ÌĞò£¬ĞŞ¸ÄÄÚÈİÊ±±ØĞë±£ÁôÖğ·É¿Æ¼¼µÄ°æÈ¨ÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯CH32V307VCT6 å¼€æºåº“çš„ä¸€éƒ¨åˆ†
 *
-* @file             zf_device_tft180
-* @company          ³É¶¼Öğ·É¿Æ¼¼ÓĞÏŞ¹«Ë¾
-* @author           Öğ·É¿Æ¼¼(QQ790875685)
-* @version          ²é¿´docÄÚversionÎÄ¼ş °æ±¾ËµÃ÷
-* @Software         MounRiver Studio V1.51
-* @Target core      CH32V307VCT6
-* @Taobao           https://seekfree.taobao.com/
-* @date             2021-11-25
-* @note             ½ÓÏß¶¨Òå£º
+* CH32V307VCT6 å¼€æºåº“ æ˜¯å…è´¹è½¯ä»¶
+* æ‚¨å¯ä»¥æ ¹æ®è‡ªç”±è½¯ä»¶åŸºé‡‘ä¼šå‘å¸ƒçš„ GPLï¼ˆGNU General Public Licenseï¼Œå³ GNUé€šç”¨å…¬å…±è®¸å¯è¯ï¼‰çš„æ¡æ¬¾
+* å³ GPL çš„ç¬¬3ç‰ˆï¼ˆå³ GPL3.0ï¼‰æˆ–ï¼ˆæ‚¨é€‰æ‹©çš„ï¼‰ä»»ä½•åæ¥çš„ç‰ˆæœ¬ï¼Œé‡æ–°å‘å¸ƒå’Œ/æˆ–ä¿®æ”¹å®ƒ
+*
+* æœ¬å¼€æºåº“çš„å‘å¸ƒæ˜¯å¸Œæœ›å®ƒèƒ½å‘æŒ¥ä½œç”¨ï¼Œä½†å¹¶æœªå¯¹å…¶ä½œä»»ä½•çš„ä¿è¯
+* ç”šè‡³æ²¡æœ‰éšå«çš„é€‚é”€æ€§æˆ–é€‚åˆç‰¹å®šç”¨é€”çš„ä¿è¯
+* æ›´å¤šç»†èŠ‚è¯·å‚è§ GPL
+*
+* æ‚¨åº”è¯¥åœ¨æ”¶åˆ°æœ¬å¼€æºåº“çš„åŒæ—¶æ”¶åˆ°ä¸€ä»½ GPL çš„å‰¯æœ¬
+* å¦‚æœæ²¡æœ‰ï¼Œè¯·å‚é˜…<https://www.gnu.org/licenses/>
+*
+* é¢å¤–æ³¨æ˜ï¼š
+* æœ¬å¼€æºåº“ä½¿ç”¨ GPL3.0 å¼€æºè®¸å¯è¯åè®® ä»¥ä¸Šè®¸å¯ç”³æ˜ä¸ºè¯‘æ–‡ç‰ˆæœ¬
+* è®¸å¯ç”³æ˜è‹±æ–‡ç‰ˆåœ¨ libraries/doc æ–‡ä»¶å¤¹ä¸‹çš„ GPL3_permission_statement.txt æ–‡ä»¶ä¸­
+* è®¸å¯è¯å‰¯æœ¬åœ¨ libraries æ–‡ä»¶å¤¹ä¸‹ å³è¯¥æ–‡ä»¶å¤¹ä¸‹çš„ LICENSE æ–‡ä»¶
+* æ¬¢è¿å„ä½ä½¿ç”¨å¹¶ä¼ æ’­æœ¬ç¨‹åº ä½†ä¿®æ”¹å†…å®¹æ—¶å¿…é¡»ä¿ç•™é€é£ç§‘æŠ€çš„ç‰ˆæƒå£°æ˜ï¼ˆå³æœ¬å£°æ˜ï¼‰
+*
+* æ–‡ä»¶åç§°          zf_device_tft180
+* å…¬å¸åç§°          æˆéƒ½é€é£ç§‘æŠ€æœ‰é™å…¬å¸
+* ç‰ˆæœ¬ä¿¡æ¯          æŸ¥çœ‹ libraries/doc æ–‡ä»¶å¤¹å†… version æ–‡ä»¶ ç‰ˆæœ¬è¯´æ˜
+* å¼€å‘ç¯å¢ƒ          MounRiver Studio V1.8.1
+* é€‚ç”¨å¹³å°          CH32V307VCT6
+* åº—é“ºé“¾æ¥          https://seekfree.taobao.com/
+*
+* ä¿®æ”¹è®°å½•
+* æ—¥æœŸ                                      ä½œè€…                             å¤‡æ³¨
+* 2022-09-15        å¤§W            first version
+********************************************************************************************************************/
+/*********************************************************************************************************************
+* æ¥çº¿å®šä¹‰ï¼š
 *                   ------------------------------------
-*                   Ä£¿é¹Ü½Å                                        µ¥Æ¬»ú¹Ü½Å
-*                   SCL                 ²é¿´ zf_device_tft180.h ÖĞ TFT180_SCL_PIN ºê¶¨Òå
-*                   SDA                 ²é¿´ zf_device_tft180.h ÖĞ TFT180_SDA_PIN ºê¶¨Òå
-*                   RES                 ²é¿´ zf_device_tft180.h ÖĞ TFT180_RES_PIN ºê¶¨Òå
-*                   DC                  ²é¿´ zf_device_tft180.h ÖĞ TFT180_DC_PIN ºê¶¨Òå
-*                   CS                  ²é¿´ zf_device_tft180.h ÖĞ TFT180_CS_PIN ºê¶¨Òå
-*                   BL                  ²é¿´ zf_device_tft180.h ÖĞ TFT180_BL_PIN ºê¶¨Òå
-*                   µçÔ´Òı½Å
-*                   VCC                 3.3VµçÔ´
-*                   GND                 µçÔ´µØ
-*                   ×î´ó·Ö±æÂÊ160*128
+*                   æ¨¡å—ç®¡è„š             å•ç‰‡æœºç®¡è„š
+*                   SCL                  æŸ¥çœ‹ zf_device_tft180.h ä¸­ TFT180_SCL_PIN å®å®šä¹‰
+*                   SDA                  æŸ¥çœ‹ zf_device_tft180.h ä¸­ TFT180_SDA_PIN å®å®šä¹‰
+*                   RES                  æŸ¥çœ‹ zf_device_tft180.h ä¸­ TFT180_RES_PIN å®å®šä¹‰
+*                   DC                   æŸ¥çœ‹ zf_device_tft180.h ä¸­ TFT180_DC_PIN å®å®šä¹‰
+*                   CS                   æŸ¥çœ‹ zf_device_tft180.h ä¸­ TFT180_CS_PIN å®å®šä¹‰
+*                   BL                   æŸ¥çœ‹ zf_device_tft180.h ä¸­ TFT180_BL_PIN å®å®šä¹‰
+*                   VCC                 3.3Vç”µæº
+*                   GND                 ç”µæºåœ°
+*                   æœ€å¤§åˆ†è¾¨ç‡160*128
 *                   ------------------------------------
 ********************************************************************************************************************/
 
+#include "zf_common_clock.h"
+#include "zf_common_debug.h"
+#include "zf_common_font.h"
+#include "zf_common_function.h"
+#include "zf_driver_delay.h"
+#include "zf_driver_soft_spi.h"
+#include "zf_driver_spi.h"
+
 #include "zf_device_tft180.h"
 
-static uint16 tft180_pencolor = TFT180_DEFAULT_PENCOLOR;
-static uint16 tft180_bgcolor = TFT180_DEFAULT_BGCOLOR;
+static uint16                   tft180_pencolor     = TFT180_DEFAULT_PENCOLOR;
+static uint16                   tft180_bgcolor      = TFT180_DEFAULT_BGCOLOR;
 
-static tft180_dir_enum tft180_display_dir = TFT180_DEFAULT_DISPLAY_DIR;
-static uint8 tft180_x_max = 160;
-static uint8 tft180_y_max = 128;
+static tft180_dir_enum          tft180_display_dir  = TFT180_DEFAULT_DISPLAY_DIR;
+static tft180_font_size_enum    tft180_display_font = TFT180_DEFAULT_DISPLAY_FONT;
+
+static uint8            tft180_x_max        = 160;
+static uint8            tft180_y_max        = 128;
 
 #if TFT180_USE_SOFT_SPI
 static soft_spi_info_struct             tft180_spi;
-#define tft180_write_8bit_data(data)    (soft_spi_write_8bit(&TFT180_spi, (data)))
-#define tft180_write_16bit_data(data)   (soft_spi_write_16bit(&TFT180_spi, (data)))
+//-------------------------------------------------------------------------------------------------------------------
+// å‡½æ•°ç®€ä»‹     TFT180 SPI å†™ 8bit æ•°æ®
+// å‚æ•°è¯´æ˜     data            æ•°æ®
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_write_8bit_data(dat);
+// å¤‡æ³¨ä¿¡æ¯     å†…éƒ¨è°ƒç”¨
+//-------------------------------------------------------------------------------------------------------------------
+#define tft180_write_8bit_data(data)    (soft_spi_write_8bit(&tft180_spi, (data)))
+
+//-------------------------------------------------------------------------------------------------------------------
+// å‡½æ•°ç®€ä»‹     TFT180 SPI å†™ 16bit æ•°æ®
+// å‚æ•°è¯´æ˜     data            æ•°æ®
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_write_16bit_data(x1 + 52);
+// å¤‡æ³¨ä¿¡æ¯     å†…éƒ¨è°ƒç”¨
+//-------------------------------------------------------------------------------------------------------------------
+#define tft180_write_16bit_data(data)   (soft_spi_write_16bit(&tft180_spi, (data)))
 #else
+//-------------------------------------------------------------------------------------------------------------------
+// å‡½æ•°ç®€ä»‹     TFT180 SPI å†™ 8bit æ•°æ®
+// å‚æ•°è¯´æ˜     data            æ•°æ®
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_write_8bit_data(dat);
+// å¤‡æ³¨ä¿¡æ¯     å†…éƒ¨è°ƒç”¨
+//-------------------------------------------------------------------------------------------------------------------
 #define tft180_write_8bit_data(data)    (spi_write_8bit(TFT180_SPI, (data)))
+
+//-------------------------------------------------------------------------------------------------------------------
+// å‡½æ•°ç®€ä»‹     IPS114 SPI å†™ 16bit æ•°æ®
+// å‚æ•°è¯´æ˜     data            æ•°æ®
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     ips114_write_16bit_data(x1 + 52);
+// å¤‡æ³¨ä¿¡æ¯     å†…éƒ¨è°ƒç”¨
+//-------------------------------------------------------------------------------------------------------------------
 #define tft180_write_16bit_data(data)   (spi_write_16bit(TFT180_SPI, (data)))
 #endif
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       Ğ´ÃüÁî ÄÚ²¿µ÷ÓÃ
-// @note        ÄÚ²¿µ÷ÓÃ ÓÃ»§ÎŞĞè¹ØĞÄ
+// å‡½æ•°ç®€ä»‹     å†™å‘½ä»¤
+// å‚æ•°è¯´æ˜     dat             æ•°æ®
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_write_index(0x2a);
+// å¤‡æ³¨ä¿¡æ¯     å†…éƒ¨è°ƒç”¨
 //-------------------------------------------------------------------------------------------------------------------
 static void tft180_write_index (const uint8 dat)
 {
-    TFT180_CS(1);
-    TFT180_CS(0);
     TFT180_DC(0);
     tft180_write_8bit_data(dat);
-    TFT180_CS(1);
     TFT180_DC(1);
-    TFT180_CS(0);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       ÉèÖÃÏÔÊ¾ÇøÓò ÄÚ²¿µ÷ÓÃ
-// @param       x1              ÆğÊ¼xÖá×ø±ê
-// @param       y1              ÆğÊ¼yÖá×ø±ê
-// @param       x2              ½áÊøxÖá×ø±ê
-// @param       y2              ½áÊøyÖá×ø±ê
-// @return      void
-// @note        ÄÚ²¿µ÷ÓÃ ÓÃ»§ÎŞĞè¹ØĞÄ
+// å‡½æ•°ç®€ä»‹     è®¾ç½®æ˜¾ç¤ºåŒºåŸŸ å†…éƒ¨è°ƒç”¨
+// å‚æ•°è¯´æ˜     x1              èµ·å§‹xè½´åæ ‡
+// å‚æ•°è¯´æ˜     y1              èµ·å§‹yè½´åæ ‡
+// å‚æ•°è¯´æ˜     x2              ç»“æŸxè½´åæ ‡
+// å‚æ•°è¯´æ˜     y2              ç»“æŸyè½´åæ ‡
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_set_region(0, 0, tft180_x_max - 1, tft180_y_max - 1);
+// å¤‡æ³¨ä¿¡æ¯     å†…éƒ¨è°ƒç”¨
 //-------------------------------------------------------------------------------------------------------------------
 static void tft180_set_region (uint16 x1, uint16 y1, uint16 x2, uint16 y2)
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
-    // ¼ì²éÒ»ÏÂÄãµÄÏÔÊ¾µ÷ÓÃµÄº¯Êı ×Ô¼º¼ÆËãÒ»ÏÂÄÄÀï³¬¹ıÁËÆÁÄ»ÏÔÊ¾·¶Î§
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
+    // æ£€æŸ¥ä¸€ä¸‹ä½ çš„æ˜¾ç¤ºè°ƒç”¨çš„å‡½æ•° è‡ªå·±è®¡ç®—ä¸€ä¸‹å“ªé‡Œè¶…è¿‡äº†å±å¹•æ˜¾ç¤ºèŒƒå›´
     zf_assert(x1 < tft180_x_max);
     zf_assert(y1 < tft180_y_max);
     zf_assert(x2 < tft180_x_max);
     zf_assert(y2 < tft180_y_max);
 
-    if(tft180_display_dir == TFT180_PORTAIT || tft180_display_dir == TFT180_PORTAIT_180)
+    switch(tft180_display_dir)
     {
-        tft180_write_index(0x2a);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(x1 + 2);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(x2 + 2);
+        case TFT180_PORTAIT:
+        case TFT180_PORTAIT_180:
+        {
+            tft180_write_index(0x2a);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(x1 + 2);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(x2 + 2);
 
-        tft180_write_index(0x2b);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(y1 + 1);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(y2 + 1);
-    }
-    else
-    {
-        tft180_write_index(0x2a);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(x1 + 1);
-        tft180_write_8bit_data(0x0);
-        tft180_write_8bit_data(x2 + 1);
+            tft180_write_index(0x2b);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(y1 + 1);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(y2 + 1);
+        }break;
+        case TFT180_CROSSWISE:
+        case TFT180_CROSSWISE_180:
+        {
+            tft180_write_index(0x2a);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(x1 + 1);
+            tft180_write_8bit_data(0x0);
+            tft180_write_8bit_data(x2 + 1);
 
-        tft180_write_index(0x2b);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(y1 + 2);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(y2 + 2);
+            tft180_write_index(0x2b);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(y1 + 2);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(y2 + 2);
+        }break;
     }
     tft180_write_index(0x2c);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       1.14´ç TFTÒº¾§ÏÔÊ¾DEBUGĞÅÏ¢³õÊ¼»¯
-// @param       void
-// @return      void
-// Sample usage:               ÄÚ²¿Ê¹ÓÃÓÃ»§ÎŞĞè¹ØĞÄ
+// å‡½æ•°ç®€ä»‹     TFT180 æ˜¾ç¤ºDEBUGä¿¡æ¯åˆå§‹åŒ–
+// å‚æ•°è¯´æ˜     void
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_debug_init();
+// å¤‡æ³¨ä¿¡æ¯     å†…éƒ¨ä½¿ç”¨
 //-------------------------------------------------------------------------------------------------------------------
-static void tft180_debug_init(void)
+static void tft180_debug_init (void)
 {
     debug_output_struct info;
     debug_output_struct_init(&info);
@@ -128,75 +192,115 @@ static void tft180_debug_init(void)
     info.display_x_max = tft180_x_max;
     info.display_y_max = tft180_y_max;
 
-    info.font_x_size = 8;
-    info.font_y_size = 16;
+    switch(tft180_display_font)
+    {
+        case TFT180_6X8_FONT:
+        {
+            info.font_x_size = 6;
+            info.font_y_size = 8;
+        }break;
+        case TFT180_8X16_FONT:
+        {
+            info.font_x_size = 8;
+            info.font_y_size = 16;
+        }break;
+        case TFT180_16X16_FONT:
+        {
+            // æš‚ä¸æ”¯æŒ
+        }break;
+    }
     info.output_screen = tft180_show_string;
     info.output_screen_clear = tft180_clear;
-
+        
     debug_output_init(&info);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       Òº¾§ÇåÆÁº¯Êı ½«ÆÁÄ»Çå¿Õ³É±³¾°ÑÕÉ«
-// @param       void
-// @return      void
-// Sample usage:                tft180_clear();
+// å‡½æ•°ç®€ä»‹     TFT180 æ¸…å±å‡½æ•°
+// å‚æ•°è¯´æ˜     void
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_clear();
+// å¤‡æ³¨ä¿¡æ¯     å°†å±å¹•æ¸…ç©ºæˆèƒŒæ™¯é¢œè‰²
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_clear (void)
 {
     uint32 i = tft180_x_max * tft180_y_max;
 
+    TFT180_CS(0);
     tft180_set_region(0, 0, tft180_x_max - 1, tft180_y_max - 1);
-    for( ; i > 0; i --)
+    for( ; 0 < i; i --)
     {
         tft180_write_16bit_data(tft180_bgcolor);
     }
+    TFT180_CS(1);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       Òº¾§ÇåÆÁº¯Êı
-// @param       color           ÑÕÉ«¸ñÊ½ RGB565 »òÕß¿ÉÒÔÊ¹ÓÃ zf_common_font.h ÄÚ³£ÓÃÑÕÉ«ºê¶¨Òå
-// @return      void
-// Sample usage:                tft180_full(RGB565_YELLOW);
+// å‡½æ•°ç®€ä»‹     TFT180 æ¸…å±å‡½æ•°
+// å‚æ•°è¯´æ˜     color           é¢œè‰²æ ¼å¼ RGB565 æˆ–è€…å¯ä»¥ä½¿ç”¨ zf_common_font.h å†…å¸¸ç”¨é¢œè‰²å®å®šä¹‰
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_full(RGB565_YELLOW);
+// å¤‡æ³¨ä¿¡æ¯
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_full (const uint16 color)
 {
     uint32 i = tft180_x_max * tft180_y_max;
 
+    TFT180_CS(0);
     tft180_set_region(0, 0, tft180_x_max - 1, tft180_y_max - 1);
-    for( ; i > 0; i --)
+    for( ; 0 < i; i --)
     {
         tft180_write_16bit_data(color);
     }
+    TFT180_CS(1);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       ÉèÖÃÏÔÊ¾·½Ïò Õâ¸öº¯ÊıÖ»ÓĞÔÚ³õÊ¼»¯ÆÁÄ»Ö®Ç°µ÷ÓÃ²ÅÉúĞ§
-// @param       dir             ÏÔÊ¾·½Ïò  ²ÎÕÕ zf_device_ips114.h ÄÚ tft180_dir_enum Ã¶¾ÙÌå¶¨Òå
-// @return      void
-// Sample usage:                tft180_set_dir(TFT180_CROSSWISE);
+// å‡½æ•°ç®€ä»‹     è®¾ç½®æ˜¾ç¤ºæ–¹å‘
+// å‚æ•°è¯´æ˜     dir             æ˜¾ç¤ºæ–¹å‘  å‚ç…§ zf_device_ips114.h å†… tft180_dir_enum æšä¸¾ä½“å®šä¹‰
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_set_dir(TFT180_CROSSWISE);
+// å¤‡æ³¨ä¿¡æ¯     è¿™ä¸ªå‡½æ•°åªæœ‰åœ¨åˆå§‹åŒ–å±å¹•ä¹‹å‰è°ƒç”¨æ‰ç”Ÿæ•ˆ
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_set_dir (tft180_dir_enum dir)
 {
     tft180_display_dir = dir;
-    if(dir < 2)
+    switch(tft180_display_dir)
     {
-        tft180_x_max = 128;
-        tft180_y_max = 160;
-    }
-    else
-    {
-        tft180_x_max = 160;
-        tft180_y_max = 128;
+        case TFT180_PORTAIT:
+        case TFT180_PORTAIT_180:
+        {
+            tft180_x_max = 128;
+            tft180_y_max = 160;
+        }break;
+        case TFT180_CROSSWISE:
+        case TFT180_CROSSWISE_180:
+        {
+            tft180_x_max = 160;
+            tft180_y_max = 128;
+        }break;
     }
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       ÉèÖÃÏÔÊ¾ÑÕÉ«
-// @param       pen             ÑÕÉ«¸ñÊ½ RGB565 »òÕß¿ÉÒÔÊ¹ÓÃ zf_common_font.h ÄÚ³£ÓÃÑÕÉ«ºê¶¨Òå
-// @param       bgcolor         ÑÕÉ«¸ñÊ½ RGB565 »òÕß¿ÉÒÔÊ¹ÓÃ zf_common_font.h ÄÚ³£ÓÃÑÕÉ«ºê¶¨Òå
-// @return      void
-// Sample usage:                tft180_set_color(RGB565_WHITE, RGB565_BLACK);
+// å‡½æ•°ç®€ä»‹     è®¾ç½®æ˜¾ç¤ºå­—ä½“
+// å‚æ•°è¯´æ˜     dir             æ˜¾ç¤ºæ–¹å‘  å‚ç…§ zf_device_tft180.h å†… tft180_font_size_enum æšä¸¾ä½“å®šä¹‰
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_set_font(TFT180_8x16_FONT);
+// å¤‡æ³¨ä¿¡æ¯     å­—ä½“å¯ä»¥éšæ—¶è‡ªç”±è®¾ç½® è®¾ç½®åç”Ÿæ•ˆ åç»­æ˜¾ç¤ºå°±æ˜¯æ–°çš„å­—ä½“å¤§å°
+//-------------------------------------------------------------------------------------------------------------------
+void tft180_set_font (tft180_font_size_enum font)
+{
+    tft180_display_font = font;
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// å‡½æ•°ç®€ä»‹     è®¾ç½®æ˜¾ç¤ºé¢œè‰²
+// å‚æ•°è¯´æ˜     pen             é¢œè‰²æ ¼å¼ RGB565 æˆ–è€…å¯ä»¥ä½¿ç”¨ zf_common_font.h å†…å¸¸ç”¨é¢œè‰²å®å®šä¹‰
+// å‚æ•°è¯´æ˜     bgcolor         é¢œè‰²æ ¼å¼ RGB565 æˆ–è€…å¯ä»¥ä½¿ç”¨ zf_common_font.h å†…å¸¸ç”¨é¢œè‰²å®å®šä¹‰
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_set_color(RGB565_WHITE, RGB565_BLACK);
+// å¤‡æ³¨ä¿¡æ¯     å­—ä½“é¢œè‰²å’ŒèƒŒæ™¯é¢œè‰²ä¹Ÿå¯ä»¥éšæ—¶è‡ªç”±è®¾ç½® è®¾ç½®åç”Ÿæ•ˆ
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_set_color (uint16 pen, const uint16 bgcolor)
 {
@@ -205,38 +309,42 @@ void tft180_set_color (uint16 pen, const uint16 bgcolor)
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       Òº¾§»­µã
-// @param       x               ×ø±êx·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_x_max-1]
-// @param       y               ×ø±êy·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_y_max-1]
-// @param       dat             ĞèÒªÏÔÊ¾µÄÑÕÉ«
-// @return      void
-// Sample usage:                tft180_draw_point(0, 0, RGB565_RED);            // ×ø±ê 0,0 »­Ò»¸öºìÉ«µÄµã
+// å‡½æ•°ç®€ä»‹     TFT180 ç”»ç‚¹
+// å‚æ•°è¯´æ˜     x               åæ ‡xæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_x_max-1]
+// å‚æ•°è¯´æ˜     y               åæ ‡yæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_y_max-1]
+// å‚æ•°è¯´æ˜     dat             éœ€è¦æ˜¾ç¤ºçš„é¢œè‰²
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_draw_point(0, 0, RGB565_RED);            // åæ ‡ 0,0 ç”»ä¸€ä¸ªçº¢è‰²çš„ç‚¹
+// å¤‡æ³¨ä¿¡æ¯
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_draw_point (uint16 x, uint16 y, const uint16 color)
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
 
+    TFT180_CS(0);
     tft180_set_region(x, y, x, y);
     tft180_write_16bit_data(color);
+    TFT180_CS(1);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       Òº¾§»­Ïß
-// @param       x_start         ×ø±êx·½ÏòµÄÆğµã
-// @param       y_start         ×ø±êy·½ÏòµÄÆğµã
-// @param       x_end           ×ø±êx·½ÏòµÄÖÕµã
-// @param       y_end           ×ø±êy·½ÏòµÄÖÕµã
-// @param       dat             ĞèÒªÏÔÊ¾µÄÑÕÉ«
-// @return      void
-// Sample usage:                tft180_draw_line(0, 0, 10, 10,RGB565_RED);      // ×ø±ê 0,0 µ½ 10,10 »­Ò»ÌõºìÉ«µÄÏß
+// å‡½æ•°ç®€ä»‹     TFT180 ç”»çº¿
+// å‚æ•°è¯´æ˜     x_start         åæ ‡xæ–¹å‘çš„èµ·ç‚¹
+// å‚æ•°è¯´æ˜     y_start         åæ ‡yæ–¹å‘çš„èµ·ç‚¹
+// å‚æ•°è¯´æ˜     x_end           åæ ‡xæ–¹å‘çš„ç»ˆç‚¹
+// å‚æ•°è¯´æ˜     y_end           åæ ‡yæ–¹å‘çš„ç»ˆç‚¹
+// å‚æ•°è¯´æ˜     dat             éœ€è¦æ˜¾ç¤ºçš„é¢œè‰²
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_draw_line(0, 0, 10, 10,RGB565_RED);      // åæ ‡ 0,0 åˆ° 10,10 ç”»ä¸€æ¡çº¢è‰²çš„çº¿
+// å¤‡æ³¨ä¿¡æ¯
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_draw_line (uint16 x_start, uint16 y_start, uint16 x_end, uint16 y_end, const uint16 color)
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
     zf_assert(x_start < tft180_x_max);
     zf_assert(y_start < tft180_y_max);
     zf_assert(x_end < tft180_x_max);
@@ -246,114 +354,176 @@ void tft180_draw_line (uint16 x_start, uint16 y_start, uint16 x_end, uint16 y_en
     int16 y_dir = (y_start < y_end ? 1 : -1);
     float temp_rate = 0;
     float temp_b = 0;
-    if(x_start != x_end)
+
+    do
     {
-        temp_rate = (float)(y_start - y_end) / (float)(x_start - x_end);
-        temp_b = (float)y_start - (float)x_start * temp_rate;
-    }
-    else
-    {
-        while(y_start != y_end)
+        if(x_start != x_end)
         {
-            tft180_draw_point(x_start, y_start, color);
-            y_start += y_dir;
+            temp_rate = (float)(y_start - y_end) / (float)(x_start - x_end);
+            temp_b = (float)y_start - (float)x_start * temp_rate;
         }
-        return;
-    }
-    if(myabs(y_start - y_end)>myabs(x_start - x_end))
-    {
-        while(y_start != y_end)
+        else
         {
-            tft180_draw_point(x_start, y_start, color);
-            y_start += y_dir;
-            x_start = (int16)(((float)y_start - temp_b) / temp_rate);
+            while(y_start != y_end)
+            {
+                tft180_draw_point(x_start, y_start, color);
+                y_start += y_dir;
+            }
+            break;
         }
-    }
-    else
-    {
-        while(x_start != x_end)
+        
+        if(func_abs(y_start - y_end) > func_abs(x_start - x_end))
         {
-            tft180_draw_point(x_start, y_start, color);
-            x_start += x_dir;
-            y_start = (int16)((float)x_start * temp_rate + temp_b);
+            while(y_start != y_end)
+            {
+                tft180_draw_point(x_start, y_start, color);
+                y_start += y_dir;
+                x_start = (int16)(((float)y_start - temp_b) / temp_rate);
+            }
         }
-    }
+        else
+        {
+            while(x_start != x_end)
+            {
+                tft180_draw_point(x_start, y_start, color);
+                x_start += x_dir;
+                y_start = (int16)((float)x_start * temp_rate + temp_b);
+            }
+        }
+    }while(0);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       Òº¾§ÏÔÊ¾×Ö·û
-// @param       x               ×ø±êx·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_x_max-1]
-// @param       y               ×ø±êy·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_y_max-1]
-// @param       dat             ĞèÒªÏÔÊ¾µÄ×Ö·û
-// @return      void
-// Sample usage:                tft180_show_char(0, 0, 'x');                    // ×ø±ê 0,0 Ğ´Ò»¸ö×Ö·û x
+// å‡½æ•°ç®€ä»‹     TFT180 æ˜¾ç¤ºå­—ç¬¦
+// å‚æ•°è¯´æ˜     x               åæ ‡xæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_x_max-1]
+// å‚æ•°è¯´æ˜     y               åæ ‡yæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_y_max-1]
+// å‚æ•°è¯´æ˜     dat             éœ€è¦æ˜¾ç¤ºçš„å­—ç¬¦
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_show_char(0, 0, 'x');                    // åæ ‡ 0,0 å†™ä¸€ä¸ªå­—ç¬¦ x
+// å¤‡æ³¨ä¿¡æ¯
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_show_char (uint16 x, uint16 y, const char dat)
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
 
-    uint8 i,j;
-    uint8 temp;
+    uint8 i = 0, j = 0;
 
-    for(i = 0; i < 16; i ++)
+    TFT180_CS(0);
+    switch(tft180_display_font)
     {
-        tft180_set_region(x, y + i, x + 7, y + i);
-        temp = tft_ascii[dat - 32][i];                                          // ¼õ 32 ÒòÎªÊÇÈ¡Ä£ÊÇ´Ó¿Õ¸ñ¿ªÊ¼È¡µÃ ¿Õ¸ñÔÚ ascii ÖĞĞòºÅÊÇ 32
-        for(j = 0; j < 8; j ++)
+        case TFT180_6X8_FONT:
         {
-            if(temp & 0x01)
-                tft180_write_16bit_data(tft180_pencolor);
-            else
-                tft180_write_16bit_data(tft180_bgcolor);
-            temp >>= 1;
-        }
+            for(i = 0; 6 > i; i ++)
+            {
+                tft180_set_region(x + i, y, x + i, y + 8);
+                // å‡ 32 å› ä¸ºæ˜¯å–æ¨¡æ˜¯ä»ç©ºæ ¼å¼€å§‹å–å¾— ç©ºæ ¼åœ¨ ascii ä¸­åºå·æ˜¯ 32
+                uint8 temp_top = ascii_font_6x8[dat - 32][i];
+                for(j = 0; 8 > j; j ++)
+                {
+                    if(temp_top & 0x01)
+                    {
+                        tft180_write_16bit_data(tft180_pencolor);
+                    }
+                    else
+                    {
+                        tft180_write_16bit_data(tft180_bgcolor);
+                    }
+                    temp_top >>= 1;
+                }
+            }
+        }break;
+        case TFT180_8X16_FONT:
+        {
+            for(i = 0; 8 > i; i ++)
+            {
+                tft180_set_region(x + i, y, x + i, y + 15);
+                // å‡ 32 å› ä¸ºæ˜¯å–æ¨¡æ˜¯ä»ç©ºæ ¼å¼€å§‹å–å¾— ç©ºæ ¼åœ¨ ascii ä¸­åºå·æ˜¯ 32
+                uint8 temp_top = ascii_font_8x16[dat - 32][i];
+                uint8 temp_bottom = ascii_font_8x16[dat - 32][i + 8];
+                for(j = 0; 8 > j; j ++)
+                {
+                    if(temp_top & 0x01)
+                    {
+                        tft180_write_16bit_data(tft180_pencolor);
+                    }
+                    else
+                    {
+                        tft180_write_16bit_data(tft180_bgcolor);
+                    }
+                    temp_top >>= 1;
+                }
+                for(j = 0; 8 > j; j ++)
+                {
+                    if(temp_bottom & 0x01)
+                    {
+                        tft180_write_16bit_data(tft180_pencolor);
+                    }
+                    else
+                    {
+                        tft180_write_16bit_data(tft180_bgcolor);
+                    }
+                    temp_bottom >>= 1;
+                }
+            }
+        }break;
+        case TFT180_16X16_FONT:
+        {
+            // æš‚ä¸æ”¯æŒ
+        }break;
     }
+    TFT180_CS(1);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       Òº¾§ÏÔÊ¾×Ö·û´®
-// @param       x               ×ø±êx·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_x_max-1]
-// @param       y               ×ø±êy·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_y_max-1]
-// @param       dat             ĞèÒªÏÔÊ¾µÄ×Ö·û´®
-// @return      void
-// Sample usage:                tft180_show_string(0, 0, "seekfree");
+// å‡½æ•°ç®€ä»‹     TFT180 æ˜¾ç¤ºå­—ç¬¦ä¸²
+// å‚æ•°è¯´æ˜     x               åæ ‡xæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_x_max-1]
+// å‚æ•°è¯´æ˜     y               åæ ‡yæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_y_max-1]
+// å‚æ•°è¯´æ˜     dat             éœ€è¦æ˜¾ç¤ºçš„å­—ç¬¦ä¸²
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_show_string(0, 0, "seekfree");
+// å¤‡æ³¨ä¿¡æ¯
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_show_string (uint16 x, uint16 y, const char dat[])
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
     
     uint16 j = 0;
-    while(dat[j] != '\0')
+    while('\0' != dat[j])
     {
-        tft180_show_char(x + 8 * j, y, dat[j]);
+        switch(tft180_display_font)
+        {
+            case TFT180_6X8_FONT:   tft180_show_char(x + 6 * j, y, dat[j]); break;
+            case TFT180_8X16_FONT:  tft180_show_char(x + 8 * j, y, dat[j]); break;
+            case TFT180_16X16_FONT: break;                                      // æš‚ä¸æ”¯æŒ
+        }
         j ++;
     }
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       Òº¾§ÏÔÊ¾32Î»ÓĞ·ûºÅ(È¥³ıÕûÊı²¿·ÖÎŞĞ§µÄ0)
-// @param       x               ×ø±êx·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_x_max-1]
-// @param       y               ×ø±êy·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_y_max-1]
-// @param       dat             ĞèÒªÏÔÊ¾µÄ±äÁ¿ Êı¾İÀàĞÍ int32
-// @param       num             ĞèÒªÏÔÊ¾µÄÎ»Êı ×î¸ß10Î»  ²»°üº¬Õı¸ººÅ
-// @return      void
-// Sample usage:                tft180_show_int(0, 0, x, 3);                    // x ¿ÉÒÔÎª int32 int16 int8 ÀàĞÍ
-// note:                        ¸ºÊı»áÏÔÊ¾Ò»¸ö ¡®-¡¯ºÅ   ÕıÊıÏÔÊ¾Ò»¸ö¿Õ¸ñ
+// å‡½æ•°ç®€ä»‹     TFT180 æ˜¾ç¤º32ä½æœ‰ç¬¦å· (å»é™¤æ•´æ•°éƒ¨åˆ†æ— æ•ˆçš„0)
+// å‚æ•°è¯´æ˜     x               åæ ‡xæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_x_max-1]
+// å‚æ•°è¯´æ˜     y               åæ ‡yæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_y_max-1]
+// å‚æ•°è¯´æ˜     dat             éœ€è¦æ˜¾ç¤ºçš„å˜é‡ æ•°æ®ç±»å‹ int32
+// å‚æ•°è¯´æ˜     num             éœ€è¦æ˜¾ç¤ºçš„ä½æ•° æœ€é«˜10ä½  ä¸åŒ…å«æ­£è´Ÿå·
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_show_int(0, 0, x, 3);                    // x å¯ä»¥ä¸º int32 int16 int8 ç±»å‹
+// å¤‡æ³¨ä¿¡æ¯     è´Ÿæ•°ä¼šæ˜¾ç¤ºä¸€ä¸ª â€˜-â€™å·
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_show_int (uint16 x, uint16 y, const int32 dat, uint8 num)
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
-    zf_assert(num > 0);
-    zf_assert(num <= 10);
+    zf_assert(0 < num);
+    zf_assert(10 >= num);
 
     int32 dat_temp = dat;
     int32 offset = 1;
@@ -362,34 +532,37 @@ void tft180_show_int (uint16 x, uint16 y, const int32 dat, uint8 num)
     memset(data_buffer, 0, 12);
     memset(data_buffer, ' ', num + 1);
 
-    if(num < 10)
+    // ç”¨æ¥è®¡ç®—ä½™æ•°æ˜¾ç¤º 123 æ˜¾ç¤º 2 ä½åˆ™åº”è¯¥æ˜¾ç¤º 23
+    if(10 > num)
     {
-        for(; num > 0; num --)
+        for(; 0 < num; num --)
+        {
             offset *= 10;
+        }
         dat_temp %= offset;
     }
-    int_to_str(data_buffer, dat_temp);
+    func_int_to_str(data_buffer, dat_temp);
     tft180_show_string(x, y, (const char *)&data_buffer);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       Òº¾§ÏÔÊ¾32Î»ÓĞ·ûºÅ(È¥³ıÕûÊı²¿·ÖÎŞĞ§µÄ0)
-// @param       x               ×ø±êx·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_x_max-1]
-// @param       y               ×ø±êy·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_y_max-1]
-// @param       dat             ĞèÒªÏÔÊ¾µÄ±äÁ¿ Êı¾İÀàĞÍ uint32
-// @param       num             ĞèÒªÏÔÊ¾µÄÎ»Êı ×î¸ß10Î»  ²»°üº¬Õı¸ººÅ
-// @return      void
-// Sample usage:                tft180_show_uint(0, 0, x, 3);                   // x ¿ÉÒÔÎª uint32 uint16 uint8 ÀàĞÍ
-// note:                        ¸ºÊı»áÏÔÊ¾Ò»¸ö ¡®-¡¯ºÅ   ÕıÊıÏÔÊ¾Ò»¸ö¿Õ¸ñ
+// å‡½æ•°ç®€ä»‹     TFT180 æ˜¾ç¤º32ä½æ— ç¬¦å· (å»é™¤æ•´æ•°éƒ¨åˆ†æ— æ•ˆçš„0)
+// å‚æ•°è¯´æ˜     x               åæ ‡xæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_x_max-1]
+// å‚æ•°è¯´æ˜     y               åæ ‡yæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_y_max-1]
+// å‚æ•°è¯´æ˜     dat             éœ€è¦æ˜¾ç¤ºçš„å˜é‡ æ•°æ®ç±»å‹ uint32
+// å‚æ•°è¯´æ˜     num             éœ€è¦æ˜¾ç¤ºçš„ä½æ•° æœ€é«˜10ä½  ä¸åŒ…å«æ­£è´Ÿå·
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_show_uint(0, 0, x, 3);                   // x å¯ä»¥ä¸º uint32 uint16 uint8 ç±»å‹
+// å¤‡æ³¨ä¿¡æ¯
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_show_uint (uint16 x, uint16 y, const uint32 dat, uint8 num)
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
-    zf_assert(num > 0);
-    zf_assert(num <= 10);
+    zf_assert(0 < num);
+    zf_assert(10 >= num);
 
     uint32 dat_temp = dat;
     int32 offset = 1;
@@ -397,81 +570,90 @@ void tft180_show_uint (uint16 x, uint16 y, const uint32 dat, uint8 num)
     memset(data_buffer, 0, 12);
     memset(data_buffer, ' ', num);
 
-    if(num < 10)
+    // ç”¨æ¥è®¡ç®—ä½™æ•°æ˜¾ç¤º 123 æ˜¾ç¤º 2 ä½åˆ™åº”è¯¥æ˜¾ç¤º 23
+    if(10 > num)
     {
-        for(; num > 0; num --)
+        for(; 0 < num; num --)
+        {
             offset *= 10;
+        }
         dat_temp %= offset;
     }
-    uint_to_str(data_buffer, dat_temp);
+    func_uint_to_str(data_buffer, dat_temp);
     tft180_show_string(x, y, (const char *)&data_buffer);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       Òº¾§ÏÔÊ¾¸¡µãÊı(È¥³ıÕûÊı²¿·ÖÎŞĞ§µÄ0)
-// @param       x               ×ø±êx·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_x_max-1]
-// @param       y               ×ø±êy·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_y_max-1]
-// @param       dat             ĞèÒªÏÔÊ¾µÄ±äÁ¿£¬Êı¾İÀàĞÍfloat»òdouble
-// @param       num             ÕûÊıÎ»ÏÔÊ¾³¤¶È   ×î¸ß10Î»
-// @param       pointnum        Ğ¡ÊıÎ»ÏÔÊ¾³¤¶È   ×î¸ß6Î»
-// @return      void
-// Sample usage:                tft180_show_float(0, 0, x, 2, 3);               // ÏÔÊ¾¸¡µãÊı   ÕûÊıÏÔÊ¾2Î»   Ğ¡ÊıÏÔÊ¾ÈıÎ»
-// @note                        ÌØ±ğ×¢Òâµ±·¢ÏÖĞ¡Êı²¿·ÖÏÔÊ¾µÄÖµÓëÄãĞ´ÈëµÄÖµ²»Ò»ÑùµÄÊ±ºò£¬
-//                              ¿ÉÄÜÊÇÓÉÓÚ¸¡µãÊı¾«¶È¶ªÊ§ÎÊÌâµ¼ÖÂµÄ£¬Õâ²¢²»ÊÇÏÔÊ¾º¯ÊıµÄÎÊÌâ£¬
-//                              ÓĞ¹ØÎÊÌâµÄÏêÇé£¬Çë×ÔĞĞ°Ù¶ÈÑ§Ï°   ¸¡µãÊı¾«¶È¶ªÊ§ÎÊÌâ¡£
-//                              ¸ºÊı»áÏÔÊ¾Ò»¸ö ¡®-¡¯ºÅ   ÕıÊıÏÔÊ¾Ò»¸ö¿Õ¸ñ
+// å‡½æ•°ç®€ä»‹     TFT180 æ˜¾ç¤ºæµ®ç‚¹æ•°(å»é™¤æ•´æ•°éƒ¨åˆ†æ— æ•ˆçš„0)
+// å‚æ•°è¯´æ˜     x               åæ ‡xæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_x_max-1]
+// å‚æ•°è¯´æ˜     y               åæ ‡yæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_y_max-1]
+// å‚æ•°è¯´æ˜     dat             éœ€è¦æ˜¾ç¤ºçš„å˜é‡ æ•°æ®ç±»å‹ float
+// å‚æ•°è¯´æ˜     num             æ•´æ•°ä½æ˜¾ç¤ºé•¿åº¦   æœ€é«˜8ä½
+// å‚æ•°è¯´æ˜     pointnum        å°æ•°ä½æ˜¾ç¤ºé•¿åº¦   æœ€é«˜6ä½
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_show_float(0, 0, x, 2, 3);               // æ˜¾ç¤ºæµ®ç‚¹æ•°   æ•´æ•°æ˜¾ç¤º2ä½   å°æ•°æ˜¾ç¤ºä¸‰ä½
+// å¤‡æ³¨ä¿¡æ¯     ç‰¹åˆ«æ³¨æ„å½“å‘ç°å°æ•°éƒ¨åˆ†æ˜¾ç¤ºçš„å€¼ä¸ä½ å†™å…¥çš„å€¼ä¸ä¸€æ ·çš„æ—¶å€™ï¼Œ
+//              å¯èƒ½æ˜¯ç”±äºæµ®ç‚¹æ•°ç²¾åº¦ä¸¢å¤±é—®é¢˜å¯¼è‡´çš„ï¼Œè¿™å¹¶ä¸æ˜¯æ˜¾ç¤ºå‡½æ•°çš„é—®é¢˜ï¼Œ
+//              æœ‰å…³é—®é¢˜çš„è¯¦æƒ…ï¼Œè¯·è‡ªè¡Œç™¾åº¦å­¦ä¹    æµ®ç‚¹æ•°ç²¾åº¦ä¸¢å¤±é—®é¢˜ã€‚
+//              è´Ÿæ•°ä¼šæ˜¾ç¤ºä¸€ä¸ª â€˜-â€™å·
 //-------------------------------------------------------------------------------------------------------------------
-void tft180_show_float (uint16 x, uint16 y, const float dat, uint8 num, uint8 pointnum)
+void tft180_show_float (uint16 x, uint16 y, const double dat, uint8 num, uint8 pointnum)
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
-    zf_assert(num > 0);
-    zf_assert(num <= 8);
-    zf_assert(pointnum > 0);
-    zf_assert(pointnum <= 6);
+    zf_assert(0 < num);
+    zf_assert(8 >= num);
+    zf_assert(0 < pointnum);
+    zf_assert(6 >= pointnum);
 
-    float dat_temp = dat;
-    float offset = 1.0;
+    double dat_temp = dat;
+    double offset = 1.0;
     char data_buffer[17];
     memset(data_buffer, 0, 17);
     memset(data_buffer, ' ', num + pointnum + 2);
 
-    if(num < 10)
+    // ç”¨æ¥è®¡ç®—ä½™æ•°æ˜¾ç¤º 123 æ˜¾ç¤º 2 ä½åˆ™åº”è¯¥æ˜¾ç¤º 23
+    for(; 0 < num; num --)
     {
-        for(; num > 0; num--)
-            offset *= 10;
-        dat_temp = dat_temp - ((int)dat_temp / (int)offset) * offset;
+        offset *= 10;
     }
-    float_to_str(data_buffer, dat_temp, pointnum);
+    dat_temp = dat_temp - ((int)dat_temp / (int)offset) * offset;
+    func_double_to_str(data_buffer, dat_temp, pointnum);
     tft180_show_string(x, y, data_buffer);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       TFT180 ÏÔÊ¾¶şÖµÍ¼Ïñ Êı¾İÃ¿°Ë¸öµã×é³ÉÒ»¸ö×Ö½ÚÊı¾İ
-// @param       x               ×ø±êx·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_x_max-1]
-// @param       y               ×ø±êy·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_y_max-1]
-// @param       *image          Í¼ÏñÊı×éÖ¸Õë
-// @param       width           Í¼ÏñÊµ¼Ê¿í¶È
-// @param       height          Í¼ÏñÊµ¼Ê¸ß¶È
-// @param       dis_width       Í¼ÏñÏÔÊ¾¿í¶È ²ÎÊı·¶Î§ [0, tft180_x_max]
-// @param       dis_height      Í¼ÏñÏÔÊ¾¸ß¶È ²ÎÊı·¶Î§ [0, tft180_y_max]
-// @return      void
-// Sample usage:                tft180_show_binary_image(0, 0, ov7725_image_binary[0], OV7725_W, OV7725_H, OV7725_W / 2, OV7725_H / 2);
+// å‡½æ•°ç®€ä»‹     TFT180 æ˜¾ç¤ºäºŒå€¼å›¾åƒ æ•°æ®æ¯å…«ä¸ªç‚¹ç»„æˆä¸€ä¸ªå­—èŠ‚æ•°æ®
+// å‚æ•°è¯´æ˜     x               åæ ‡xæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_x_max-1]
+// å‚æ•°è¯´æ˜     y               åæ ‡yæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_y_max-1]
+// å‚æ•°è¯´æ˜     *image          å›¾åƒæ•°ç»„æŒ‡é’ˆ
+// å‚æ•°è¯´æ˜     width           å›¾åƒå®é™…å®½åº¦
+// å‚æ•°è¯´æ˜     height          å›¾åƒå®é™…é«˜åº¦
+// å‚æ•°è¯´æ˜     dis_width       å›¾åƒæ˜¾ç¤ºå®½åº¦ å‚æ•°èŒƒå›´ [0, tft180_x_max]
+// å‚æ•°è¯´æ˜     dis_height      å›¾åƒæ˜¾ç¤ºé«˜åº¦ å‚æ•°èŒƒå›´ [0, tft180_y_max]
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_show_binary_image(0, 0, ov7725_image_binary[0], OV7725_W, OV7725_H, OV7725_W / 2, OV7725_H / 2);
+// å¤‡æ³¨ä¿¡æ¯     ç”¨äºæ˜¾ç¤ºå°é’»é£çš„æœªè§£å‹çš„å‹ç¼©äºŒå€¼åŒ–å›¾åƒ
+//              è¿™ä¸ªå‡½æ•°ä¸å¯ä»¥ç”¨æ¥ç›´æ¥æ˜¾ç¤ºæ€»é’»é£çš„æœªå‹ç¼©çš„äºŒå€¼åŒ–å›¾åƒ
+//              è¿™ä¸ªå‡½æ•°ä¸å¯ä»¥ç”¨æ¥ç›´æ¥æ˜¾ç¤ºæ€»é’»é£çš„æœªå‹ç¼©çš„äºŒå€¼åŒ–å›¾åƒ
+//              è¿™ä¸ªå‡½æ•°ä¸å¯ä»¥ç”¨æ¥ç›´æ¥æ˜¾ç¤ºæ€»é’»é£çš„æœªå‹ç¼©çš„äºŒå€¼åŒ–å›¾åƒ
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_show_binary_image (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height)
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
+    zf_assert(NULL != image);
 
     uint32 i = 0, j = 0;
     uint8 temp = 0;
     uint32 width_index = 0, height_index = 0;
 
-    tft180_set_region(x, y, x + dis_width - 1, y + dis_height - 1);             // ÉèÖÃÏÔÊ¾ÇøÓò
+    TFT180_CS(0);
+    tft180_set_region(x, y, x + dis_width - 1, y + dis_height - 1);             // è®¾ç½®æ˜¾ç¤ºåŒºåŸŸ
 
     for(j = 0; j < dis_height; j ++)
     {
@@ -479,40 +661,51 @@ void tft180_show_binary_image (uint16 x, uint16 y, const uint8 *image, uint16 wi
         for(i = 0; i < dis_width; i ++)
         {
             width_index = i * width / dis_width;
-            temp = *(image + height_index * width / 8 + width_index / 8);       // ¶ÁÈ¡ÏñËØµã
+            temp = *(image + height_index * width / 8 + width_index / 8);       // è¯»å–åƒç´ ç‚¹
             if(0x80 & (temp << (width_index % 8)))
+            {
                 tft180_write_16bit_data(RGB565_WHITE);
+            }
             else
+            {
                 tft180_write_16bit_data(RGB565_BLACK);
+            }
         }
     }
+    TFT180_CS(1);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       TFT180 ÏÔÊ¾ 8bit »Ò¶ÈÍ¼Ïñ ´ø¶şÖµ»¯ãĞÖµ
-// @param       x               ×ø±êx·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_x_max-1]
-// @param       y               ×ø±êy·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_y_max-1]
-// @param       *image          Í¼ÏñÊı×éÖ¸Õë
-// @param       width           Í¼ÏñÊµ¼Ê¿í¶È
-// @param       height          Í¼ÏñÊµ¼Ê¸ß¶È
-// @param       dis_width       Í¼ÏñÏÔÊ¾¿í¶È ²ÎÊı·¶Î§ [0, tft180_x_max]
-// @param       dis_height      Í¼ÏñÏÔÊ¾¸ß¶È ²ÎÊı·¶Î§ [0, tft180_y_max]
-// @param       threshold       ¶şÖµ»¯ÏÔÊ¾ãĞÖµ 0-²»¿ªÆô¶şÖµ»¯
-// @return      void
-// Sample usage:                tft180_show_gray_image(0, 0, mt9v03x_image[0], MT9V03X_W, MT9V03X_H, MT9V03X_W / 2, MT9V03X_H / 2, 0);
+// å‡½æ•°ç®€ä»‹     TFT180 æ˜¾ç¤º 8bit ç°åº¦å›¾åƒ å¸¦äºŒå€¼åŒ–é˜ˆå€¼
+// å‚æ•°è¯´æ˜     x               åæ ‡xæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_x_max-1]
+// å‚æ•°è¯´æ˜     y               åæ ‡yæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_y_max-1]
+// å‚æ•°è¯´æ˜     *image          å›¾åƒæ•°ç»„æŒ‡é’ˆ
+// å‚æ•°è¯´æ˜     width           å›¾åƒå®é™…å®½åº¦
+// å‚æ•°è¯´æ˜     height          å›¾åƒå®é™…é«˜åº¦
+// å‚æ•°è¯´æ˜     dis_width       å›¾åƒæ˜¾ç¤ºå®½åº¦ å‚æ•°èŒƒå›´ [0, tft180_x_max]
+// å‚æ•°è¯´æ˜     dis_height      å›¾åƒæ˜¾ç¤ºé«˜åº¦ å‚æ•°èŒƒå›´ [0, tft180_y_max]
+// å‚æ•°è¯´æ˜     threshold       äºŒå€¼åŒ–æ˜¾ç¤ºé˜ˆå€¼ 0-ä¸å¼€å¯äºŒå€¼åŒ–
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_show_gray_image(0, 0, mt9v03x_image[0], MT9V03X_W, MT9V03X_H, MT9V03X_W / 2, MT9V03X_H / 2, 0);
+// å¤‡æ³¨ä¿¡æ¯     ç”¨äºæ˜¾ç¤ºæ€»é’»é£çš„å›¾åƒ
+//              å¦‚æœè¦æ˜¾ç¤ºäºŒå€¼åŒ–å›¾åƒ ç›´æ¥ä¿®æ”¹æœ€åä¸€ä¸ªå‚æ•°ä¸ºéœ€è¦çš„äºŒå€¼åŒ–é˜ˆå€¼å³å¯
+//              å¦‚æœè¦æ˜¾ç¤ºäºŒå€¼åŒ–å›¾åƒ ç›´æ¥ä¿®æ”¹æœ€åä¸€ä¸ªå‚æ•°ä¸ºéœ€è¦çš„äºŒå€¼åŒ–é˜ˆå€¼å³å¯
+//              å¦‚æœè¦æ˜¾ç¤ºäºŒå€¼åŒ–å›¾åƒ ç›´æ¥ä¿®æ”¹æœ€åä¸€ä¸ªå‚æ•°ä¸ºéœ€è¦çš„äºŒå€¼åŒ–é˜ˆå€¼å³å¯
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_show_gray_image (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 threshold)
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
+    zf_assert(NULL != image);
 
     uint32 i = 0, j = 0;
     uint16 color = 0,temp = 0;
     uint32 width_index = 0, height_index = 0;
 
-    tft180_set_region(x, y, x + dis_width - 1, y + dis_height - 1);             // ÉèÖÃÏÔÊ¾ÇøÓò
+    TFT180_CS(0);
+    tft180_set_region(x, y, x + dis_width - 1, y + dis_height - 1);             // è®¾ç½®æ˜¾ç¤ºåŒºåŸŸ
 
     for(j = 0; j < dis_height; j ++)
     {
@@ -520,7 +713,7 @@ void tft180_show_gray_image (uint16 x, uint16 y, const uint8 *image, uint16 widt
         for(i = 0; i < dis_width; i ++)
         {
             width_index = i * width / dis_width;
-            temp = *(image + height_index * width + width_index);               // ¶ÁÈ¡ÏñËØµã
+            temp = *(image + height_index * width + width_index);               // è¯»å–åƒç´ ç‚¹
             if(threshold == 0)
             {
                 color = (0x001f & ((temp) >> 3)) << 11;
@@ -529,38 +722,49 @@ void tft180_show_gray_image (uint16 x, uint16 y, const uint8 *image, uint16 widt
                 tft180_write_16bit_data(color);
             }
             else if(temp < threshold)
+            {
                 tft180_write_16bit_data(RGB565_BLACK);
+            }
             else
+            {
                 tft180_write_16bit_data(RGB565_WHITE);
+            }
         }
     }
+    TFT180_CS(1);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       TFT180 ÏÔÊ¾ RGB565 ²ÊÉ«Í¼Ïñ
-// @param       x               ×ø±êx·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_x_max-1]
-// @param       y               ×ø±êy·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_y_max-1]
-// @param       *image          Í¼ÏñÊı×éÖ¸Õë
-// @param       width           Í¼ÏñÊµ¼Ê¿í¶È
-// @param       height          Í¼ÏñÊµ¼Ê¸ß¶È
-// @param       dis_width       Í¼ÏñÏÔÊ¾¿í¶È ²ÎÊı·¶Î§ [0, tft180_x_max]
-// @param       dis_height      Í¼ÏñÏÔÊ¾¸ß¶È ²ÎÊı·¶Î§ [0, tft180_y_max]
-// @param       color_mode      É«²ÊÄ£Ê½ 0-µÍÎ»ÔÚÇ° 1-¸ßÎ»ÔÚÇ°
-// @return      void
-// Sample usage:                tft180_show_rgb565_image(0, 0, scc8660_image[0], SCCB8660_W, SCCB8660_H, SCCB8660_W / 2, SCCB8660_H / 2, 1);
+// å‡½æ•°ç®€ä»‹     TFT180 æ˜¾ç¤º RGB565 å½©è‰²å›¾åƒ
+// å‚æ•°è¯´æ˜     x               åæ ‡xæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_x_max-1]
+// å‚æ•°è¯´æ˜     y               åæ ‡yæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_y_max-1]
+// å‚æ•°è¯´æ˜     *image          å›¾åƒæ•°ç»„æŒ‡é’ˆ
+// å‚æ•°è¯´æ˜     width           å›¾åƒå®é™…å®½åº¦
+// å‚æ•°è¯´æ˜     height          å›¾åƒå®é™…é«˜åº¦
+// å‚æ•°è¯´æ˜     dis_width       å›¾åƒæ˜¾ç¤ºå®½åº¦ å‚æ•°èŒƒå›´ [0, tft180_x_max]
+// å‚æ•°è¯´æ˜     dis_height      å›¾åƒæ˜¾ç¤ºé«˜åº¦ å‚æ•°èŒƒå›´ [0, tft180_y_max]
+// å‚æ•°è¯´æ˜     color_mode      è‰²å½©æ¨¡å¼ 0-ä½ä½åœ¨å‰ 1-é«˜ä½åœ¨å‰
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_show_rgb565_image(0, 0, scc8660_image[0], SCC8660_W, SCC8660_H, SCC8660_W / 2, SCC8660_H / 2, 1);
+// å¤‡æ³¨ä¿¡æ¯     ç”¨äºæ˜¾ç¤ºå‡Œç³çš„ RGB565 çš„å›¾åƒ
+//              å¦‚æœè¦æ˜¾ç¤ºä½ä½åœ¨å‰çš„å…¶ä»– RGB565 å›¾åƒ ä¿®æ”¹æœ€åä¸€ä¸ªå‚æ•°å³å¯
+//              å¦‚æœè¦æ˜¾ç¤ºä½ä½åœ¨å‰çš„å…¶ä»– RGB565 å›¾åƒ ä¿®æ”¹æœ€åä¸€ä¸ªå‚æ•°å³å¯
+//              å¦‚æœè¦æ˜¾ç¤ºä½ä½åœ¨å‰çš„å…¶ä»– RGB565 å›¾åƒ ä¿®æ”¹æœ€åä¸€ä¸ªå‚æ•°å³å¯
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_show_rgb565_image (uint16 x, uint16 y, const uint16 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 color_mode)
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
+    zf_assert(NULL != image);
 
     uint32 i = 0, j = 0;
     uint16 color = 0;
     uint32 width_index = 0, height_index = 0;
 
-    tft180_set_region(x, y, x + dis_width - 1, y + dis_height - 1);             // ÉèÖÃÏÔÊ¾ÇøÓò
+    TFT180_CS(0);
+    tft180_set_region(x, y, x + dis_width - 1, y + dis_height - 1);             // è®¾ç½®æ˜¾ç¤ºåŒºåŸŸ
 
     for(j = 0; j < dis_height; j ++)
     {
@@ -568,37 +772,43 @@ void tft180_show_rgb565_image (uint16 x, uint16 y, const uint16 *image, uint16 w
         for(i = 0; i < dis_width; i ++)
         {
             width_index = i * width / dis_width;
-            color = *(image + height_index * width + width_index);              // ¶ÁÈ¡ÏñËØµã
+            color = *(image + height_index * width + width_index);              // è¯»å–åƒç´ ç‚¹
             if(color_mode)
+            {
                 color = ((color & 0xff) << 8) | (color >> 8);
+            }
             tft180_write_16bit_data(color);
         }
     }
+    TFT180_CS(1);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       TFT180 ÏÔÊ¾²¨ĞÎ
-// @param       x               ×ø±êx·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_x_max-1]
-// @param       y               ×ø±êy·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_y_max-1]
-// @param       *wave           ²¨ĞÎÊı×éÖ¸Õë
-// @param       width           ²¨ĞÎÊµ¼Ê¿í¶È
-// @param       value_max       ²¨ĞÎÊµ¼Ê×î´óÖµ
-// @param       dis_width       ²¨ĞÎÏÔÊ¾¿í¶È ²ÎÊı·¶Î§ [0, tft180_x_max]
-// @param       dis_value_max   ²¨ĞÎÏÔÊ¾×î´óÖµ ²ÎÊı·¶Î§ [0, tft180_y_max]
-// @return      void
-// Sample usage:                tft180_show_wave(32, 64, data, 128, 64, 64, 32);
+// å‡½æ•°ç®€ä»‹     TFT180 æ˜¾ç¤ºæ³¢å½¢
+// å‚æ•°è¯´æ˜     x               åæ ‡xæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_x_max-1]
+// å‚æ•°è¯´æ˜     y               åæ ‡yæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_y_max-1]
+// å‚æ•°è¯´æ˜     *wave           æ³¢å½¢æ•°ç»„æŒ‡é’ˆ
+// å‚æ•°è¯´æ˜     width           æ³¢å½¢å®é™…å®½åº¦
+// å‚æ•°è¯´æ˜     value_max       æ³¢å½¢å®é™…æœ€å¤§å€¼
+// å‚æ•°è¯´æ˜     dis_width       æ³¢å½¢æ˜¾ç¤ºå®½åº¦ å‚æ•°èŒƒå›´ [0, tft180_x_max]
+// å‚æ•°è¯´æ˜     dis_value_max   æ³¢å½¢æ˜¾ç¤ºæœ€å¤§å€¼ å‚æ•°èŒƒå›´ [0, tft180_y_max]
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_show_wave(32, 64, data, 128, 64, 64, 32);
+// å¤‡æ³¨ä¿¡æ¯
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_show_wave (uint16 x, uint16 y, const uint16 *wave, uint16 width, uint16 value_max, uint16 dis_width, uint16 dis_value_max)
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
+    zf_assert(NULL != wave);
 
     uint32 i = 0, j = 0;
     uint32 width_index = 0, value_max_index = 0;
 
-    tft180_set_region(x, y, x + dis_width - 1, y + dis_value_max - 1);          // ÉèÖÃÏÔÊ¾ÇøÓò
+    TFT180_CS(0);
+    tft180_set_region(x, y, x + dis_width - 1, y + dis_value_max - 1);          // è®¾ç½®æ˜¾ç¤ºåŒºåŸŸ
     for(i = 0; i < dis_value_max; i ++)
     {
         for(j = 0; j < dis_width; j ++)
@@ -606,6 +816,7 @@ void tft180_show_wave (uint16 x, uint16 y, const uint16 *wave, uint16 width, uin
             tft180_write_16bit_data(tft180_bgcolor); 
         }
     }
+    TFT180_CS(1);
 
     for(i = 0; i < dis_width; i ++)
     {
@@ -616,30 +827,32 @@ void tft180_show_wave (uint16 x, uint16 y, const uint16 *wave, uint16 width, uin
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       ºº×ÖÏÔÊ¾
-// @param       x               ×ø±êx·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_x_max-1]
-// @param       y               ×ø±êy·½ÏòµÄÆğµã ²ÎÊı·¶Î§ [0, tft180_y_max-1]
-// @param       size            È¡Ä£µÄÊ±ºòÉèÖÃµÄºº×Ö×ÖÌå´óĞ¡ Ò²¾ÍÊÇÒ»¸öºº×ÖÕ¼ÓÃµÄµãÕó³¤¿íÎª¶àÉÙ¸öµã È¡Ä£µÄÊ±ºòĞèÒª³¤¿íÊÇÒ»ÑùµÄ
-// @param       *chinese_buffer ĞèÒªÏÔÊ¾µÄºº×ÖÊı×é
-// @param       number          ĞèÒªÏÔÊ¾¶àÉÙÎ»
-// @param       color           ÏÔÊ¾ÑÕÉ«
-// @return      void
-// Sample usage:                tft180_show_chinese(0, 0, 16, chinese_test[0], 4, RGB565_RED);//ÏÔÊ¾fontÎÄ¼şÀïÃæµÄ Ê¾Àı
-// @Note                        Ê¹ÓÃPCtoLCD2002Èí¼şÈ¡Ä£           ÒõÂë¡¢ÖğĞĞÊ½¡¢Ë³Ïò   16*16
+// å‡½æ•°ç®€ä»‹     æ±‰å­—æ˜¾ç¤º
+// å‚æ•°è¯´æ˜     x               åæ ‡xæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_x_max-1]
+// å‚æ•°è¯´æ˜     y               åæ ‡yæ–¹å‘çš„èµ·ç‚¹ å‚æ•°èŒƒå›´ [0, tft180_y_max-1]
+// å‚æ•°è¯´æ˜     size            å–æ¨¡çš„æ—¶å€™è®¾ç½®çš„æ±‰å­—å­—ä½“å¤§å° ä¹Ÿå°±æ˜¯ä¸€ä¸ªæ±‰å­—å ç”¨çš„ç‚¹é˜µé•¿å®½ä¸ºå¤šå°‘ä¸ªç‚¹ å–æ¨¡çš„æ—¶å€™éœ€è¦é•¿å®½æ˜¯ä¸€æ ·çš„
+// å‚æ•°è¯´æ˜     *chinese_buffer éœ€è¦æ˜¾ç¤ºçš„æ±‰å­—æ•°ç»„
+// å‚æ•°è¯´æ˜     number          éœ€è¦æ˜¾ç¤ºå¤šå°‘ä½
+// å‚æ•°è¯´æ˜     color           æ˜¾ç¤ºé¢œè‰²
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_show_chinese(0, 0, 16, chinese_test[0], 4, RGB565_RED);//æ˜¾ç¤ºfontæ–‡ä»¶é‡Œé¢çš„ ç¤ºä¾‹
+// å¤‡æ³¨ä¿¡æ¯     ä½¿ç”¨PCtoLCD2002è½¯ä»¶å–æ¨¡           é˜´ç ã€é€è¡Œå¼ã€é¡ºå‘   16*16
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_show_chinese (uint16 x, uint16 y, uint8 size, const uint8 *chinese_buffer, uint8 number, const uint16 color)
 {
-    // Èç¹û³ÌĞòÔÚÊä³öÁË¶ÏÑÔĞÅÏ¢ ²¢ÇÒÌáÊ¾³ö´íÎ»ÖÃÔÚÕâÀï
-    // ÄÇÃ´Ò»°ãÊÇÆÁÄ»ÏÔÊ¾µÄÊ±ºò³¬¹ıÆÁÄ»·Ö±æÂÊ·¶Î§ÁË
+    // å¦‚æœç¨‹åºåœ¨è¾“å‡ºäº†æ–­è¨€ä¿¡æ¯ å¹¶ä¸”æç¤ºå‡ºé”™ä½ç½®åœ¨è¿™é‡Œ
+    // é‚£ä¹ˆä¸€èˆ¬æ˜¯å±å¹•æ˜¾ç¤ºçš„æ—¶å€™è¶…è¿‡å±å¹•åˆ†è¾¨ç‡èŒƒå›´äº†
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
+    zf_assert(NULL != chinese_buffer);
 
-    int i, j, k; 
-    uint8 temp, temp1, temp2;
-    const uint8 *p_data;
+    int i = 0, j = 0, k = 0; 
+    uint8 temp = 0, temp1 = 0, temp2 = 0;
+    const uint8 *p_data = chinese_buffer;
     
     temp2 = size / 8;
     
+    TFT180_CS(0);
     tft180_set_region(x, y, number * size - 1 + x, y + size - 1);
     
     for(i = 0; i < size; i ++)
@@ -650,48 +863,55 @@ void tft180_show_chinese (uint16 x, uint16 y, uint8 size, const uint8 *chinese_b
         {
             for(k = 0; k < temp2; k ++)
             {
-                for(j = 8; j > 0; j --)
+                for(j = 8; 0 < j; j --)
                 {
                     temp = (*p_data >> (j - 1)) & 0x01;
-                    if(temp)    tft180_write_16bit_data(color);
-                    else        tft180_write_16bit_data(tft180_bgcolor);
+                    if(temp)
+                    {
+                        tft180_write_16bit_data(color);
+                    }
+                    else
+                    {
+                        tft180_write_16bit_data(tft180_bgcolor);
+                    }
                 }
                 p_data ++;
             }
             p_data = p_data - temp2 + temp2 * size;
         }   
     }
+    TFT180_CS(1);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       1.14´ç IPSÒº¾§³õÊ¼»¯
-// @return      void
-// Sample usage:                tft180_init();
+// å‡½æ•°ç®€ä»‹     TFT180 åˆå§‹åŒ–
+// è¿”å›å‚æ•°     void
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     tft180_init();
+// å¤‡æ³¨ä¿¡æ¯
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_init (void)
 {
 #if TFT180_USE_SOFT_SPI
     soft_spi_init(&tft180_spi, 0, TFT180_SOFT_SPI_DELAY, TFT180_SCL_PIN, TFT180_SDA_PIN, SOFT_SPI_PIN_NULL, SOFT_SPI_PIN_NULL);
 #else
-    zf_assert(TFT180_SPI != (TFT180_SCL_PIN & 0xF000 >> 12));
-    zf_assert(TFT180_SPI != (TFT180_SDA_PIN & 0xF000 >> 12));
     spi_init(TFT180_SPI, SPI_MODE0, TFT180_SPI_SPEED, TFT180_SCL_PIN, TFT180_SDA_PIN, SPI_MISO_NULL, SPI_CS_NULL);
 #endif
 
     gpio_init(TFT180_DC_PIN, GPO, GPIO_LOW, GPO_PUSH_PULL);
     gpio_init(TFT180_RES_PIN, GPO, GPIO_LOW, GPO_PUSH_PULL);
-    gpio_init(TFT180_CS_PIN, GPO, GPIO_LOW, GPO_PUSH_PULL);
+    gpio_init(TFT180_CS_PIN, GPO, GPIO_HIGH, GPO_PUSH_PULL);
     gpio_init(TFT180_BL_PIN, GPO, GPIO_HIGH, GPO_PUSH_PULL);
 
     tft180_set_dir(tft180_display_dir);
     tft180_set_color(tft180_pencolor, tft180_bgcolor);
-    tft180_debug_init();
 
     TFT180_RST(0);
     system_delay_ms(10);
 
     TFT180_RST(1);
     system_delay_ms(120);
+    TFT180_CS(0);
 
     tft180_write_index(0x11);
     system_delay_ms(120);
@@ -741,10 +961,10 @@ void tft180_init (void)
     tft180_write_index(0x36);
     switch(tft180_display_dir)                                                  // y x v
     {
-        case 0: tft180_write_8bit_data(1<<7 | 1<<6 | 0<<5);  break;             // ÊúÆÁÄ£Ê½
-        case 1: tft180_write_8bit_data(0<<7 | 0<<6 | 0<<5);  break;             // ÊúÆÁÄ£Ê½  Ğı×ª180
-        case 2: tft180_write_8bit_data(1<<7 | 0<<6 | 1<<5);  break;             // ºáÆÁÄ£Ê½
-        case 3: tft180_write_8bit_data(0<<7 | 1<<6 | 1<<5);  break;             // ºáÆÁÄ£Ê½  Ğı×ª180
+        case TFT180_PORTAIT:        tft180_write_8bit_data(1<<7 | 1<<6 | 0<<5);  break;
+        case TFT180_PORTAIT_180:    tft180_write_8bit_data(0<<7 | 0<<6 | 0<<5);  break;
+        case TFT180_CROSSWISE:      tft180_write_8bit_data(1<<7 | 0<<6 | 1<<5);  break;
+        case TFT180_CROSSWISE_180:  tft180_write_8bit_data(0<<7 | 1<<6 | 1<<5);  break;
     }
 
     tft180_write_index(0xe0);
@@ -803,7 +1023,8 @@ void tft180_init (void)
     tft180_write_index(0x3A);
     tft180_write_8bit_data(0x05);
     tft180_write_index(0x29);
+    TFT180_CS(1);
 
     tft180_clear();
+    tft180_debug_init();
 }
-

@@ -1,20 +1,38 @@
 /*********************************************************************************************************************
- * COPYRIGHT NOTICE
- * Copyright (c) 2020,逐飞科技
- * All rights reserved.
- *
- * 以下所有内容版权均属逐飞科技所有，未经允许不得用于商业用途，
- * 欢迎各位使用并传播本程序，修改内容时必须保留逐飞科技的版权声明。
- *
- * @file            zf_driver_dvp
- * @company         成都逐飞科技有限公司
- * @author          逐飞科技(QQ790875685)
- * @version         查看doc内version文件 版本说明
- * @Software        MounRiver Studio V1.51
- * @Target core     CH32V307VCT6
- * @Taobao          https://seekfree.taobao.com/
- * @date            2021-11-25
- ********************************************************************************************************************/
+* CH32V307VCT6 Opensourec Library 即（CH32V307VCT6 开源库）是一个基于官方 SDK 接口的第三方开源库
+* Copyright (c) 2022 SEEKFREE 逐飞科技
+*
+* 本文件是CH32V307VCT6 开源库的一部分
+*
+* CH32V307VCT6 开源库 是免费软件
+* 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
+* 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
+*
+* 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
+* 甚至没有隐含的适销性或适合特定用途的保证
+* 更多细节请参见 GPL
+*
+* 您应该在收到本开源库的同时收到一份 GPL 的副本
+* 如果没有，请参阅<https://www.gnu.org/licenses/>
+*
+* 额外注明：
+* 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
+* 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
+* 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
+* 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
+*
+* 文件名称          zf_driver_dvp
+* 公司名称          成都逐飞科技有限公司
+* 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
+* 开发环境          MounRiver Studio V1.8.1
+* 适用平台          CH32V307VCT6
+* 店铺链接          https://seekfree.taobao.com/
+*
+* 修改记录
+* 日期                                      作者                             备注
+* 2022-09-15        大W            first version
+********************************************************************************************************************/
+
 #include "zf_driver_delay.h"
 #include "zf_driver_gpio.h"
 #include "zf_driver_dvp.h"
@@ -24,13 +42,13 @@
 //vuint32 href_cnt = 0;
 
 //-------------------------------------------------------------------------------------------------------------------
-//  @brief      dvp接口引脚初始化
-//  @param      dvp_d0到dvp_d0       摄像头D0-D7引脚
-//  @param      dvp_pclk            摄像头PCLK引脚
-//  @param      dvp_vsync           摄像头vysnc引脚
-//  @param      dvp_herf            摄像头herf引脚
-//  @return     void
-//  Sample usage:                   内部使用，用户无需关心
+// 函数简介     dvp接口引脚初始化
+// 参数说明     dvp_d0到dvp_d0       摄像头D0-D7引脚
+// 参数说明     dvp_pclk            摄像头PCLK引脚
+// 参数说明     dvp_vsync           摄像头vysnc引脚
+// 参数说明     dvp_herf            摄像头herf引脚
+// 返回参数     void
+// 使用示例         内部使用，用户无需关心
 //-------------------------------------------------------------------------------------------------------------------
 void dvp_gpio_init(
         uint8 dvp_d0,uint8 dvp_d1,uint8 dvp_d2,uint8 dvp_d3,
@@ -55,15 +73,15 @@ void dvp_gpio_init(
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-//  @brief      dvp接口初始化
-//  @param      *image0                数据buff0的地址
-//  @param      *image1                数据buff1的地址
-//  @param      col_len                列长度
-//  @param      row_len                行长度
-//  @return     void
-//  Sample usage:                      内部使用，用户无需关心
+// 函数简介     dvp接口初始化
+// 参数说明     *image0                数据buff0的地址
+// 参数说明     *image1                数据buff1的地址
+// 参数说明     col_len                列长度
+// 参数说明     row_len                行长度
+// 返回参数     void
+// 使用示例            内部使用，用户无需关心
 //-------------------------------------------------------------------------------------------------------------------
-void dvp_camera_init(uint32 *image0, uint32 *image1, uint16 col_len, uint16 row_len)
+void dvp_camera_init(uint32 *image0_addr, uint32 *image1_addr, uint16 col_len, uint16 row_len)
 {
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DVP, ENABLE);
 
@@ -72,11 +90,11 @@ void dvp_camera_init(uint32 *image0, uint32 *image1, uint16 col_len, uint16 row_
     /* VSYNC、HSYNC:High level active */
     DVP->CR0 |= RB_DVP_D8_MOD | RB_DVP_JPEG | RB_DVP_V_POLAR ;
     DVP->CR1 &= ~((RB_DVP_ALL_CLR)| RB_DVP_RCV_CLR);
-    DVP->ROW_NUM = row_len;                         // rows行数
-    DVP->COL_NUM = col_len;                         // cols列数
+    DVP->ROW_NUM = row_len;                    // rows行数
+    DVP->COL_NUM = col_len;                    // cols列数
 
-    DVP->DMA_BUF0 = (uint32)image0;               //DMA addr0
-    DVP->DMA_BUF1 = (uint32)image1;               //DMA addr1
+    DVP->DMA_BUF0 = (uint32)image0_addr;               //DMA addr0
+    DVP->DMA_BUF1 = (uint32)image1_addr;               //DMA addr1
 
 
     /* Set frame capture rate */
@@ -84,7 +102,7 @@ void dvp_camera_init(uint32 *image0, uint32 *image1, uint16 col_len, uint16 row_
     DVP->CR1 |= DVP_RATE_100P;  //100%
 
     // 设置为循环采集模式
-    //DVP->CR1 |= RB_DVP_CM;
+    // DVP->CR1 |= RB_DVP_CM;
 
 
 

@@ -34,9 +34,9 @@
 ********************************************************************************************************************/
 
 #include "zf_common_debug.h"
-
 #include "zf_driver_soft_spi.h"
 
+soft_spi_info_struct softspi;
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     软件 SPI 延时
 // 参数说明     void
@@ -225,7 +225,7 @@ static uint16 soft_spi_16bit_data_handler (soft_spi_info_struct *soft_spi_obj, c
 // 参数说明     data            发送的数据
 // 返回参数     void
 // 使用示例     soft_spi_write_8bit(&soft_spi_obj, 1);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_write_8bit (soft_spi_info_struct *soft_spi_obj, const uint8 data)
 {
@@ -240,7 +240,7 @@ void soft_spi_write_8bit (soft_spi_info_struct *soft_spi_obj, const uint8 data)
 // 参数说明     len             缓冲区长度
 // 返回参数     void
 // 使用示例     soft_spi_write_8bit_array(&soft_spi_obj, buf, 16);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_write_8bit_array (soft_spi_info_struct *soft_spi_obj, const uint8 *data, uint32 len)
 {
@@ -258,7 +258,7 @@ void soft_spi_write_8bit_array (soft_spi_info_struct *soft_spi_obj, const uint8 
 // 参数说明     data            发送的数据
 // 返回参数     void
 // 使用示例     soft_spi_write_16bit(&soft_spi_obj, 1);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_write_16bit (soft_spi_info_struct *soft_spi_obj, uint16 data)
 {
@@ -273,7 +273,7 @@ void soft_spi_write_16bit (soft_spi_info_struct *soft_spi_obj, uint16 data)
 // 参数说明     len             缓冲区长度
 // 返回参数     void
 // 使用示例     soft_spi_write_16bit_array(&soft_spi_obj, buf, 16);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_write_16bit_array (soft_spi_info_struct *soft_spi_obj, const uint16 *data, uint32 len)
 {
@@ -292,7 +292,7 @@ void soft_spi_write_16bit_array (soft_spi_info_struct *soft_spi_obj, const uint1
 // 参数说明     data            发送的数据
 // 返回参数     void
 // 使用示例     soft_spi_write_8bit_register(&soft_spi_obj, 1, 1);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_write_8bit_register (soft_spi_info_struct *soft_spi_obj, const uint8 register_name, const uint8 data)
 {
@@ -328,7 +328,7 @@ void soft_spi_write_8bit_registers (soft_spi_info_struct *soft_spi_obj, const ui
 // 参数说明     data            发送的数据
 // 返回参数     void
 // 使用示例     soft_spi_write_16bit_register(&soft_spi_obj, 1, 1);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_write_16bit_register (soft_spi_info_struct *soft_spi_obj, const uint16 register_name, uint16 data)
 {
@@ -345,7 +345,7 @@ void soft_spi_write_16bit_register (soft_spi_info_struct *soft_spi_obj, const ui
 // 参数说明     len             缓冲区长度
 // 返回参数     void
 // 使用示例     soft_spi_write_16bit_registers(&soft_spi_obj, 1, buf, 16);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_write_16bit_registers (soft_spi_info_struct *soft_spi_obj, const uint16 register_name, const uint16 *data, uint32 len)
 {
@@ -364,7 +364,7 @@ void soft_spi_write_16bit_registers (soft_spi_info_struct *soft_spi_obj, const u
 // 参数说明     data            发送的数据
 // 返回参数     uint8           返回读取的 8bit 数据
 // 使用示例     soft_spi_read_8bit(&soft_spi_obj);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 uint8 soft_spi_read_8bit (soft_spi_info_struct *soft_spi_obj)
 {
@@ -379,7 +379,7 @@ uint8 soft_spi_read_8bit (soft_spi_info_struct *soft_spi_obj)
 // 参数说明     len             缓冲区长度
 // 返回参数     void
 // 使用示例     soft_spi_read_8bit_array(&soft_spi_obj, buf, 16);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_read_8bit_array (soft_spi_info_struct *soft_spi_obj, uint8 *data, uint32 len)
 {
@@ -397,7 +397,7 @@ void soft_spi_read_8bit_array (soft_spi_info_struct *soft_spi_obj, uint8 *data, 
 // 参数说明     data            发送的数据
 // 返回参数     uint16          返回读取的 16bit 数据
 // 使用示例     soft_spi_read_16bit(&soft_spi_obj);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 uint16 soft_spi_read_16bit (soft_spi_info_struct *soft_spi_obj)
 {
@@ -412,7 +412,7 @@ uint16 soft_spi_read_16bit (soft_spi_info_struct *soft_spi_obj)
 // 参数说明     len             缓冲区长度
 // 返回参数     void
 // 使用示例     soft_spi_read_16bit_array(&soft_spi_obj, buf, 16);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_read_16bit_array (soft_spi_info_struct *soft_spi_obj, uint16 *data, uint32 len)
 {
@@ -431,7 +431,7 @@ void soft_spi_read_16bit_array (soft_spi_info_struct *soft_spi_obj, uint16 *data
 // 参数说明     data            发送的数据
 // 返回参数     uint8           返回读取的 8bit 数据
 // 使用示例     soft_spi_read_8bit_register(&soft_spi_obj, 0x01, 0x01);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 uint8 soft_spi_read_8bit_register (soft_spi_info_struct *soft_spi_obj, const uint8 register_name)
 {
@@ -448,7 +448,7 @@ uint8 soft_spi_read_8bit_register (soft_spi_info_struct *soft_spi_obj, const uin
 // 参数说明     len             缓冲区长度
 // 返回参数     void
 // 使用示例     soft_spi_read_8bit_registers(&soft_spi_obj, 0x01, buf, 16);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_read_8bit_registers (soft_spi_info_struct *soft_spi_obj, const uint8 register_name, uint8 *data, uint32 len)
 {
@@ -468,7 +468,7 @@ void soft_spi_read_8bit_registers (soft_spi_info_struct *soft_spi_obj, const uin
 // 参数说明     data            发送的数据
 // 返回参数     uint16          返回读取的 16bit 数据
 // 使用示例     soft_spi_read_16bit_register(&soft_spi_obj, 0x0101);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 uint16 soft_spi_read_16bit_register (soft_spi_info_struct *soft_spi_obj, const uint16 register_name)
 {
@@ -485,7 +485,7 @@ uint16 soft_spi_read_16bit_register (soft_spi_info_struct *soft_spi_obj, const u
 // 参数说明     len             缓冲区长度
 // 返回参数     void
 // 使用示例     soft_spi_read_16bit_registers(&soft_spi_obj, 0x0101, buf, 16);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_read_16bit_registers (soft_spi_info_struct *soft_spi_obj, const uint16 register_name, uint16 *data, uint32 len)
 {
@@ -506,7 +506,7 @@ void soft_spi_read_16bit_registers (soft_spi_info_struct *soft_spi_obj, const ui
 // 参数说明     len             发送的字节数
 // 返回参数     void
 // 使用示例     soft_spi_transfer_8bit(&soft_spi_obj, buf, buf, 1);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_transfer_8bit (soft_spi_info_struct *soft_spi_obj, const uint8 *write_buffer, uint8 *read_buffer, uint32 len)
 {
@@ -536,7 +536,7 @@ void soft_spi_transfer_8bit (soft_spi_info_struct *soft_spi_obj, const uint8 *wr
 // 参数说明     len             发送的字节数
 // 返回参数     void
 // 使用示例     soft_spi_transfer_16bit(&soft_spi_obj, buf, buf, 1);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_transfer_16bit (soft_spi_info_struct *soft_spi_obj, const uint16 *write_buffer, uint16 *read_buffer, uint32 len)
 {
@@ -569,7 +569,7 @@ void soft_spi_transfer_16bit (soft_spi_info_struct *soft_spi_obj, const uint16 *
 // 参数说明     cs_pin          选择 CS 引脚 如果不需要这个引脚 就填 SOFT_SPI_PIN_NULL
 // 返回参数     void
 // 使用示例     spi_init(SPI_1, 0, 1*1000*1000, A5, A7, A6, A4);
-// 备注信息     
+// 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 void soft_spi_init (soft_spi_info_struct *soft_spi_obj, uint8 mode, uint32 delay, gpio_pin_enum sck_pin, gpio_pin_enum mosi_pin, uint32 miso_pin, uint32 cs_pin)
 {

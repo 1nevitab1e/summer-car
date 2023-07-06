@@ -1,81 +1,78 @@
 /*********************************************************************************************************************
- * COPYRIGHT NOTICE
- * Copyright (c) 2020,逐飞科技
- * All rights reserved.
- *
- * 以下所有内容版权均属逐飞科技所有，未经允许不得用于商业用途，
- * 欢迎各位使用并传播本程序，修改内容时必须保留逐飞科技的版权声明。
- *
- * @file            zf_driver_adc
- * @company         成都逐飞科技有限公司
- * @author          逐飞科技(QQ790875685)
- * @version         查看doc内version文件 版本说明
- * @Software        MounRiver Studio V1.51
- * @Target core     CH32V307VCT6
- * @Taobao          https://seekfree.taobao.com/
- * @date            2021-11-25
- * @note            version:
- *                  V1.1 2021.11.30 关闭ADC BUFF使能
- *                  V1.2 2022.03.29 给ADC_InitStructure结构体赋初值
- ********************************************************************************************************************/
+* CH32V307VCT6 Opensourec Library 即（CH32V307VCT6 开源库）是一个基于官方 SDK 接口的第三方开源库
+* Copyright (c) 2022 SEEKFREE 逐飞科技
+*
+* 本文件是CH32V307VCT6 开源库的一部分
+*
+* CH32V307VCT6 开源库 是免费软件
+* 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
+* 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
+*
+* 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
+* 甚至没有隐含的适销性或适合特定用途的保证
+* 更多细节请参见 GPL
+*
+* 您应该在收到本开源库的同时收到一份 GPL 的副本
+* 如果没有，请参阅<https://www.gnu.org/licenses/>
+*
+* 额外注明：
+* 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
+* 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
+* 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
+* 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
+*
+* 文件名称          zf_driver_adc
+* 公司名称          成都逐飞科技有限公司
+* 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
+* 开发环境          MounRiver Studio V1.8.1
+* 适用平台          CH32V307VCT6
+* 店铺链接          https://seekfree.taobao.com/
+*
+* 修改记录
+* 日期                                      作者                             备注
+* 2022-09-15        大W            first version
+********************************************************************************************************************/
+
+#include "ch32v30x.h"
+#include "ch32v30x_adc.h"
 
 #include "zf_driver_adc.h"
 #include "zf_driver_gpio.h"
 
+#include "zf_common_debug.h"
+
+
+static  ADC_TypeDef    *adc_index[2]        = {ADC1, ADC2};
+static  uint8           adc_resolution[2]   = {ADC_12BIT, ADC_12BIT};
+
 
 //-------------------------------------------------------------------------------------------------------------------
-//  @brief      ADC引脚初始化
-//  @param      adc_ch      adc_ch通道(可选择范围由zf_adc.h内ADC_CH_enum枚举值确定)
-//  @return     void
-//  Sample usage:           内部使用  用户无需关心
+// 函数简介     ADC转换一次
+// 参数说明     ch              选择ADC通道
+// 参数说明     resolution      分辨率(8位 10位 12位)
+// 返回参数     void
+// 使用示例     adc_convert(ADC_IN0_A0, ADC_8BIT);  //采集A0端口返回8位分辨率的AD值
 //-------------------------------------------------------------------------------------------------------------------
-void adc_gpio_init(ADC_CH_enum adc_ch)
+uint16 adc_convert (adc_channel_enum ch)
 {
-    if(ADC_IN0_A0 == adc_ch)            gpio_init(A0, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN1_A1 == adc_ch)       gpio_init(A1, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN2_A2 == adc_ch)       gpio_init(A2, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN3_A3 == adc_ch)       gpio_init(A3, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN4_A4 == adc_ch)       gpio_init(A4, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN5_A5 == adc_ch)       gpio_init(A5, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN6_A6 == adc_ch)       gpio_init(A6, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN7_A7 == adc_ch)       gpio_init(A7, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN8_B0 == adc_ch)       gpio_init(B0, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN9_B1 == adc_ch)       gpio_init(B1, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN10_C0 == adc_ch)      gpio_init(C0, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN11_C1 == adc_ch)      gpio_init(C1, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN12_C2 == adc_ch)      gpio_init(C2, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN13_C3 == adc_ch)      gpio_init(C3, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN14_C4 == adc_ch)      gpio_init(C4, GPI, 0, GPI_ANAOG_IN);
-    else if(ADC_IN15_C5 == adc_ch)      gpio_init(C5, GPI, 0, GPI_ANAOG_IN);
-}
+    uint8 adc = ((ch & 0xF000) >> 12);
+    uint8 adc_ch = (uint8)(ch >> 8) & 0xF;
 
-
-
-//-------------------------------------------------------------------------------------------------------------------
-//  @brief      ADC转换一次
-//  @param      ch              选择ADC通道
-//  @param      resolution      分辨率(8位 10位 12位)
-//  @return     void
-//  Sample usage:               adc_convert(ADC_IN0_A0, ADC_8BIT);  //采集A0端口返回8位分辨率的AD值
-//-------------------------------------------------------------------------------------------------------------------
-uint16 adc_convert(ADC_CH_enum adc_ch, ADC_RES_enum resolution)
-{
-    ADC_RegularChannelConfig(ADC1, (uint8)adc_ch, 1, ADC_SampleTime_41Cycles5 );
-    ADC_SoftwareStartConvCmd(ADC1, ENABLE);
-
-    while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC ));//等待转换结束
-    return ((ADC1->RDATAR)>>resolution);
+    ADC_RegularChannelConfig(adc_index[adc], adc_ch, 1, ADC_SampleTime_41Cycles5);  // 使能对应通道
+    ADC_SoftwareStartConvCmd(adc_index[adc], ENABLE);                               // 开始数据转换
+    while(!ADC_GetFlagStatus(adc_index[adc], ADC_FLAG_EOC ));                       // 等待数据转换完成
+    return ((adc_index[adc]->RDATAR) >> adc_resolution[adc]);                       // 读取数据
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-//  @brief      ADC转换N次，平均值滤波
-//  @param      ch              选择ADC通道
-//  @param      resolution      分辨率(8位 10位 12位)
-//  @param      count           转换次数
-//  @return     void
-//  Sample usage:               adc_mean_filter(ADC_IN0_A0, ADC_8BIT,5);  //采集A0端口返回8位分辨率的AD值，采集五次取平均值
+// 函数简介     ADC转换N次，平均值滤波
+// 参数说明     ch              选择ADC通道
+// 参数说明     resolution      分辨率(8位 10位 12位)
+// 参数说明     count           转换次数
+// 返回参数     void
+// 使用示例     adc_mean_filter(ADC_IN0_A0, ADC_8BIT,5);  //采集A0端口返回8位分辨率的AD值，采集五次取平均值
 //-------------------------------------------------------------------------------------------------------------------
-uint16 adc_mean_filter(ADC_CH_enum adc_ch, ADC_RES_enum resolution, uint8 count)
+uint16 adc_mean_filter_convert (adc_channel_enum ch, const uint8 count)
 {
     uint8 i;
     uint32 sum;
@@ -85,7 +82,7 @@ uint16 adc_mean_filter(ADC_CH_enum adc_ch, ADC_RES_enum resolution, uint8 count)
     sum = 0;
     for(i=0; i<count; i++)
     {
-        sum += adc_convert(adc_ch, resolution);
+        sum += adc_convert(ch);
     }
 
     sum = sum/count;
@@ -93,38 +90,50 @@ uint16 adc_mean_filter(ADC_CH_enum adc_ch, ADC_RES_enum resolution, uint8 count)
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-//  @brief      ADC初始化
-//  @param      adc_ch      adc_ch通道(可选择范围由zf_adc.h内ADC_CH_enum枚举值确定)
-//  @return     void
-//  Sample usage:           adc_init(ADC_IN0_A0);//初始化A0引脚为ADC功能
+// 函数简介     ADC初始化
+// 参数说明     adc_ch      adc_ch通道(可选择范围由zf_adc.h内ADC_CH_enum枚举值确定)
+// 返回参数     void
+// 使用示例    adc_init(ADC_IN0_A0);//初始化A0引脚为ADC功能
 //-------------------------------------------------------------------------------------------------------------------
-void adc_init(ADC_CH_enum adc_ch)
+void adc_init (adc_channel_enum ch, adc_resolution_enum resolution)
 {
     ADC_InitTypeDef ADC_InitStructure = {0};
 
-    adc_gpio_init(adc_ch);                                              //GPIO初始化
+    uint8 adc = ((ch & 0xF000) >> 12);
+    gpio_init(ch&0xFF, GPI, 0, GPI_ANAOG_IN);                           // GPIO初始化
 
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1 , ENABLE );              //使能ADC1通道时钟
-    RCC_ADCCLKConfig(RCC_PCLK2_Div2);
+    if(adc == 0)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1 , ENABLE );          // 使能ADC1通道时钟
+    }
+    else if(adc == 1)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2 , ENABLE );          // 使能ADC2通道时钟
+    }
 
-//    if(system_clock > 84000000)  RCC_ADCCLKConfig(RCC_PCLK2_Div8);   //设置ADC分频因子，ADC最大速率不能超过14M
+    RCC_ADCCLKConfig(RCC_PCLK2_Div8);
+
+
+//    if(system_clock > 84000000)  RCC_ADCCLKConfig(RCC_PCLK2_Div8);    // 设置ADC分频因子，ADC最大速率不能超过14M
 //    else RCC_ADCCLKConfig(RCC_PCLK2_Div6);
-    ADC_DeInit(ADC1);
-    ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;                  //ADC工作模式:ADC1工作在独立模式
-    ADC_InitStructure.ADC_ScanConvMode = DISABLE;                       //模数转换工作在单通道模式
-    ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;                 //模数转换工作在单次转换模式
-    ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None; //转换由软件而不是外部触发启动
-    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;              //ADC数据右对齐
-    ADC_InitStructure.ADC_NbrOfChannel = 1;                             //顺序进行规则转换的ADC通道的数目
-    ADC_Init(ADC1, &ADC_InitStructure);                                 //根据ADC_InitStruct中指定的参数初始化外设ADCx的寄存器
 
-    ADC_Cmd(ADC1, ENABLE);                                              //使能指定的ADC1
-    ADC_BufferCmd(ADC1, DISABLE);                                       //disable buffer
+    ADC_DeInit(adc_index[adc]);
+    ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;                  // ADC工作模式:ADC1工作在独立模式
+    ADC_InitStructure.ADC_ScanConvMode = DISABLE;                       // 模数转换工作在单通道模式
+    ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;                 // 模数转换工作在单次转换模式
+    ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None; // 转换由软件而不是外部触发启动
+    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;              // ADC数据右对齐
+    ADC_InitStructure.ADC_NbrOfChannel = 1;                             // 顺序进行规则转换的ADC通道的数目
+    ADC_Init(adc_index[adc], &ADC_InitStructure);                       // 根据ADC_InitStruct中指定的参数初始化外设ADCx的寄存器
 
-    ADC_ResetCalibration(ADC1);                                         //使能复位校准
-    while(ADC_GetResetCalibrationStatus(ADC1));                         //等待复位校准结束
-    ADC_StartCalibration(ADC1);                                         //开启AD校准
-    while(ADC_GetCalibrationStatus(ADC1));                              //等待校准结束
-    //ADC_BufferCmd(ADC1, ENABLE);                                        //enable buffer
+    ADC_Cmd(adc_index[adc], ENABLE);                                    // 使能指定的ADC1
+    ADC_BufferCmd(adc_index[adc], DISABLE);                             // disable buffer
 
+    ADC_ResetCalibration(adc_index[adc]);                               // 使能复位校准
+    while(ADC_GetResetCalibrationStatus(adc_index[adc]));               // 等待复位校准结束
+    ADC_StartCalibration(adc_index[adc]);                               // 开启AD校准
+    while(ADC_GetCalibrationStatus(adc_index[adc]));                    // 等待校准结束
+    //ADC_BufferCmd(ADC1, ENABLE);                                      // enable buffer
+
+    adc_resolution[adc] = resolution;                                   // 记录ADC精度 将在采集时使用
 }

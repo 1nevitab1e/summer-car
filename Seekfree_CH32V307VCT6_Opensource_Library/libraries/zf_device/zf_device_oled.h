@@ -1,87 +1,99 @@
 /*********************************************************************************************************************
-* COPYRIGHT NOTICE
-* Copyright (c) 2019,Öğ·É¿Æ¼¼
-* All rights reserved.
+* CH32V307VCT6 Opensourec Library å³ï¼ˆCH32V307VCT6 å¼€æºåº“ï¼‰æ˜¯ä¸€ä¸ªåŸºäºå®˜æ–¹ SDK æ¥å£çš„ç¬¬ä¸‰æ–¹å¼€æºåº“
+* Copyright (c) 2022 SEEKFREE é€é£ç§‘æŠ€
 *
-* ÒÔÏÂËùÓĞÄÚÈİ°æÈ¨¾ùÊôÖğ·É¿Æ¼¼ËùÓĞ£¬Î´¾­ÔÊĞí²»µÃÓÃÓÚÉÌÒµÓÃÍ¾£¬
-* »¶Ó­¸÷Î»Ê¹ÓÃ²¢´«²¥±¾³ÌĞò£¬ĞŞ¸ÄÄÚÈİÊ±±ØĞë±£ÁôÖğ·É¿Æ¼¼µÄ°æÈ¨ÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯CH32V307VCT6 å¼€æºåº“çš„ä¸€éƒ¨åˆ†
 *
-* @file             zf_device_oled
-* @company          ³É¶¼Öğ·É¿Æ¼¼ÓĞÏŞ¹«Ë¾
-* @author           Öğ·É¿Æ¼¼(QQ790875685)
-* @version          ²é¿´docÄÚversionÎÄ¼ş °æ±¾ËµÃ÷
-* @Software         MounRiver Studio V1.51
-* @Target core      CH32V307VCT6
-* @Taobao           https://seekfree.taobao.com/
-* @date             2021-11-25
-* @note             ½ÓÏß¶¨Òå£º
+* CH32V307VCT6 å¼€æºåº“ æ˜¯å…è´¹è½¯ä»¶
+* æ‚¨å¯ä»¥æ ¹æ®è‡ªç”±è½¯ä»¶åŸºé‡‘ä¼šå‘å¸ƒçš„ GPLï¼ˆGNU General Public Licenseï¼Œå³ GNUé€šç”¨å…¬å…±è®¸å¯è¯ï¼‰çš„æ¡æ¬¾
+* å³ GPL çš„ç¬¬3ç‰ˆï¼ˆå³ GPL3.0ï¼‰æˆ–ï¼ˆæ‚¨é€‰æ‹©çš„ï¼‰ä»»ä½•åæ¥çš„ç‰ˆæœ¬ï¼Œé‡æ–°å‘å¸ƒå’Œ/æˆ–ä¿®æ”¹å®ƒ
+*
+* æœ¬å¼€æºåº“çš„å‘å¸ƒæ˜¯å¸Œæœ›å®ƒèƒ½å‘æŒ¥ä½œç”¨ï¼Œä½†å¹¶æœªå¯¹å…¶ä½œä»»ä½•çš„ä¿è¯
+* ç”šè‡³æ²¡æœ‰éšå«çš„é€‚é”€æ€§æˆ–é€‚åˆç‰¹å®šç”¨é€”çš„ä¿è¯
+* æ›´å¤šç»†èŠ‚è¯·å‚è§ GPL
+*
+* æ‚¨åº”è¯¥åœ¨æ”¶åˆ°æœ¬å¼€æºåº“çš„åŒæ—¶æ”¶åˆ°ä¸€ä»½ GPL çš„å‰¯æœ¬
+* å¦‚æœæ²¡æœ‰ï¼Œè¯·å‚é˜…<https://www.gnu.org/licenses/>
+*
+* é¢å¤–æ³¨æ˜ï¼š
+* æœ¬å¼€æºåº“ä½¿ç”¨ GPL3.0 å¼€æºè®¸å¯è¯åè®® ä»¥ä¸Šè®¸å¯ç”³æ˜ä¸ºè¯‘æ–‡ç‰ˆæœ¬
+* è®¸å¯ç”³æ˜è‹±æ–‡ç‰ˆåœ¨ libraries/doc æ–‡ä»¶å¤¹ä¸‹çš„ GPL3_permission_statement.txt æ–‡ä»¶ä¸­
+* è®¸å¯è¯å‰¯æœ¬åœ¨ libraries æ–‡ä»¶å¤¹ä¸‹ å³è¯¥æ–‡ä»¶å¤¹ä¸‹çš„ LICENSE æ–‡ä»¶
+* æ¬¢è¿å„ä½ä½¿ç”¨å¹¶ä¼ æ’­æœ¬ç¨‹åº ä½†ä¿®æ”¹å†…å®¹æ—¶å¿…é¡»ä¿ç•™é€é£ç§‘æŠ€çš„ç‰ˆæƒå£°æ˜ï¼ˆå³æœ¬å£°æ˜ï¼‰
+*
+* æ–‡ä»¶åç§°          zf_device_oled
+* å…¬å¸åç§°          æˆéƒ½é€é£ç§‘æŠ€æœ‰é™å…¬å¸
+* ç‰ˆæœ¬ä¿¡æ¯          æŸ¥çœ‹ libraries/doc æ–‡ä»¶å¤¹å†… version æ–‡ä»¶ ç‰ˆæœ¬è¯´æ˜
+* å¼€å‘ç¯å¢ƒ          MounRiver Studio V1.8.1
+* é€‚ç”¨å¹³å°          CH32V307VCT6
+* åº—é“ºé“¾æ¥          https://seekfree.taobao.com/
+*
+* ä¿®æ”¹è®°å½•
+* æ—¥æœŸ                                      ä½œè€…                             å¤‡æ³¨
+* 2022-09-15        å¤§W            first version
+********************************************************************************************************************/
+/*********************************************************************************************************************
+* æ¥çº¿å®šä¹‰ï¼š
 *                   ------------------------------------
-*                   Ä£¿é¹Ü½Å             µ¥Æ¬»ú¹Ü½Å
-*                   D0                  ²é¿´ zf_device_oled.h ÖĞ OLED_D0_PIN ºê¶¨Òå
-*                   D1                  ²é¿´ zf_device_oled.h ÖĞ OLED_D1_PIN ºê¶¨Òå
-*                   RES                 ²é¿´ zf_device_oled.h ÖĞ OLED_RES_PIN ºê¶¨Òå
-*                   DC                  ²é¿´ zf_device_oled.h ÖĞ OLED_DC_PIN ºê¶¨Òå
-*                   CS                  ²é¿´ zf_device_oled.h ÖĞ OLED_CS_PIN ºê¶¨Òå
-*                   µçÔ´Òı½Å
-*                   VCC                 3.3VµçÔ´
-*                   GND                 µçÔ´µØ
+*                   æ¨¡å—ç®¡è„š             å•ç‰‡æœºç®¡è„š
+*                   D0                  æŸ¥çœ‹ zf_device_oled.h ä¸­ OLED_D0_PIN å®å®šä¹‰
+*                   D1                  æŸ¥çœ‹ zf_device_oled.h ä¸­ OLED_D1_PIN å®å®šä¹‰
+*                   RES                 æŸ¥çœ‹ zf_device_oled.h ä¸­ OLED_RES_PIN å®å®šä¹‰
+*                   DC                  æŸ¥çœ‹ zf_device_oled.h ä¸­ OLED_DC_PIN å®å®šä¹‰
+*                   CS                  æŸ¥çœ‹ zf_device_oled.h ä¸­ OLED_CS_PIN å®å®šä¹‰
+*                   VCC                 3.3Vç”µæº
+*                   GND                 ç”µæºåœ°
 *                   ------------------------------------
 ********************************************************************************************************************/
 
 #ifndef _zf_device_oled_h_
 #define _zf_device_oled_h_
 
-#include "zf_common_clock.h"
-#include "zf_common_debug.h"
-#include "zf_common_font.h"
-#include "zf_common_function.h"
+#include "zf_common_typedef.h"
 
-#include "zf_driver_delay.h"
-//#include "zf_driver_soft_spi.h"
-#include "zf_driver_spi.h"
-#include "game_bird.h"
-
-#define OLED_USE_SOFT_SPI               0                                       // Ä¬ÈÏÊ¹ÓÃÓ²¼ş SPI ·½Ê½Çı¶¯ ½¨ÒéÊ¹ÓÃÓ²¼ş SPI ·½Ê½Çı¶¯
-#if OLED_USE_SOFT_SPI                                                           // ÕâÁ½¶Î ÑÕÉ«Õı³£µÄ²ÅÊÇÕıÈ·µÄ ÑÕÉ«»ÒµÄ¾ÍÊÇÃ»ÓĞÓÃµÄ
-//====================================================Èí¼ş SPI Çı¶¯====================================================
-#define OLED_SOFT_SPI_DELAY             1                                       // Èí¼ş SPI µÄÊ±ÖÓÑÓÊ±ÖÜÆÚ ÊıÖµÔ½Ğ¡ SPI Í¨ĞÅËÙÂÊÔ½¿ì
-#define OLED_D0_PIN                     D4                                      // Èí¼ş SPI SCK Òı½Å
-#define OLED_D1_PIN                     D6                                      // Èí¼ş SPI MOSI Òı½Å
-//====================================================Èí¼ş SPI Çı¶¯====================================================
+#define OLED_USE_SOFT_SPI               (0 )                                    // é»˜è®¤ä½¿ç”¨ç¡¬ä»¶ SPI æ–¹å¼é©±åŠ¨ å»ºè®®ä½¿ç”¨ç¡¬ä»¶ SPI æ–¹å¼é©±åŠ¨
+#if OLED_USE_SOFT_SPI                                                           // è¿™ä¸¤æ®µ é¢œè‰²æ­£å¸¸çš„æ‰æ˜¯æ­£ç¡®çš„ é¢œè‰²ç°çš„å°±æ˜¯æ²¡æœ‰ç”¨çš„
+//====================================================è½¯ä»¶ SPI é©±åŠ¨====================================================
+#define OLED_SOFT_SPI_DELAY             (1 )                                    // è½¯ä»¶ SPI çš„æ—¶é’Ÿå»¶æ—¶å‘¨æœŸ æ•°å€¼è¶Šå° SPI é€šä¿¡é€Ÿç‡è¶Šå¿«
+#define OLED_D0_PIN                     (D4)                                    // è½¯ä»¶ SPI SCK å¼•è„š
+#define OLED_D1_PIN                     (D6)                                    // è½¯ä»¶ SPI MOSI å¼•è„š
+//====================================================è½¯ä»¶ SPI é©±åŠ¨====================================================
 #else
-//====================================================Ó²¼ş SPI Çı¶¯====================================================
-#define OLED_SPI_SPEED                  system_clock/2                          // Ó²¼ş SPI ËÙÂÊ
-#define OLED_SPI                        SPI_2                                   // Ó²¼ş SPI ºÅ
-#define OLED_D0_PIN                     SPI2_SCK_B13                             // Ó²¼ş SPI SCK Òı½Å
-#define OLED_D1_PIN                     SPI2_MOSI_B15                            // Ó²¼ş SPI MOSI Òı½Å
-//====================================================Ó²¼ş SPI Çı¶¯====================================================
+//====================================================ç¡¬ä»¶ SPI é©±åŠ¨====================================================
+#define OLED_SPI_SPEED                  (72 * 1000 * 1000)                      // ç¡¬ä»¶ SPI é€Ÿç‡
+#define OLED_SPI                        (SPI_2)                                 // ç¡¬ä»¶ SPI å·
+#define OLED_D0_PIN                     (SPI2_MAP0_SCK_B13 )                    // ç¡¬ä»¶ SPI SCK å¼•è„š
+#define OLED_D1_PIN                     (SPI2_MAP0_MOSI_B15)                    // ç¡¬ä»¶ SPI MOSI å¼•è„š
+//====================================================ç¡¬ä»¶ SPI é©±åŠ¨====================================================
 #endif
 
-#define OLED_RES_PIN                    B7                                     // Òº¾§¸´Î»Òı½Å¶¨Òå
-#define OLED_DC_PIN                     D7                                      // Òº¾§ÃüÁîÎ»Òı½Å¶¨Òå
-#define OLED_CS_PIN                     D4                                      // CS Æ¬Ñ¡Òı½Å
+#define OLED_RES_PIN                    (B7 )                                   // æ¶²æ™¶å¤ä½å¼•è„šå®šä¹‰
+#define OLED_DC_PIN                     (D7 )                                   // æ¶²æ™¶å‘½ä»¤ä½å¼•è„šå®šä¹‰
+#define OLED_CS_PIN                     (D4 )                                   // CS ç‰‡é€‰å¼•è„š
 
-#define OLED_RES(x)                     (x?(gpio_high(OLED_RES_PIN)):(gpio_low(OLED_RES_PIN)))
-#define OLED_DC(x)                      (x?(gpio_high(OLED_DC_PIN)):(gpio_low(OLED_DC_PIN)))
-#define OLED_CS(x)                      (x?(gpio_high(OLED_CS_PIN)):(gpio_low(OLED_CS_PIN)))
+#define OLED_BRIGHTNESS                 (0x7f)                                  // è®¾ç½®OLEDäº®åº¦ è¶Šå¤§è¶Šäº® èŒƒå›´0-0XFF
+#define OLED_DEFAULT_DISPLAY_DIR        (OLED_CROSSWISE)                        // é»˜è®¤çš„æ˜¾ç¤ºæ–¹å‘
+#define OLED_DEFAULT_DISPLAY_FONT       (OLED_6X8_FONT )                        // é»˜è®¤çš„å­—ä½“æ¨¡å¼
+
+#define OLED_RES(x)                     ((x) ? (gpio_high(OLED_RES_PIN)) : (gpio_low(OLED_RES_PIN)))
+#define OLED_DC(x)                      ((x) ? (gpio_high(OLED_DC_PIN)) : (gpio_low(OLED_DC_PIN)))
+#define OLED_CS(x)                      ((x) ? (gpio_high(OLED_CS_PIN)) : (gpio_low(OLED_CS_PIN)))
 
 typedef enum
 {
-    OLED_CROSSWISE                      = 0,                                    // ºáÆÁÄ£Ê½
-    OLED_CROSSWISE_180                  = 1,                                    // ºáÆÁÄ£Ê½  Ğı×ª180
+    OLED_CROSSWISE                      = 0,                                    // æ¨ªå±æ¨¡å¼
+    OLED_CROSSWISE_180                  = 1,                                    // æ¨ªå±æ¨¡å¼  æ—‹è½¬180
 }oled_dir_enum;
 
 typedef enum
 {
-    OLED_6x8_FONT                      = 0,                                     // 6x8 ×ÖÌå
-    OLED_8x16_FONT                      = 1,                                    // 8x16 ×ÖÌå
+    OLED_6X8_FONT                       = 0,                                    // 6x8      å­—ä½“
+    OLED_8X16_FONT                      = 1,                                    // 8x16     å­—ä½“
+    OLED_16X16_FONT                     = 2,                                    // 16x16    å­—ä½“ ç›®å‰ä¸æ”¯æŒ
 }oled_font_size_enum;
 
-#define OLED_BRIGHTNESS                 0x7f                                    // ÉèÖÃOLEDÁÁ¶È Ô½´óÔ½ÁÁ ·¶Î§0-0XFF
-#define OLED_DEFAULT_DISPLAY_DIR        OLED_CROSSWISE                          // Ä¬ÈÏµÄÏÔÊ¾·½Ïò
-#define OLED_DEFAULT_DISPLAY_FONT       OLED_6x8_FONT                           // Ä¬ÈÏµÄÏÔÊ¾·½Ïò
-#define OLED_X_MAX                      128
-#define OLED_Y_MAX                      64
+#define OLED_X_MAX                      (128)
+#define OLED_Y_MAX                      (64 )
 
 void    oled_clear                      (void);
 void    oled_full                       (const uint8 color);
@@ -92,7 +104,7 @@ void    oled_draw_point                 (uint16 x, uint16 y, const uint8 color);
 void    oled_show_string                (uint16 x, uint16 y, const char ch[]);
 void    oled_show_int                   (uint16 x, uint16 y, const int32 dat, uint8 num);
 void    oled_show_uint                  (uint16 x, uint16 y, const uint32 dat, uint8 num);
-void    oled_show_float                 (uint16 x, uint16 y, const float dat, uint8 num,uint8 pointnum);
+void    oled_show_float                 (uint16 x, uint16 y, const double dat, uint8 num, uint8 pointnum);
 
 void    oled_show_binary_image          (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height);
 void    oled_show_gray_image            (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 threshold);
@@ -100,27 +112,25 @@ void    oled_show_gray_image            (uint16 x, uint16 y, const uint8 *image,
 void    oled_show_wave                  (uint16 x, uint16 y, const uint16 *image, uint16 width, uint16 value_max, uint16 dis_width, uint16 dis_value_max);
 void    oled_show_chinese               (uint16 x, uint16 y, uint8 size, const uint8 *chinese_buffer, uint8 number);
 
-#define oled_displayimage7725(p,width,height)                                   oled_show_binary_image(0,0,p,width,height,128,64)
+//-------------------------------------------------------------------------------------------------------------------
+// å‡½æ•°ç®€ä»‹     OLED 128*64 æ˜¾ç¤ºå°é’»é£å›¾åƒ
+// å‚æ•°è¯´æ˜     p               å›¾åƒæ•°ç»„
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     oled_displayimage7725(ov7725_image_binary[0]);
+// å¤‡æ³¨ä¿¡æ¯
+//-------------------------------------------------------------------------------------------------------------------
+#define oled_displayimage7725(p)        (oled_show_binary_image(0, 0, (p), OV7725_W, OV7725_H, 128, 64))
 
-#define oled_displayimage032(p,width,height,x)                                  oled_show_gray_image(0,0,p,width,height,128,64,x)
-#define oled_displayimage032_zoom(p,width,height,dis_width,dis_height,x)        oled_show_gray_image(0,0,p,width,height,dis_width,dis_height,x)
+//-------------------------------------------------------------------------------------------------------------------
+// å‡½æ•°ç®€ä»‹     OLED 128*64 æ˜¾ç¤ºæ€»é’»é£å›¾åƒ å¸¦äºŒå€¼åŒ–
+// å‚æ•°è¯´æ˜     p               å›¾åƒæ•°ç»„
+// å‚æ•°è¯´æ˜     x               äºŒå€¼åŒ–æ˜¾ç¤ºé˜ˆå€¼
+// è¿”å›å‚æ•°     void
+// ä½¿ç”¨ç¤ºä¾‹     oled_displayimage03x(mt9v03x_image[0], 127);
+// å¤‡æ³¨ä¿¡æ¯
+//-------------------------------------------------------------------------------------------------------------------
+#define oled_displayimage03x(p,x)       (oled_show_gray_image(0, 0, (p), MT9V03X_W, MT9V03X_H, 128, 64, (x)))
 
 void    oled_init                       (void);
-
-/*ÒÔÏÂº¯ÊıÊÇ×Ô¼ºĞ´µÄ*/
-/*Ğ¡Äñ*/
-void Bird_Create(FlappyBird bird,uint8 BirdPos[][16]);
-void Bird_Clear(uint8 x,uint8 y);
-void oled_bird_move(uint8 x,uint8 y,uint8 dir,uint8 dis,FlappyBird bird,uint8 *BirdPos);
-void oled_brisk(uint8 x,uint8 y,uint8 Data);
-void oled_wall(uint8 x,uint8 y);
-void oled_wall_clear(uint8 x,uint8 y);
-void oled_bird_down(uint8 x,uint8 y,uint8 BirdPos[][16],uint8 e);
-void oled_bird_up(uint8 x,uint8 y,uint8 BirdPos[][16],uint8 e);
-
-/*Ì°³ÔÉß*/
-void OLED_SnakeBody(unsigned char x, unsigned char y);
-void OLED_CLR_Body(unsigned char x, unsigned char y);
-void OLED_Wall(unsigned char x, unsigned char y);
 
 #endif
