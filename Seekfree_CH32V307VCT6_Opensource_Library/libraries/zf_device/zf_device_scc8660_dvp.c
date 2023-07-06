@@ -1,573 +1,568 @@
 /*********************************************************************************************************************
-* CH32V307VCT6 Opensourec Library 即（CH32V307VCT6 开源库）是一个基于官方 SDK 接口的第三方开源库
-* Copyright (c) 2022 SEEKFREE 逐飞科技
+* COPYRIGHT NOTICE
+* Copyright (c) 2019,逐飞科技
+* All rights reserved.
 *
-* 本文件是CH32V307VCT6 开源库的一部分
+* 以下所有内容版权均属逐飞科技所有，未经允许不得用于商业用途，
+* 欢迎各位使用并传播本程序，修改内容时必须保留逐飞科技的版权声明。
 *
-* CH32V307VCT6 开源库 是免费软件
-* 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
-* 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
+* @file             zf_device_scc8660
+* @company          成都逐飞科技有限公司
+* @author           逐飞科技(QQ790875685)
+* @version          查看doc内version文件 版本说明
+* @Software         MounRiver Studio V1.51
+* @Target core      CH32V307VCT6
+* @Taobao           https://seekfree.taobao.com/
+* @date             2021-12-03
+* @note             version:
+*                   V1.1 2021.12.23 摄像头采集完成标志位增加volatile修饰
 *
-* 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
-* 甚至没有隐含的适销性或适合特定用途的保证
-* 更多细节请参见 GPL
-*
-* 您应该在收到本开源库的同时收到一份 GPL 的副本
-* 如果没有，请参阅<https://www.gnu.org/licenses/>
-*
-* 额外注明：
-* 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
-* 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
-* 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
-* 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
-*
-* 文件名称          zf_device_scc8660_dvp_dvp
-* 公司名称          成都逐飞科技有限公司
-* 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
-* 开发环境          MounRiver Studio V1.8.1
-* 适用平台          CH32V307VCT6
-* 店铺链接          https://seekfree.taobao.com/
-*
-* 修改记录
-* 日期                                      作者                             备注
-* 2022-09-15        大W            first version
-********************************************************************************************************************/
-/*********************************************************************************************************************
-*接线定义：
+*                   接线定义：
 *                   ------------------------------------
 *                   模块管脚            单片机管脚
-*                   TXD                 查看 zf_device_scc8660_dvp.h 中 SCC8660_COF_UART_TX        宏定义
-*                   RXD                 查看 zf_device_scc8660_dvp.h 中 SCC8660_COF_UART_RX        宏定义
-*                   D0                  查看 zf_device_scc8660_dvp.h 中 SCC8660_D0_PIN             宏定义
-*                   D1                  查看 zf_device_scc8660_dvp.h 中 SCC8660_D1_PIN             宏定义
-*                   D2                  查看 zf_device_scc8660_dvp.h 中 SCC8660_D2_PIN             宏定义
-*                   D3                  查看 zf_device_scc8660_dvp.h 中 SCC8660_D3_PIN             宏定义
-*                   D4                  查看 zf_device_scc8660_dvp.h 中 SCC8660_D4_PIN             宏定义
-*                   D5                  查看 zf_device_scc8660_dvp.h 中 SCC8660_D5_PIN             宏定义
-*                   D6                  查看 zf_device_scc8660_dvp.h 中 SCC8660_D6_PIN             宏定义
-*                   D7                  查看 zf_device_scc8660_dvp.h 中 SCC8660_D7_PIN             宏定义
-*                   PCLK                查看 zf_device_scc8660_dvp.h 中 SCC8660_PCLK_PIN           宏定义
-*                   VSYNC               查看 zf_device_scc8660_dvp.h 中 SCC8660_VSY_PIN            宏定义
-*                   HSYNC               查看 zf_device_scc8660_dvp.h 中 SCC8660_HERF_PIN           宏定义
+*                   TXD                 查看 zf_device_scc8660.h 中 SCC8660_COF_UART_TX_DVP        宏定义
+*                   RXD                 查看 zf_device_scc8660.h 中 SCC8660_COF_UART_RX_DVP        宏定义
+*                   D0                  查看 zf_device_scc8660.h 中 SCC8660_D0_PIN_DVP             宏定义
+*                   D1                  查看 zf_device_scc8660.h 中 SCC8660_D1_PIN_DVP             宏定义
+*                   D2                  查看 zf_device_scc8660.h 中 SCC8660_D2_PIN_DVP             宏定义
+*                   D3                  查看 zf_device_scc8660.h 中 SCC8660_D3_PIN_DVP             宏定义
+*                   D4                  查看 zf_device_scc8660.h 中 SCC8660_D4_PIN_DVP             宏定义
+*                   D5                  查看 zf_device_scc8660.h 中 SCC8660_D5_PIN_DVP             宏定义
+*                   D6                  查看 zf_device_scc8660.h 中 SCC8660_D6_PIN_DVP             宏定义
+*                   D7                  查看 zf_device_scc8660.h 中 SCC8660_D7_PIN_DVP             宏定义
+*                   PCLK                查看 zf_device_scc8660.h 中 SCC8660_PCLK_PIN_DVP           宏定义
+*                   VSYNC               查看 zf_device_scc8660.h 中 SCC8660_VSY_PIN_DVP            宏定义
+*                   HSYNC               查看 zf_device_scc8660.h 中 SCC8660_HERF_PIN_DVP           宏定义
 *                   ------------------------------------
 ********************************************************************************************************************/
 
 #include "zf_device_type.h"
 #include "zf_device_camera.h"
-#include "zf_driver_dvp.h"
-#include "zf_driver_delay.h"
 #include "zf_device_scc8660_dvp.h"
-#include "zf_driver_soft_iic.h"
-#include "zf_device_type.h"
-#include "zf_device_config.h"
 
-vuint8 scc8660_finish_flag = 0;                                                  // 一场图像采集完成标志位
-uint16 scc8660_image[SCC8660_H][SCC8660_W];
+__aligned(4) uint16 scc8660_image_dvp[SCC8660_DVP_PIC_H][SCC8660_DVP_PIC_W];
 
-static scc8660_type_enum scc8660_type;
 
-// 需要配置到摄像头的数据 不允许在这修改参数
-static int16 scc8660_set_confing_buffer[SCC8660_CONFIG_FINISH][2]=
+//用户访问图像数据直接访问这个指针变量就可以
+//访问方式非常简单，可以直接使用下标的方式访问
+//例如访问第10行 50列的点，scc8660_csi_image[10][50]就可以了
+
+
+uint8   scc8660_uart_receive_dvp[3];
+uint8   scc8660_uart_receive_num_dvp = 0;
+volatile uint8  scc8660_uart_receive_flag_dvp;
+
+//需要配置到摄像头的数据
+uint16 SCC8660_CFG_DVP[SCC8660_CONFIG_FINISH][2]=
 {
-    {SCC8660_INIT,              0},                                             // 摄像头开始初始化
-    {SCC8660_AUTO_EXP,          SCC8660_AUTO_EXP_DEF},                          // 自动曝光
-    {SCC8660_BRIGHT,            SCC8660_BRIGHT_DEF},                            // 亮度设置
-    {SCC8660_FPS,               SCC8660_FPS_DEF},                               // 图像帧率
-    {SCC8660_SET_COL,           SCC8660_W},                                     // 图像列数
-    {SCC8660_SET_ROW,           SCC8660_H},                                     // 图像行数
-    {SCC8660_PCLK_DIV,          SCC8660_PCLK_DIV_DEF},                          // PCLK分频系数
-    {SCC8660_PCLK_MODE,         SCC8660_PCLK_MODE_DEF},                         // PCLK模式
-    {SCC8660_COLOR_MODE,        SCC8660_COLOR_MODE_DEF},                        // 图像色彩模式
-    {SCC8660_DATA_FORMAT,       SCC8660_DATA_FORMAT_DEF},                       // 输出数据格式
-    {SCC8660_MANUAL_WB,         SCC8660_MANUAL_WB_DEF},                         // 手动白平衡
-
+    {SCC8660_AUTO_EXP,          0},                     //自动曝光     默认：0     	可选参数为：0 1。      0：手动曝光  1：自动曝光
+    {SCC8660_BRIGHT,            800},                   //亮度设置     手动曝光默认：800	手动曝光时：参数范围0-65535   自动曝光推荐值：100 自动曝光时参数设置范围0-255
+														//需要注意SCC8660_BRIGHT的参数固定时，不同的SCC8660_PCLK_DIV参数会影响图像的亮度。
+														//假设SCC8660_BRIGHT的参数为800，SCC8660_PCLK_DIV的参数为0时 和 SCC8660_PCLK_DIV的参数为2时 
+														//参数为2的时候图像明显要比为0的时候亮，在使用双摄的时候感觉两个摄像头亮度不一致时需要注意这个问题。
+														
+    {SCC8660_FPS,               60},                    //图像帧率     默认：50    	可选参数为：60 50 30 25。 实际帧率还需要看SCC8660_PCLK_DIV参数的设置
+    {SCC8660_SET_COL,           SCC8660_DVP_PIC_W},     //图像列数     默认：160   	请在.h的宏定义处修改
+    {SCC8660_SET_ROW,           SCC8660_DVP_PIC_H},     //图像行数     默认：120   	请在.h的宏定义处修改
+    {SCC8660_PCLK_DIV,          1},                     //PCLK分频系数 默认：0     	可选参数为：0:1/1 1:2/3 2:1/2 3:1/3 4:1/4 5:1/8。
+                                                        //分频系数越大，PCLK频率越低，降低PCLK可以减轻DVP接口的干扰，但降低PCLK频率则会影响帧率。若无特殊需求请保持默认。
+                                                        //例如设置FPS为50帧，但是pclk分频系数选择的为5，则摄像头输出的帧率为50*（1/8）=6.25帧
+													    //其他参数不变的情况下，SCC8660_PCLK_DIV参数越大图像会越亮
+    
+    {SCC8660_PCLK_MODE,         1},                     //PCLK模式     默认：0		可选参数为：0 1。         0：不输出消隐信号，1：输出消隐信号。(通常都设置为0，如果使用CH32V306的DVP接口或STM32的DCMI接口采集需要设置为1)
+    {SCC8660_COLOR_MODE,        0},                     //图像色彩模式 默认：0		可选参数为：0 1。         0：正常彩色模式    1：鲜艳模式（色彩饱和度提高）
+    {SCC8660_DATA_FORMAT,       0},                     //输出数据格式 默认：0		可选参数为：0 1 2 3。     0：RGB565 1：RGB565(字节交换) 2：YUV422(YUYV) 3：YUV422(UYVY)
+    {SCC8660_MANUAL_WB,         0},                     //手动白平衡   默认：0		可选参数为：0 0x65-0xa0。 0：关闭手动白平衡，启用自动白平衡    其他：手动白平衡 手动白平衡时 参数范围0x65-0xa0
+    
+    {SCC8660_INIT,              0}                      //摄像头开始初始化
 };
 
-// 从摄像头内部获取到的配置数据 不允许在这修改参数
-static int16 scc8660_get_confing_buffer[SCC8660_CONFIG_FINISH - 1][2]=
+//从摄像头内部获取到的配置数据
+uint16 SCC8660_GET_CFG_DVP[SCC8660_CONFIG_FINISH-1][2]=
 {
     {SCC8660_AUTO_EXP,          0},
-    {SCC8660_BRIGHT,            0},                                             // 亮度设置
-    {SCC8660_FPS,               0},                                             // 图像帧率
-    {SCC8660_SET_COL,           0},                                             // 图像列数
-    {SCC8660_SET_ROW,           0},                                             // 图像行数
-    {SCC8660_PCLK_DIV,          0},                                             // PCLK分频系数
-    {SCC8660_PCLK_MODE,         0},                                             // PCLK模式
-    {SCC8660_COLOR_MODE,        0},                                             // 图像色彩模式
-    {SCC8660_DATA_FORMAT,       0},                                             // 输出数据格式
-    {SCC8660_MANUAL_WB,         0},                                             // 白平衡设置
+    {SCC8660_BRIGHT,            0}, //亮度设置          
+    {SCC8660_FPS,               0}, //图像帧率           
+    {SCC8660_SET_COL,           0}, //图像列数           
+    {SCC8660_SET_ROW,           0}, //图像行数          
+    {SCC8660_PCLK_DIV,          0}, //PCLK分频系数      
+    {SCC8660_PCLK_MODE,         0}, //PCLK模式      
+    {SCC8660_COLOR_MODE,        0}, //图像色彩模式
+    {SCC8660_DATA_FORMAT,       0}, //输出数据格式 	
+    {SCC8660_MANUAL_WB,         0}, //白平衡设置
 };
 
+
+
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     配置摄像头内部配置信息 内部调用
-// 参数说明     buff            发送配置信息的地址
-// 返回参数     uint8           1-失败 0-成功
-// 使用示例     if(scc8660_set_config(scc8660_set_confing_buffer)){}
-// 备注信息     调用该函数前请先初始化串口
+//  @brief      SCC8660(凌瞳摄像头)串口中断函数
+//  @param      NULL
+//  @return     void					
+//  @since      v1.0
+//  Sample usage:	
+//  @note       该函数在SDK底层fsl_lpuart文件中的串口3中断函数内调用
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 scc8660_set_config (int16 buff[SCC8660_CONFIG_FINISH][2])
+void scc8660_uart_callback_dvp(void)
 {
-    uint8 return_state = 1;
-    uint8  uart_buffer[4];
-    uint16 temp;
-    uint16 timeout_count = 0;
-    uint32 loop_count = 0;
-    uint32 uart_buffer_index = 0;
+    if(uart_query_byte(SCC8660_COF_UART_DVP, &scc8660_uart_receive_dvp[scc8660_uart_receive_num_dvp]))
+        scc8660_uart_receive_num_dvp++;
 
-    // 设置参数  具体请参看问题锦集手册
-    // 开始配置摄像头并重新初始化
-    for(loop_count = SCC8660_MANUAL_WB; loop_count < SCC8660_SET_REG_DATA; loop_count --)
+    if(1==scc8660_uart_receive_num_dvp && 0XA5!=scc8660_uart_receive_dvp[0])  scc8660_uart_receive_num_dvp = 0;
+    if(3 == scc8660_uart_receive_num_dvp)
     {
-        uart_buffer[0] = 0xA5;
-        uart_buffer[1] = buff[loop_count][0];
-        temp = buff[loop_count][1];
-        uart_buffer[2] = temp >> 8;
-        uart_buffer[3] = (uint8)temp;
-        uart_write_buffer(SCC8660_COF_UART, uart_buffer, 4);
+        scc8660_uart_receive_num_dvp = 0;
+        scc8660_uart_receive_flag_dvp = 1;
+    }
+}
 
+volatile uint8 scc8660_finish_flag_dvp;  //图像采集完成的标志位
+
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      摄像头配置串口初始化
+//  @param      NULL
+//  @return     void                    
+//  @since      v1.0
+//  Sample usage:       内部调用，无需用户调用。
+//-------------------------------------------------------------------------------------------------------------------
+void scc8660_dvp_cof_uart_init(void)
+{
+    //初始化摄像头配置串口
+    uart_init (SCC8660_COF_UART_DVP, 9600, SCC8660_COF_UART_RX_DVP, SCC8660_COF_UART_TX_DVP);    //初始换串口 配置摄像头
+    uart_rx_interrupt(SCC8660_COF_UART_DVP, ENABLE);
+    //开总中断
+    interrupt_global_enable();
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      配置摄像头内部配置信息
+//  @param      uartn       选择使用的串口
+//  @param      buff        发送配置信息的地址
+//  @return     void
+//  @since      v1.0
+//  Sample usage:           调用该函数前请先初始化串口
+//-------------------------------------------------------------------------------------------------------------------
+static uint8 scc8660_set_all_config(uart_index_enum uartn, uint16 buff[SCC8660_CONFIG_FINISH-1][2])
+{
+    uint16 temp, i;
+    uint8  send_buffer[4];
+    volatile int16 timeout = SCC8660_INIT_TIMEOUT;
+
+    scc8660_uart_receive_flag_dvp = 0;
+    
+    //设置参数  具体请参看问题锦集手册
+    //开始配置摄像头并重新初始化
+    for(i=0; i<SCC8660_CONFIG_FINISH; i++)
+    {
+        send_buffer[0] = 0xA5;
+        send_buffer[1] = buff[i][0];
+        temp           = buff[i][1];
+        send_buffer[2] = temp>>8;
+        send_buffer[3] = (uint8)temp;
+        
+        uart_write_buffer(uartn,send_buffer,4);
         system_delay_ms(2);
     }
-
-    do
+    
+    //等待摄像头初始化成功
+    while(!scc8660_uart_receive_flag_dvp && timeout-- > 0)
     {
-        if(3 <= fifo_used(&camera_receiver_fifo))
-        {
-            uart_buffer_index = 3;
-            fifo_read_buffer(&camera_receiver_fifo, uart_buffer, &uart_buffer_index, FIFO_READ_AND_CLEAN);
-            if((0xff == uart_buffer[1]) || (0xff == uart_buffer[2]))
-            {
-                return_state = 0;
-                break;
-            }
-        }
         system_delay_ms(1);
-    }while(SCC8660_INIT_TIMEOUT > timeout_count ++);
-
-    // 以上部分对摄像头配置的数据全部都会保存在摄像头上51单片机的eeprom中
-    // 利用set_exposure_time函数单独配置的曝光数据不存储在eeprom中
-    return return_state;
-}
-
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取摄像头内部配置信息 内部调用
-// 参数说明     buff            接收配置信息的地址
-// 返回参数     uint8           1-失败 0-成功
-// 使用示例     if(scc8660_get_config(scc8660_get_confing_buffer)){}
-// 备注信息     调用该函数前请先初始化串口
-//-------------------------------------------------------------------------------------------------------------------
-static uint8 scc8660_get_config (int16 buff[SCC8660_CONFIG_FINISH-1][2])
-{
-    uint8 return_state = 0;
-    uint8  uart_buffer[4];
-    uint16 temp;
-    uint16 timeout_count = 0;
-    uint32 loop_count = 0;
-    uint32 uart_buffer_index = 0;
-
-    for(loop_count = SCC8660_MANUAL_WB - 1; loop_count >= 1; loop_count --)
-    {
-        uart_buffer[0] = 0xA5;
-        uart_buffer[1] = SCC8660_GET_STATUS;
-        temp = buff[loop_count][0];
-        uart_buffer[2] = temp >> 8;
-        uart_buffer[3] = (uint8)temp;
-        uart_write_buffer(SCC8660_COF_UART, uart_buffer, 4);
-
-        timeout_count = 0;
-        do
-        {
-            if(3 <= fifo_used(&camera_receiver_fifo))
-            {
-                uart_buffer_index = 3;
-                fifo_read_buffer(&camera_receiver_fifo, uart_buffer, &uart_buffer_index, FIFO_READ_AND_CLEAN);
-                buff[loop_count][1] = uart_buffer[1] << 8 | uart_buffer[2];
-                break;
-            }
-            system_delay_ms(1);
-        }while(SCC8660_INIT_TIMEOUT > timeout_count ++);
-        if(timeout_count > SCC8660_INIT_TIMEOUT)                                // 超时
-        {
-            return_state = 1;
-            break;
-        }
     }
-    return return_state;
-}
 
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     SCC8660 通信串口回调函数
-// 参数说明     void
-// 返回参数     void
-// 使用示例     scc8660_uart_handler();
-// 备注信息     通过 zf_device_type.c 的接口调用 用户在使用默认设置时不需要关心
-//-------------------------------------------------------------------------------------------------------------------
-static void scc8660_uart_handler (void)
-{
-    uint8 data = 0;
-    uart_query_byte(SCC8660_COF_UART, &data);
-    if(0xA5 == data)
+
+    scc8660_uart_receive_flag_dvp = 0;
+    timeout = SCC8660_INIT_TIMEOUT;
+
+    while(((0xff != scc8660_uart_receive_dvp[1]) || (0xff != scc8660_uart_receive_dvp[2])) && timeout-- > 0)   // 判断数据是否截取到对应内容
     {
-        fifo_clear(&camera_receiver_fifo);
-    }
-    fifo_write_element(&camera_receiver_fifo, data);
-}
-
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     SCC8660 场中断回调函数
-// 参数说明     void
-// 返回参数     void
-// 使用示例     scc8660_vsync_handler();
-// 备注信息     通过 zf_device_type.c 的接口调用 用户在使用默认设置时不需要关心
-//-------------------------------------------------------------------------------------------------------------------
-static void scc8660_dvp_handler (void)
-{
-    //已经修改为循环采集模式。不需要设置地址和开启DVP
-    //DVP->DMA_BUF0 = (uint32)camera_buffer_addr;       // 恢复DMA地址
-    scc8660_finish_flag = 1;                            // 摄像头采集完成标志位置1
-    //已经修改为循环采集模式。不需要设置地址和开启DVP
-    //DVP->CR0 |= RB_ENABLE;                            // 重新打开DVP，采集下一副图像
-}
-
-
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取摄像头 ID
-// 参数说明     void
-// 返回参数     uint16          0-获取错误 N-版本号
-// 使用示例     scc8660_get_id();                               // 调用该函数前请先初始化串口
-// 备注信息
-//-------------------------------------------------------------------------------------------------------------------
-uint16 scc8660_get_id (void)
-{
-    uint16 temp;
-    uint8  uart_buffer[4];
-    uint16 timeout_count = 0;
-    uint16 return_value = 0;
-    uint32 uart_buffer_index = 0;
-
-    uart_buffer[0] = 0xA5;
-    uart_buffer[1] = SCC8660_GET_WHO_AM_I;
-    temp = 0;
-    uart_buffer[2] = temp >> 8;
-    uart_buffer[3] = (uint8)temp;
-    uart_write_buffer(SCC8660_COF_UART, uart_buffer, 4);
-
-    do
-    {
-        if(3 <= fifo_used(&camera_receiver_fifo))
-        {
-            uart_buffer_index = 3;
-            fifo_read_buffer(&camera_receiver_fifo, uart_buffer, &uart_buffer_index, FIFO_READ_AND_CLEAN);
-            return_value = uart_buffer[1] << 8 | uart_buffer[2];
-            break;
-        }
         system_delay_ms(1);
-    }while(SCC8660_INIT_TIMEOUT > timeout_count ++);
-    return return_value;
+    }
+    //以上部分对摄像头配置的数据全部都会保存在摄像头上51单片机的eeprom中
+    //利用set_exposure_time函数单独配置的曝光数据不存储在eeprom中
+
+    if(timeout <= 0)                                                     // 超时
+        return 1;
+
+    return 0;
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     单独设置摄像头曝光时间
-// 参数说明     light           设置曝光时间越大图像越亮，摄像头收到后会根据分辨率及FPS计算最大曝光时间如果设置的数据过大，那么摄像头将会设置这个最大值
-// 返回参数     uint16          数据
-// 使用示例     scc8660_get_parameter(config);                                  // 调用该函数前请先初始化串口
-// 备注信息
-//-------------------------------------------------------------------------------------------------------------------
-uint16 scc8660_get_parameter (uint16 config)
-{
-    uint8  uart_buffer[4];
-    uint16 timeout_count = 0;
-    uint16 return_value = 0;
-    uint32 uart_buffer_index = 0;
-
-    uart_buffer[0] = 0xA5;
-    uart_buffer[1] = SCC8660_GET_WHO_AM_I;
-    uart_buffer[2] = 0x00;
-    uart_buffer[3] = config;
-    uart_write_buffer(SCC8660_COF_UART, uart_buffer, 4);
-
-    do
-    {
-        if(3 <= fifo_used(&camera_receiver_fifo))
-        {
-            uart_buffer_index = 3;
-            fifo_read_buffer(&camera_receiver_fifo, uart_buffer, &uart_buffer_index, FIFO_READ_AND_CLEAN);
-            return_value = uart_buffer[1] << 8 | uart_buffer[2];
-            break;
-        }
-        system_delay_ms(1);
-    }while(SCC8660_INIT_TIMEOUT > timeout_count ++);
-    return return_value;
-}
-
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取彩色摄像头固件版本
-// 参数说明     void
-// 返回参数     uint16          版本号
-// 使用示例     scc8660_get_version();                                          // 调用该函数前请先初始化摄像头配置串口
-// 备注信息
-//-------------------------------------------------------------------------------------------------------------------
-uint16 scc8660_get_version (void)
-{
-    uint16 temp;
-    uint8  uart_buffer[4];
-    uint16 timeout_count = 0;
-    uint16 return_value = 0;
-    uint32 uart_buffer_index = 0;
-
-    uart_buffer[0] = 0xA5;
-    uart_buffer[1] = SCC8660_GET_STATUS;
-    temp           = SCC8660_GET_VERSION;
-    uart_buffer[2] = temp >> 8;
-    uart_buffer[3] = (uint8)temp;
-
-    uart_write_buffer(SCC8660_COF_UART, uart_buffer, 4);
-
-    do
-    {
-        if(3 <= fifo_used(&camera_receiver_fifo))
-        {
-            uart_buffer_index = 3;
-            fifo_read_buffer(&camera_receiver_fifo, uart_buffer, &uart_buffer_index, FIFO_READ_AND_CLEAN);
-            return_value = uart_buffer[1] << 8 | uart_buffer[2];
-            break;
-        }
-        system_delay_ms(1);
-    }while(SCC8660_INIT_TIMEOUT > timeout_count ++);
-    return return_value;
-}
-
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     单独设置图像亮度
-// 参数说明     data            需要设置的亮度值
-// 返回参数     uint8           1-失败 0-成功
-// 使用示例     scc8660_set_bright(data);                                       // 通过该函数设置的参数，不会被51单片机保存
-// 备注信息     调用该函数前请先初始化摄像头配置串口
-//-------------------------------------------------------------------------------------------------------------------
-uint8 scc8660_set_bright (uint16 data)
-{
-    uint8 return_state = 0;
-    if(SCC8660_UART == scc8660_type)
-    {
-        uint8  uart_buffer[4];
-        uint16 temp;
-        uint16 timeout_count = 0;
-        uint32 uart_buffer_index = 0;
-
-        uart_buffer[0] = 0xA5;
-        uart_buffer[1] = SCC8660_SET_BRIGHT;
-        uart_buffer[2] = data >> 8;
-        uart_buffer[3] = (uint8)data;
-
-        uart_write_buffer(SCC8660_COF_UART, uart_buffer, 4);
-
-        do
-        {
-            if(3 <= fifo_used(&camera_receiver_fifo))
-            {
-                uart_buffer_index = 3;
-                fifo_read_buffer(&camera_receiver_fifo, uart_buffer, &uart_buffer_index, FIFO_READ_AND_CLEAN);
-                temp = uart_buffer[1] << 8 | uart_buffer[2];
-                break;
-            }
-            system_delay_ms(1);
-        }while(SCC8660_INIT_TIMEOUT > timeout_count ++);
-        if((temp != data) || (SCC8660_INIT_TIMEOUT <= timeout_count))
-        {
-            return_state = 1;
-        }
-    }
-    else
-    {
-        return_state = scc8660_set_brightness_sccb(data);
-    }
-
-    return return_state;
-}
-
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     单独设置白平衡
-// 参数说明     data            需要设置的亮度值
-// 返回参数     uint8           1-失败 0-成功
-// 使用示例     scc8660_set_white_balance(data);                // 调用该函数前请先初始化摄像头配置串口
-// 备注信息     通过该函数设置的参数，不会被51单片机保存
-//-------------------------------------------------------------------------------------------------------------------
-uint8 scc8660_set_white_balance (uint16 data)
-{
-    uint8 return_state = 0;
-
-    if(SCC8660_UART == scc8660_type)
-    {
-        uint8  uart_buffer[4];
-        uint16 temp;
-        uint16 timeout_count = 0;
-        uint32 uart_buffer_index = 0;
-
-        uart_buffer[0] = 0xA5;
-        uart_buffer[1] = SCC8660_SET_MANUAL_WB;
-        uart_buffer[2] = data >> 8;
-        uart_buffer[3] = (uint8)data;
-
-        uart_write_buffer(SCC8660_COF_UART, uart_buffer, 4);
-
-        do
-        {
-            if(3 <= fifo_used(&camera_receiver_fifo))
-            {
-                uart_buffer_index = 3;
-                fifo_read_buffer(&camera_receiver_fifo, uart_buffer, &uart_buffer_index, FIFO_READ_AND_CLEAN);
-                temp = uart_buffer[1] << 8 | uart_buffer[2];
-                break;
-            }
-            system_delay_ms(1);
-        }while(SCC8660_INIT_TIMEOUT > timeout_count ++);
-        if((temp != data) || (SCC8660_INIT_TIMEOUT <= timeout_count))
-        {
-            return_state = 1;
-        }
-    }
-    else
-    {
-        return_state = scc8660_set_manual_wb_sccb(data);
-    }
-    return return_state;
-}
-
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     对摄像头内部寄存器进行写操作
-// 参数说明     addr            摄像头内部寄存器地址
-// 参数说明     data            需要写入的数据
-// 返回参数     uint8           1-失败 0-成功
-// 使用示例     scc8660_set_reg(addr, data);                    // 调用该函数前请先初始化串口
-// 备注信息
-//-------------------------------------------------------------------------------------------------------------------
-uint8 scc8660_set_reg (uint8 addr, uint16 data)
-{
-    uint8 return_state = 0;
-
-    if(SCC8660_UART == scc8660_type)
-    {
-        uint8  uart_buffer[4];
-        uint16 temp;
-        uint16 timeout_count = 0;
-        uint32 uart_buffer_index = 0;
-
-        uart_buffer[0] = 0xA5;
-        uart_buffer[1] = SCC8660_SET_REG_ADDR;
-        uart_buffer[2] = 0x00;
-        uart_buffer[3] = (uint8)addr;
-        uart_write_buffer(SCC8660_COF_UART, uart_buffer, 4);
-
-        system_delay_ms(10);
-        uart_buffer[0] = 0xA5;
-        uart_buffer[1] = SCC8660_SET_REG_DATA;
-        temp           = data;
-        uart_buffer[2] = temp >> 8;
-        uart_buffer[3] = (uint8)temp;
-        uart_write_buffer(SCC8660_COF_UART, uart_buffer, 4);
-
-        do
-        {
-            if(3 <= fifo_used(&camera_receiver_fifo))
-            {
-                uart_buffer_index = 3;
-                fifo_read_buffer(&camera_receiver_fifo, uart_buffer, &uart_buffer_index, FIFO_READ_AND_CLEAN);
-                temp = uart_buffer[1] << 8 | uart_buffer[2];
-                break;
-            }
-            system_delay_ms(1);
-        }while(SCC8660_INIT_TIMEOUT > timeout_count ++);
-        if((temp != data) || (SCC8660_INIT_TIMEOUT <= timeout_count))
-        {
-            return_state = 1;
-        }
-    }
-    else
-    {
-        return_state = scc8660_set_reg_sccb(addr, data);
-    }
-    return return_state;
-}
-
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     SCC8660(凌瞳摄像头)初始化 使用DVP接口
-// 参数说明     NULL
-// 返回参数     void
+//  @brief      获取摄像头内部全部配置信息
+//  @param      uartn       选择使用的串口
+//  @param      buff        接收配置信息的地址
+//  @return     void
 //  @since      v1.0
-// 备注信息
+//  Sample usage:           调用该函数前请先初始化摄像头配置串口
 //-------------------------------------------------------------------------------------------------------------------
-uint8 scc8660_init(void)
+static uint8 scc8660_get_all_config(uart_index_enum uartn, uint16 buff[SCC8660_CONFIG_FINISH-1][2])
 {
-
-    uint8 return_state = 0;
-
-    soft_iic_info_struct scc8660_iic_struct;
-
-                                                   // 获取配置的方式
-
-    do
+    uint16 temp, i;
+    uint8  send_buffer[4];
+    volatile int16 timeout = SCC8660_INIT_TIMEOUT;
+    
+    for(i=0; i<SCC8660_CONFIG_FINISH-1; i++)
     {
-        system_delay_ms(200);
-        set_camera_type(CAMERA_COLOR, NULL, NULL);                        // 设置连接摄像头类型
-        // 首先尝试SCCB通讯
-        scc8660_type = SCC8660_SCCB;
-        soft_iic_init(&scc8660_iic_struct, 0, SCC8660_COF_IIC_DELAY, SCC8660_COF_IIC_SCL, SCC8660_COF_IIC_SDA);
-        set_camera_type(CAMERA_COLOR, NULL, scc8660_dvp_handler);
-        if(scc8660_set_config_sccb(&scc8660_iic_struct, scc8660_set_confing_buffer))
+        send_buffer[0] = 0xA5;
+        send_buffer[1] = SCC8660_GET_STATUS;
+        temp           = buff[i][0];
+        send_buffer[2] = temp>>8;
+        send_buffer[3] = (uint8)temp;
+        
+        uart_write_buffer(uartn,send_buffer,4);
+        
+        //等待接受回传数据
+        while(!scc8660_uart_receive_flag_dvp && timeout-- > 0)
         {
-            scc8660_type = SCC8660_UART;
-            // 初始换串口 配置摄像头
-            uart_init(SCC8660_COF_UART, SCC8660_COF_BAUR, SCC8660_COF_UART_RX, SCC8660_COF_UART_TX);
-            uart_rx_interrupt(SCC8660_COF_UART, 1);
-            system_delay_ms(200);
-
-            set_camera_type(CAMERA_COLOR, scc8660_uart_handler, scc8660_dvp_handler);
-            camera_fifo_init();
-
-            // 等待摄像头上电初始化成功 方式有两种：延时或者通过获取配置的方式 二选一
-            // system_delay_ms(1000);                                                   // 延时方式
-
-            //    if(scc8660_set_config(scc8660_set_confing_buffer))
-            //    {
-            //        set_camera_type(NO_CAMERE, NULL, NULL, NULL);
-            //        return 1;
-            //    }
-            scc8660_get_version();
-
-            if(scc8660_set_config(scc8660_set_confing_buffer))
-            {
-                // 如果程序在输出了断言信息 并且提示出错位置在这里
-                // 那么就是串口通信出错并超时退出了
-                // 检查一下接线有没有问题 如果没问题可能就是坏了
-                zf_log(0, "SCC8660 set config error.");
-                set_camera_type(NO_CAMERE, NULL, NULL);
-                return_state = 1;
-                break;
-            }
-
-            // 获取配置便于查看配置是否正确
-            if(scc8660_get_config(scc8660_get_confing_buffer))
-            {
-                // 如果程序在输出了断言信息 并且提示出错位置在这里
-                // 那么就是串口通信出错并超时退出了
-                // 检查一下接线有没有问题 如果没问题可能就是坏了
-                zf_log(0, "SCC8660 get config error.");
-                set_camera_type(NO_CAMERE, NULL, NULL);
-                return_state = 1;
-                break;
-            }
+            system_delay_ms(1);
         }
 
-        // DVP引脚初始化
-        dvp_gpio_init(
-                SCC8660_D0_PIN, SCC8660_D1_PIN, SCC8660_D2_PIN, SCC8660_D3_PIN,
-                SCC8660_D4_PIN, SCC8660_D5_PIN, SCC8660_D6_PIN, SCC8660_D7_PIN,
-                SCC8660_PCLK_PIN, SCC8660_VSY_PIN, SCC8660_HERF_PIN);
+        if(timeout <= 0)                                                     // 超时
+            return 1;
 
-        // DVP接口初始化
-        dvp_camera_init((uint32 *)&scc8660_image[0], NULL, SCC8660_IMAGE_SIZE, 1);
-    }while(0);
+        scc8660_uart_receive_flag_dvp = 0;
+        buff[i][1] = scc8660_uart_receive_dvp[1]<<8 | scc8660_uart_receive_dvp[2];
+    }
+    return 0;
+}
 
-    return return_state;
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      获取摄像头固件版本
+//  @param      uartn               选择使用的串口
+//  @return     (uint16)camera_id   返回摄像头ID
+//  @since      v1.0
+//  Sample usage:           调用该函数前请先初始化摄像头配置串口
+//-------------------------------------------------------------------------------------------------------------------
+uint16 scc8660_get_id(uart_index_enum uartn)
+{
+    uint16 temp;
+    uint8  send_buffer[4];
+    volatile int16 timeout = SCC8660_INIT_TIMEOUT;
+
+    send_buffer[0] = 0xA5;
+    send_buffer[1] = SCC8660_GET_WHO_AM_I;
+    temp           = 0;
+    send_buffer[2] = temp>>8;
+    send_buffer[3] = (uint8)temp;
+    
+    uart_write_buffer(uartn, send_buffer, 4);
+        
+    //等待接受回传数据
+    while(!scc8660_uart_receive_flag_dvp && timeout-- > 0)
+    {
+        system_delay_ms(1);
+    }
+    scc8660_uart_receive_flag_dvp = 0;
+    
+    if(timeout <= 0)                                                     // 超时
+          return 0;
+
+    return ((uint16)(scc8660_uart_receive_dvp[1]<<8) | scc8660_uart_receive_dvp[2]);
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      获取摄像头某一个参数配置信息
+//  @param      uartn               选择使用的串口
+//  @return     (uint16)config      返回参数值
+//  @since      v1.0
+//  Sample usage:           调用该函数前请先初始化摄像头配置串口
+//-------------------------------------------------------------------------------------------------------------------
+uint16 scc8660_get_config(uart_index_enum uartn, uint8 config)
+{
+    uint8 send_buffer[4];
+    volatile int16 timeout = SCC8660_INIT_TIMEOUT;
+
+    send_buffer[0] = 0xA5;
+    send_buffer[1] = SCC8660_GET_WHO_AM_I;
+    send_buffer[2] = 0x00;
+    send_buffer[3] = config;
+    
+    uart_write_buffer(uartn, send_buffer, 4);
+
+    //等待接受回传数据
+    while(!scc8660_uart_receive_flag_dvp && timeout-- > 0)
+    {
+        system_delay_ms(1);
+    }
+    scc8660_uart_receive_flag_dvp = 0;
+    
+    if(timeout <= 0)                                                     // 超时
+          return 0;
+
+    return ((uint16)(scc8660_uart_receive_dvp[1]<<8) | scc8660_uart_receive_dvp[2]);
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      获取彩色摄像头固件版本
+//  @param      uartn       选择使用的串口
+//  @return     uint16      版本号
+//  @since      v1.0
+//  Sample usage:           调用该函数前请先初始化摄像头配置串口
+//-------------------------------------------------------------------------------------------------------------------
+uint16 scc8660_get_version(uart_index_enum uartn)
+{
+    uint16 temp;
+    uint8  send_buffer[4];
+    volatile int16 timeout = SCC8660_INIT_TIMEOUT;
+
+    send_buffer[0] = 0xA5;
+    send_buffer[1] = SCC8660_GET_STATUS;
+    temp           = SCC8660_GET_VERSION;
+    send_buffer[2] = temp>>8;
+    send_buffer[3] = (uint8)temp;
+    
+    uart_write_buffer(uartn, send_buffer, 4);
+        
+    //等待接受回传数据
+    while(!scc8660_uart_receive_flag_dvp && timeout-- > 0)
+    {
+        system_delay_ms(1);
+    }
+    scc8660_uart_receive_flag_dvp = 0;
+    
+    if(timeout <= 0)                                                     // 超时
+          return 0;
+
+    return ((uint16)(scc8660_uart_receive_dvp[1]<<8) | scc8660_uart_receive_dvp[2]);
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      单独设置图像亮度
+//  @param      uartn       选择使用的串口
+//  @param      data        需要设置的亮度值
+//  @return     uint16      返回设置的亮度值
+//  @since      v1.0
+//  Sample usage:           调用该函数前请先初始化摄像头配置串口
+//  @note                   通过该函数设置的参数，不会被51单片机保存
+//-------------------------------------------------------------------------------------------------------------------
+uint16  scc8660_set_bright(uart_index_enum uartn, uint16 data)
+{
+    uint8  send_buffer[4];
+    volatile int16 timeout = SCC8660_INIT_TIMEOUT;
+
+    send_buffer[0] = 0xA5;
+    send_buffer[1] = SCC8660_SET_BRIGHT;
+    send_buffer[2] = data>>8;
+    send_buffer[3] = (uint8)data;
+    
+    uart_write_buffer(uartn,send_buffer,4);
+    
+    //等待接受回传数据
+    while(!scc8660_uart_receive_flag_dvp && timeout-- > 0)
+    {
+        system_delay_ms(1);
+    }
+    scc8660_uart_receive_flag_dvp = 0;
+    
+    if(timeout <= 0)                                                     // 超时
+          return 0;
+
+    return ((uint16)(scc8660_uart_receive_dvp[1]<<8) | scc8660_uart_receive_dvp[2]);
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      单独设置白平衡
+//  @param      uartn       选择使用的串口
+//  @param      data        需要设置的亮度值
+//  @return     uint16      返回设置的亮度值
+//  @since      v1.0
+//  Sample usage:           调用该函数前请先初始化摄像头配置串口
+//  @note                   通过该函数设置的参数，不会被51单片机保存
+//-------------------------------------------------------------------------------------------------------------------
+uint16  scc8660_set_maunal_wb(uart_index_enum uartn, uint16 data)
+{
+    uint8  send_buffer[4];
+    volatile int16 timeout = SCC8660_INIT_TIMEOUT;
+
+    send_buffer[0] = 0xA5;
+    send_buffer[1] = SCC8660_SET_MANUAL_WB;
+    send_buffer[2] = data>>8;
+    send_buffer[3] = (uint8)data;
+    
+    uart_write_buffer(uartn,send_buffer,4);
+    
+    //等待接受回传数据
+    while(!scc8660_uart_receive_flag_dvp && timeout-- > 0)
+    {
+        system_delay_ms(1);
+    }
+    scc8660_uart_receive_flag_dvp = 0;
+    
+    if(timeout <= 0)                                                     // 超时
+          return 0;
+
+    return ((uint16)(scc8660_uart_receive_dvp[1]<<8) | scc8660_uart_receive_dvp[2]);
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      单独设置摄像头寄存器
+//  @param      uartn       选择使用的串口
+//  @param      reg         寄存器地址
+//  @param      data        需要写入寄存器的数值
+//  @return     uint16      回传写入寄存器的值
+//  @since      v1.0
+//  Sample usage:           调用该函数前请先初始化串口
+//-------------------------------------------------------------------------------------------------------------------
+uint16 scc8660_set_reg_addr(uart_index_enum uartn, uint8 reg, uint16 data)
+{
+    uint16 temp;
+    uint8  send_buffer[4];
+    volatile int16 timeout = SCC8660_INIT_TIMEOUT;
+
+    send_buffer[0] = 0xA5;
+    send_buffer[1] = SCC8660_SET_REG_ADDR;
+    send_buffer[2] = 0x00;
+    send_buffer[3] = (uint8)reg;
+    
+    uart_write_buffer(uartn,send_buffer,4);
+    
+    system_delay_ms(2);
+    
+    send_buffer[0] = 0xA5;
+    send_buffer[1] = SCC8660_SET_REG_DATA;
+    temp           = data;
+    send_buffer[2] = temp>>8;
+    send_buffer[3] = (uint8)temp;
+    
+    uart_write_buffer(uartn,send_buffer,4);
+    
+    //等待接受回传数据
+    while(!scc8660_uart_receive_flag_dvp && timeout-- > 0)
+    {
+        system_delay_ms(1);
+    }
+    scc8660_uart_receive_flag_dvp = 0;
+    
+    if(timeout <= 0)                                                     // 超时
+          return 0;
+
+    return ((uint16)(scc8660_uart_receive_dvp[1]<<8) | scc8660_uart_receive_dvp[2]);
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      SCC8660摄像头场中断
+//  @param      NULL
+//  @return     void
+//  @since      v1.0
+//  Sample usage:               在isr.c里面先创建对应的中断函数，然后调用该函数(之后别忘记清除中断标志位)
+//-------------------------------------------------------------------------------------------------------------------
+void scc8660_vsync_dvp(void)
+{
+    //已经修改为循环采集模式。不需要设置地址和开启DVP
+    //恢复DMA地址
+    //DVP->DMA_BUF0 = (uint32)camera_buffer_addr;
+
+    //采集完成标志位置1
+    scc8660_finish_flag_dvp = 1;
+
+    //已经修改为循环采集模式。不需要设置地址和开启DVP
+    //开启DVP
+    //DVP->CR0 |= RB_DVP_ENABLE;
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      SCC8660摄像头行中断
+//  @param      NULL
+//  @return     void
+//  @since      v1.0
+//  Sample usage:               暂不需要
+//-------------------------------------------------------------------------------------------------------------------
+void scc8660_dvp_hsync(void)
+{
 
 }
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      SCC8660(凌瞳摄像头)初始化 使用DVP接口
+//  @param      NULL
+//  @return     void					
+//  @since      v1.0
+//  Sample usage:		
+//-------------------------------------------------------------------------------------------------------------------
+uint8 scc8660_init_dvp(void)
+{
+
+    //摄像头类型设置为凌瞳
+    set_camera_type(CAMERA_COLOR);
+    //摄像头开始初始化之前务必将场信号拉高
+    gpio_init(SCC8660_VSY_PIN_DVP, GPO, 1, GPIO_PIN_CONFIG);
+    //摄像头配置串口初始化
+    scc8660_dvp_cof_uart_init();
+
+    //等待摄像头上电初始化成功 方式有两种：延时或者通过获取配置的方式 二选一
+    //system_delay_ms(500);//延时方式
+    scc8660_uart_receive_flag_dvp = 0;
+    if(scc8660_get_all_config(SCC8660_COF_UART_DVP, SCC8660_GET_CFG_DVP))//获取配置的方式
+    {
+        zf_assert(0);
+        return 1;
+    }
+    //向摄像头发送配置信息
+    scc8660_uart_receive_flag_dvp = 0;
+    if(scc8660_set_all_config(SCC8660_COF_UART_DVP, SCC8660_CFG_DVP))
+    {
+        zf_assert(0);
+        return 1;
+    }
+    //获取配置便于查看配置是否正确
+    scc8660_uart_receive_flag_dvp = 0;
+    if(scc8660_get_all_config(SCC8660_COF_UART_DVP, SCC8660_GET_CFG_DVP))
+    {
+        zf_assert(0);
+        return 1;
+    }
+    //为方便使用，获取配置信息后并未对数据进行校验，如果需要确认配置是否成功，请自行进行数据比对。
+    interrupt_global_disable();
+
+    //DVP引脚初始化
+    dvp_gpio_init(
+            SCC8660_D0_PIN_DVP, SCC8660_D1_PIN_DVP, SCC8660_D2_PIN_DVP, SCC8660_D3_PIN_DVP,
+            SCC8660_D4_PIN_DVP, SCC8660_D5_PIN_DVP, SCC8660_D6_PIN_DVP, SCC8660_D7_PIN_DVP,
+            SCC8660_PCLK_PIN_DVP, SCC8660_VSY_PIN_DVP, SCC8660_HERF_PIN_DVP);
+
+    //设置图像地址初值，务必保留
+    camera_buffer_addr = (uint8 *)scc8660_image_dvp[0];
+
+    //DVP 采集初始化
+    dvp_camera_init((uint32 *)camera_buffer_addr, NULL, SCC8660_DVP_W*SCC8660_DVP_H, 1);
+    return 0;
+
+}
+
+
+
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      SCC8660(凌瞳摄像头)获取像素点RGB分量
+//  @param      *dat    图像数组的地址
+//  @param      x       需要获取的像素所在列
+//  @param      y       需要获取的像素所在行
+//  @param      z       图像宽度
+//  @param      *r      接收r分量地址 返回值范围0-31
+//  @param      *g      接收g分量地址 返回值范围0-63
+//  @param      *b      接收b分量地址 返回值范围0-31
+//  @return     void
+//  @since      v1.0
+//  Sample usage:		color_camera_take_point(scc8660_dvp_image[0],0, 0, SCC8660_DVP_PIC_W, &r_value,&g_value,&b_value);//获取第0列 第0行像素的RGB分量  摄像头的数据格式必须设置为0
+//	@note				此函数主要目的是为了让大家能够清晰的了解RGB数据是如何存储的
+//-------------------------------------------------------------------------------------------------------------------
+void inline color_camera_take_point(uint16 *dat, uint16 x, uint16 y, uint16 z, uint8 *r, uint8 *g, uint8 *b)
+{
+    uint16 pixel;
+
+    //获取指定坐标的像素数据
+    pixel = dat[x+y*z];
+
+    //因为R5G3是存储在低八位 G3B5是存储在高八位
+    //因为我们先将位置进行交换，便于获取每个分量的数据
+    pixel = ((pixel&0xff)<<8) |(pixel>>8);
+
+    *r = pixel>>11;
+    *g = (pixel>>5)&0x3f;
+    *b = pixel&0x1f;
+}
+
+
 

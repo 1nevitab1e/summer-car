@@ -41,34 +41,34 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_FLASH += \
-open2023.hex \
+Seekfree_CH32V307VCT6_Opensource_Library.hex \
 
 SECONDARY_LIST += \
-open2023.lst \
+Seekfree_CH32V307VCT6_Opensource_Library.lst \
 
 SECONDARY_SIZE += \
-open2023.siz \
+Seekfree_CH32V307VCT6_Opensource_Library.siz \
 
 
 # 所有目标
-all: open2023.elf secondary-outputs
+all: Seekfree_CH32V307VCT6_Opensource_Library.elf secondary-outputs
 
 # 工具调用
-open2023.elf: $(OBJS) $(USER_OBJS)
-	@	@	riscv-none-embed-gcc -march=rv32imafc -mabi=ilp32f -msmall-data-limit=8 -mno-save-restore -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common -pedantic -Wunused -Wuninitialized -Wall  -g -T "E:\wch307\CHV307_Library-master\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Ld\Link.ld" -nostartfiles -Xlinker --gc-sections -L"../" -L"E:\wch307\CHV307_Library-master\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_device" -Wl,-Map,"open2023.map" --specs=nano.specs -u _printf_float --specs=nosys.specs -Wl,--print-memory-usage -o "open2023.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+Seekfree_CH32V307VCT6_Opensource_Library.elf: $(OBJS) $(USER_OBJS)
+	@	@	riscv-none-embed-gcc -march=rv32imafc -mabi=ilp32f -msmall-data-limit=8 -mno-save-restore -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common -pedantic -Wunused -Wuninitialized -Wall  -g -T "E:\wch307\欧美风情\CHV307_Library-master\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Ld\Link.ld" -nostartfiles -Xlinker --gc-sections -L"../" -Wl,-Map,"Seekfree_CH32V307VCT6_Opensource_Library.map" --specs=nano.specs -u _printf_float --specs=nosys.specs -o "Seekfree_CH32V307VCT6_Opensource_Library.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@	@
-open2023.hex: open2023.elf
-	@	riscv-none-embed-objcopy -O ihex "open2023.elf"  "open2023.hex"
+Seekfree_CH32V307VCT6_Opensource_Library.hex: Seekfree_CH32V307VCT6_Opensource_Library.elf
+	@	riscv-none-embed-objcopy -O ihex "Seekfree_CH32V307VCT6_Opensource_Library.elf"  "Seekfree_CH32V307VCT6_Opensource_Library.hex"
 	@	@
-open2023.lst: open2023.elf
-	@	riscv-none-embed-objdump --source --all-headers --demangle --line-numbers --wide "open2023.elf" > "open2023.lst"
+Seekfree_CH32V307VCT6_Opensource_Library.lst: Seekfree_CH32V307VCT6_Opensource_Library.elf
+	@	riscv-none-embed-objdump --source --all-headers --demangle --line-numbers --wide "Seekfree_CH32V307VCT6_Opensource_Library.elf" > "Seekfree_CH32V307VCT6_Opensource_Library.lst"
 	@	@
-open2023.siz: open2023.elf
-	@	riscv-none-embed-size --format=berkeley "open2023.elf"
+Seekfree_CH32V307VCT6_Opensource_Library.siz: Seekfree_CH32V307VCT6_Opensource_Library.elf
+	@	riscv-none-embed-size --format=berkeley "Seekfree_CH32V307VCT6_Opensource_Library.elf"
 	@	@
 # 其他目标
 clean:
-	-$(RM) $(ASM_UPPER_DEPS)$(OBJS)$(SECONDARY_FLASH)$(SECONDARY_LIST)$(SECONDARY_SIZE)$(ASM_DEPS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS) open2023.elf
+	-$(RM) $(ASM_UPPER_DEPS)$(OBJS)$(SECONDARY_FLASH)$(SECONDARY_LIST)$(SECONDARY_SIZE)$(ASM_DEPS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS) Seekfree_CH32V307VCT6_Opensource_Library.elf
 	-@
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_LIST) $(SECONDARY_SIZE)
 

@@ -274,6 +274,6 @@ void    imu963ra_get_mag            (void);
 //-------------------------------------------------------------------------------------------------------------------
 #define imu963ra_mag_transition(mag_value)    ((float)mag_value / imu963ra_transition_factor[2])
 
-uint8   imu963ra_init(void);
+uint8   imu963ra_init               (void);
 
 #endif

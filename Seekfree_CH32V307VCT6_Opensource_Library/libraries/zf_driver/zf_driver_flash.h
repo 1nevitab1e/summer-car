@@ -1,48 +1,31 @@
 /*********************************************************************************************************************
-* CH32V307VCT6 Opensourec Library 即（CH32V307VCT6 开源库）是一个基于官方 SDK 接口的第三方开源库
-* Copyright (c) 2022 SEEKFREE 逐飞科技
-*
-* 本文件是CH32V307VCT6 开源库的一部分
-*
-* CH32V307VCT6 开源库 是免费软件
-* 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
-* 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
-*
-* 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
-* 甚至没有隐含的适销性或适合特定用途的保证
-* 更多细节请参见 GPL
-*
-* 您应该在收到本开源库的同时收到一份 GPL 的副本
-* 如果没有，请参阅<https://www.gnu.org/licenses/>
-*
-* 额外注明：
-* 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
-* 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
-* 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
-* 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
-*
-* 文件名称          zf_driver_delay
-* 公司名称          成都逐飞科技有限公司
-* 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
-* 开发环境          MounRiver Studio V1.8.1
-* 适用平台          CH32V307VCT6
-* 店铺链接          https://seekfree.taobao.com/
-*
-* 修改记录
-* 日期                                      作者                             备注
-* 2022-09-15        大W            first version
-********************************************************************************************************************/
+ * COPYRIGHT NOTICE
+ * Copyright (c) 2020,逐飞科技
+ * All rights reserved.
+ *
+ * 以下所有内容版权均属逐飞科技所有，未经允许不得用于商业用途，
+ * 欢迎各位使用并传播本程序，修改内容时必须保留逐飞科技的版权声明。
+ *
+ * @file            zf_driver_flash
+ * @company         成都逐飞科技有限公司
+ * @author          逐飞科技(QQ790875685)
+ * @version         查看doc内version文件 版本说明
+ * @Software        MounRiver Studio V1.51
+ * @Target core     CH32V307VCT6
+ * @Taobao          https://seekfree.taobao.com/
+ * @date            2021-11-25
+ * @note            version:
+ *                  V1.1 2022.01.17 修改扇区总数的枚举体定义
+ ********************************************************************************************************************/
 
-#ifndef _zf_driver_flash_h
-#define _zf_driver_flash_h
+#ifndef _zf_flash_h
+#define _zf_flash_h
 
-#include "ch32v30x.h"
+#include "ch32v30x_misc.h"
 #include "ch32v30x_flash.h"
 #include "zf_common_typedef.h"
 
 #define FLASH_BASE_ADDR             (0x08000000)                // FALSH首地址
-#define FLASH_MAX_PAGE_INDEX        (3)
-#define FLASH_MAX_SECTION_INDEX     (63)
 #define FLASH_PAGE_SIZE             (0x00000400)                // 1K byte
 #define FLASH_SECTION_SIZE          (FLASH_PAGE_SIZE*4)         // 4K byte
 #define FLASH_OPERATION_TIME_OUT    0x0FFF
@@ -67,15 +50,94 @@ typedef union                                                                   
 */
 
 
-extern flash_data_union flash_union_buffer[FLASH_DATA_BUFFER_SIZE];
+// 枚举 Flash 扇区  此枚举定义不允许用户修改
+typedef enum
+{
+    FLASH_SECTION_00,
+    FLASH_SECTION_01,
+    FLASH_SECTION_02,
+    FLASH_SECTION_03,
+    FLASH_SECTION_04,
+    FLASH_SECTION_05,
+    FLASH_SECTION_06,
+    FLASH_SECTION_07,
+    FLASH_SECTION_08,
+    FLASH_SECTION_09,
+    FLASH_SECTION_10,
+    FLASH_SECTION_11,
+    FLASH_SECTION_12,
+    FLASH_SECTION_13,
+    FLASH_SECTION_14,
+    FLASH_SECTION_15,
+    FLASH_SECTION_16,
+    FLASH_SECTION_17,
+    FLASH_SECTION_18,
+    FLASH_SECTION_19,
+    FLASH_SECTION_20,
+    FLASH_SECTION_21,
+    FLASH_SECTION_22,
+    FLASH_SECTION_23,
+    FLASH_SECTION_24,
+    FLASH_SECTION_25,
+    FLASH_SECTION_26,
+    FLASH_SECTION_27,
+    FLASH_SECTION_28,
+    FLASH_SECTION_29,
+    FLASH_SECTION_30,
+    FLASH_SECTION_31,
+    FLASH_SECTION_32,
+    FLASH_SECTION_33,
+    FLASH_SECTION_34,
+    FLASH_SECTION_35,
+    FLASH_SECTION_36,
+    FLASH_SECTION_37,
+    FLASH_SECTION_38,
+    FLASH_SECTION_39,
+    FLASH_SECTION_40,
+    FLASH_SECTION_41,
+    FLASH_SECTION_42,
+    FLASH_SECTION_43,
+    FLASH_SECTION_44,
+    FLASH_SECTION_45,
+    FLASH_SECTION_46,
+    FLASH_SECTION_47,
+    FLASH_SECTION_48,
+    FLASH_SECTION_49,
+    FLASH_SECTION_50,
+    FLASH_SECTION_51,
+    FLASH_SECTION_52,
+    FLASH_SECTION_53,
+    FLASH_SECTION_54,
+    FLASH_SECTION_55,
+    FLASH_SECTION_56,
+    FLASH_SECTION_57,
+    FLASH_SECTION_58,
+    FLASH_SECTION_59,
+    FLASH_SECTION_60,
+    FLASH_SECTION_61,
+    FLASH_SECTION_62,
+    FLASH_SECTION_63
+}flash_section_enum;
 
-uint8   flash_check                         (uint32 sector_num, uint32 page_num);
-uint8   flash_erase_sector                  (uint32 sector_num, uint32 page_num);
-void    flash_read_page                     (uint32 sector_num, uint32 page_num, uint32 *buf, uint16 len);
-uint8   flash_write_page                    (uint32 sector_num, uint32 page_num, const uint32 *buf, uint16 len);
+// 枚举 Flash 页索引 此枚举定义不允许用户修改
+typedef enum
+{
+    FLASH_PAGE_0,
+    FLASH_PAGE_1,
+    FLASH_PAGE_2,
+    FLASH_PAGE_3,
+}flash_page_enum;
 
-void    flash_read_page_to_buffer           (uint32 sector_num, uint32 page_num);
-uint8   flash_write_page_from_buffer        (uint32 sector_num, uint32 page_num);
-void    flash_buffer_clear                  (void);
+extern flash_data_union flash_data_union_buffer[FLASH_DATA_BUFFER_SIZE];
+
+uint8 flash_check         (flash_section_enum sector_num, flash_page_enum page_num);
+uint8 flash_erase_page    (flash_section_enum sector_num, flash_page_enum page_num);
+void    flash_read_page     (flash_section_enum sector_num, flash_page_enum page_num, uint32 *buf, uint16 len);
+uint8 flash_write_page    (flash_section_enum sector_num, flash_page_enum page_num, const uint32 *buf, uint16 len);
+
+void    flash_read_page_to_data_buffer      (flash_section_enum sector_num, flash_page_enum page_num);
+uint8 flash_write_page_to_data_buffer     (flash_section_enum sector_num, flash_page_enum page_num);
+void    flash_data_buffer_clear             (void);
+
 
 #endif

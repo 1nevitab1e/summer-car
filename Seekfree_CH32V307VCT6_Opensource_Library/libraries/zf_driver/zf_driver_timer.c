@@ -1,43 +1,28 @@
 /*********************************************************************************************************************
-* CH32V307VCT6 Opensourec Library 即（CH32V307VCT6 开源库）是一个基于官方 SDK 接口的第三方开源库
-* Copyright (c) 2022 SEEKFREE 逐飞科技
-*
-* 本文件是CH32V307VCT6 开源库的一部分
-*
-* CH32V307VCT6 开源库 是免费软件
-* 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
-* 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
-*
-* 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
-* 甚至没有隐含的适销性或适合特定用途的保证
-* 更多细节请参见 GPL
-*
-* 您应该在收到本开源库的同时收到一份 GPL 的副本
-* 如果没有，请参阅<https://www.gnu.org/licenses/>
-*
-* 额外注明：
-* 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
-* 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
-* 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
-* 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
-*
-* 文件名称          zf_driver_timer
-* 公司名称          成都逐飞科技有限公司
-* 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
-* 开发环境          MounRiver Studio V1.8.1
-* 适用平台          CH32V307VCT6
-* 店铺链接          https://seekfree.taobao.com/
-*
-* 修改记录
-* 日期                                      作者                             备注
-* 2022-09-15        大W            first version
-********************************************************************************************************************/
+ * COPYRIGHT NOTICE
+ * Copyright (c) 2020,逐飞科技
+ * All rights reserved.
+ *
+ * 以下所有内容版权均属逐飞科技所有，未经允许不得用于商业用途，
+ * 欢迎各位使用并传播本程序，修改内容时必须保留逐飞科技的版权声明。
+ *
+ * @file            zf_driver_timer
+ * @company         成都逐飞科技有限公司
+ * @author          逐飞科技(QQ790875685)
+ * @version         查看doc内version文件 版本说明
+ * @Software        MounRiver Studio V1.51
+ * @Target core     CH32V307VCT6
+ * @Taobao          https://seekfree.taobao.com/
+ * @date            2021-11-25
+ * @note            version:
+ *                  V1.1 2022.01.17 修复计时不准的问题
+ ********************************************************************************************************************/
 
 #include "zf_driver_gpio.h"
 #include "zf_driver_timer.h"
 
 
-// 该数组禁止修改，内部使用,用户无需关心
+// 该数组禁止修改，内部使用用户无需关心
 static timer_function_enum timer_function_state[10] =
 {
     TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT,
@@ -46,11 +31,16 @@ static timer_function_enum timer_function_state[10] =
     TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT,
     TIMER_FUNCTION_INIT, TIMER_FUNCTION_INIT
 };
-
-// 该数组禁止修改，内部使用,用户无需关心
-static timer_mode_enum timer_mode_state[10] =
+// 该数组禁止修改，内部使用用户无需关心
+const uint32 tim_index[] =
 {
-    TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK,
+    TIM1_BASE, TIM2_BASE, TIM3_BASE, TIM4_BASE,
+    TIM5_BASE, TIM6_BASE, TIM7_BASE, TIM8_BASE,
+    TIM9_BASE, TIM10_BASE
+};
+
+static timer_mode_enum timer_mode_state[8] =
+{
     TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK,
     TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK,
     TIMER_SYSTEM_CLOCK, TIMER_SYSTEM_CLOCK,
@@ -58,35 +48,28 @@ static timer_mode_enum timer_mode_state[10] =
 };
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介      TIMER 外设确认功能状态 库内部调用
-// 参数说明     index           TIMER 外设模块号
-// 参数说明     mode            需要确的功能模块
-// 返回参数     uint8           1-可以使用 0-不可以使用
-// 使用示例     zf_assert(timer_funciton_check(TIM_1, TIMER_FUNCTION_PWM);
+// @brief       TIMER 外设确认功能状态 库内部调用
+// @param       index           TIMER 外设模块号
+// @param       mode            需要确的功能模块
+// @return      uint8         1-可以使用 0-不可以使用
+// Sample usage:                zf_assert(timer_funciton_check(TIM_1, TIMER_FUNCTION_PWM);
 //-------------------------------------------------------------------------------------------------------------------
 uint8 timer_funciton_check (timer_index_enum index, timer_function_enum mode)
 {
-    uint8 return_state = 1;
-    if(TIMER_FUNCTION_INIT == timer_function_state[index])
-    {
+    if(timer_function_state[index] == TIMER_FUNCTION_INIT)
         timer_function_state[index] = mode;
-    }
     else if(timer_function_state[index] == mode)
-    {
-        return_state = 1;
-    }
+        return 1;
     else
-    {
-        return_state = 0;
-    }
-    return return_state;
+        return 0;
+    return 1;
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     定时器时钟总线初始化
-// 参数说明     timer_ch      定时器通道
-// 返回参数     void
-// 备注信息          内部使用，用户无需关心
+//  @brief      定时器时钟总线初始化
+//  @param      timer_ch      定时器通道
+//  @return     void
+//  Sample usage:          内部使用，用户无需关心
 //-------------------------------------------------------------------------------------------------------------------
 void timer_clock_enable(timer_index_enum index)
 {
@@ -105,185 +88,71 @@ void timer_clock_enable(timer_index_enum index)
 
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     计时器开始
-// 参数说明     timer_ch      选择模块的通道 (选择范围 由TIMERN_enum枚举值的内容确定)
-// 返回参数     void
-// 使用示例     timer_start(TIM_1, TIMER_US);  //定时器1 开始计数，每一us计数一次
+//  @brief      计时器开始
+//  @param      timer_ch      选择模块的通道 (选择范围 由TIMERN_enum枚举值的内容确定)
+//  @return     void
+//  Sample usage:           timer_start(TIM_1, TIMER_US);  //定时器1 开始计数，每一us计数一次
 //-------------------------------------------------------------------------------------------------------------------
-void timer_start(timer_index_enum index)
-{
-    TIM_TypeDef *tim_index = TIM1;
-    switch(index)
-    {
-        case TIM_1:  tim_index = ((TIM_TypeDef *)TIM1_BASE);    break;
-        case TIM_2:  tim_index = ((TIM_TypeDef *)TIM2_BASE);    break;
-        case TIM_3:  tim_index = ((TIM_TypeDef *)TIM3_BASE);    break;
-        case TIM_4:  tim_index = ((TIM_TypeDef *)TIM4_BASE);    break;
-        case TIM_5:  tim_index = ((TIM_TypeDef *)TIM5_BASE);    break;
-        case TIM_6:  tim_index = ((TIM_TypeDef *)TIM6_BASE);    break;
-        case TIM_7:  tim_index = ((TIM_TypeDef *)TIM7_BASE);    break;
-        case TIM_8:  tim_index = ((TIM_TypeDef *)TIM8_BASE);    break;
-        case TIM_9:  tim_index = ((TIM_TypeDef *)TIM9_BASE);    break;
-        case TIM_10: tim_index = ((TIM_TypeDef *)TIM10_BASE);   break;
-    }
-    TIM_Cmd(tim_index, ENABLE);                                          // 使能TIMx
-}
-
-
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     关闭计时器
-// 参数说明     timer_ch      选择模块的通道 (选择范围 由TIMERN_enum枚举值的内容确定)
-// 返回参数     void
-// 备注信息             关闭定时器并清除标志位
-//-------------------------------------------------------------------------------------------------------------------
-void timer_stop(timer_index_enum index)
-{
-    TIM_TypeDef *tim_index = TIM1;
-
-    switch(index)
-    {
-        case TIM_1:  tim_index = ((TIM_TypeDef *)TIM1_BASE);    break;
-        case TIM_2:  tim_index = ((TIM_TypeDef *)TIM2_BASE);    break;
-        case TIM_3:  tim_index = ((TIM_TypeDef *)TIM3_BASE);    break;
-        case TIM_4:  tim_index = ((TIM_TypeDef *)TIM4_BASE);    break;
-        case TIM_5:  tim_index = ((TIM_TypeDef *)TIM5_BASE);    break;
-        case TIM_6:  tim_index = ((TIM_TypeDef *)TIM6_BASE);    break;
-        case TIM_7:  tim_index = ((TIM_TypeDef *)TIM7_BASE);    break;
-        case TIM_8:  tim_index = ((TIM_TypeDef *)TIM8_BASE);    break;
-        case TIM_9:  tim_index = ((TIM_TypeDef *)TIM9_BASE);    break;
-        case TIM_10: tim_index = ((TIM_TypeDef *)TIM10_BASE);   break;
-    }
-
-    TIM_Cmd(tim_index, DISABLE);  //失能TIM
-}
-
-
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取计时器值
-// 参数说明     timer_ch      选择模块的通道 (选择范围 由TIMERN_enum枚举值的内容确定)
-// 返回参数     uint32      计数值
-// 使用示例     timer_get(TIM_1)  //获取定时器1的计时时间
-//-------------------------------------------------------------------------------------------------------------------
-uint16 timer_get(timer_index_enum index)
-{
-    TIM_TypeDef *tim_index = TIM1;
-    uint16 return_value = 0;
-
-    switch(index)
-    {
-        case TIM_1:  tim_index = ((TIM_TypeDef *)TIM1_BASE);    break;
-        case TIM_2:  tim_index = ((TIM_TypeDef *)TIM2_BASE);    break;
-        case TIM_3:  tim_index = ((TIM_TypeDef *)TIM3_BASE);    break;
-        case TIM_4:  tim_index = ((TIM_TypeDef *)TIM4_BASE);    break;
-        case TIM_5:  tim_index = ((TIM_TypeDef *)TIM5_BASE);    break;
-        case TIM_6:  tim_index = ((TIM_TypeDef *)TIM6_BASE);    break;
-        case TIM_7:  tim_index = ((TIM_TypeDef *)TIM7_BASE);    break;
-        case TIM_8:  tim_index = ((TIM_TypeDef *)TIM8_BASE);    break;
-        case TIM_9:  tim_index = ((TIM_TypeDef *)TIM9_BASE);    break;
-        case TIM_10: tim_index = ((TIM_TypeDef *)TIM10_BASE);   break;
-    }
-
-
-    if(timer_mode_state[index] == TIMER_MS)
-    {
-        return_value = tim_index->CNT/3;
-    }
-    else
-    {
-        return_value = tim_index->CNT;
-    }
-    return return_value;
-}
-
-
-
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     TIMER 清除计时器计数
-// 参数说明     index           TIMER 外设模块号
-// 返回参数     void
-// 使用示例     timer_clear(TIM_1);
-// 备注信息
-//-------------------------------------------------------------------------------------------------------------------
-void timer_clear (timer_index_enum index)
-{
-    TIM_TypeDef *tim_index = TIM1;
-
-    switch(index)
-    {
-        case TIM_1:  tim_index = ((TIM_TypeDef *)TIM1_BASE);    break;
-        case TIM_2:  tim_index = ((TIM_TypeDef *)TIM2_BASE);    break;
-        case TIM_3:  tim_index = ((TIM_TypeDef *)TIM3_BASE);    break;
-        case TIM_4:  tim_index = ((TIM_TypeDef *)TIM4_BASE);    break;
-        case TIM_5:  tim_index = ((TIM_TypeDef *)TIM5_BASE);    break;
-        case TIM_6:  tim_index = ((TIM_TypeDef *)TIM6_BASE);    break;
-        case TIM_7:  tim_index = ((TIM_TypeDef *)TIM7_BASE);    break;
-        case TIM_8:  tim_index = ((TIM_TypeDef *)TIM8_BASE);    break;
-        case TIM_9:  tim_index = ((TIM_TypeDef *)TIM9_BASE);    break;
-        case TIM_10: tim_index = ((TIM_TypeDef *)TIM10_BASE);   break;
-    }
-    tim_index->CNT = 0;
-}
-
-//-------------------------------------------------------------------------------------------------------------------
-// 函数简介     TIMER 计时器初始化
-// 参数说明     index           TIMER 外设模块号
-// 参数说明     mode            计时方式
-// 返回参数     void
-// 使用示例     timer_init(TIM_1, TIMER_US);
-// 备注信息
-//-------------------------------------------------------------------------------------------------------------------
-void timer_init(timer_index_enum index, timer_mode_enum mode)
+void timer_start(timer_index_enum index, timer_mode_enum mode)
 {
 
-    // 如果程序在输出了断言信息 并且提示出错位置在这里
-    // 就去查看你在什么地方调用这个函数 检查你的传入参数
-    // 这里是检查是否有重复使用定时器
-    // 比如初始化了 TIM1_PWM 然后又初始化成 TIM_1 这种用法是不允许的
     zf_assert(timer_funciton_check(index, TIMER_FUNCTION_TIMER));
-    timer_function_state[index] = TIMER_FUNCTION_TIMER;
 
-    TIM_TypeDef *tim_index = TIM1;
-    switch(index)
-    {
-        case TIM_1:  tim_index = ((TIM_TypeDef *)TIM1_BASE);    break;
-        case TIM_2:  tim_index = ((TIM_TypeDef *)TIM2_BASE);    break;
-        case TIM_3:  tim_index = ((TIM_TypeDef *)TIM3_BASE);    break;
-        case TIM_4:  tim_index = ((TIM_TypeDef *)TIM4_BASE);    break;
-        case TIM_5:  tim_index = ((TIM_TypeDef *)TIM5_BASE);    break;
-        case TIM_6:  tim_index = ((TIM_TypeDef *)TIM6_BASE);    break;
-        case TIM_7:  tim_index = ((TIM_TypeDef *)TIM7_BASE);    break;
-        case TIM_8:  tim_index = ((TIM_TypeDef *)TIM8_BASE);    break;
-        case TIM_9:  tim_index = ((TIM_TypeDef *)TIM9_BASE);    break;
-        case TIM_10: tim_index = ((TIM_TypeDef *)TIM10_BASE);   break;
-    }
-
-
-
-    timer_clock_enable(index);                                                  // 开启时钟总线
+    //开启时钟总线
+    timer_clock_enable(index);
 
     timer_mode_state[index] = mode;
 
-    TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure = {0};
+    TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
     if(mode == TIMER_US)
     {
-        TIM_TimeBaseStructure.TIM_Period = 0xFFFF;                              // 装载自动重装载值
-        TIM_TimeBaseStructure.TIM_Prescaler = (system_clock/1000000)-1;         // 装载预分频
+        TIM_TimeBaseStructure.TIM_Period = 0xFFFF;                          // 装载自动重装载值
+        TIM_TimeBaseStructure.TIM_Prescaler = (system_clock/1000000)-1;           // 装载预分频
     }
     else if(mode == TIMER_MS)
     {
-        TIM_TimeBaseStructure.TIM_Period = 0xFFFF;                              // 装载自动重装载值
-        TIM_TimeBaseStructure.TIM_Prescaler = (system_clock/1000)/3-1;          // 装载预分频
+        TIM_TimeBaseStructure.TIM_Period =0xFFFF;                          // 装载自动重装载值
+        TIM_TimeBaseStructure.TIM_Prescaler =(system_clock/1000)/3-1;          // 装载预分频
     }
     else
     {
-        TIM_TimeBaseStructure.TIM_Period = 0xFFFF;                              // 装载自动重装载值
+        TIM_TimeBaseStructure.TIM_Period = 0xFFFF;                          // 装载自动重装载值
         TIM_TimeBaseStructure.TIM_Prescaler = 0;                                // 装载预分频
     }
     TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;                     // 设置时钟分割:TDTS = Tck_tim
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;                 // TIM向上计数模式
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;                            // 重复计数器设置为0
-    TIM_TimeBaseInit(tim_index, &TIM_TimeBaseStructure);                        // 根据指定的参数初始化TIMx的时间基数单位
+    TIM_TimeBaseInit((TIM_TypeDef*)tim_index[index], &TIM_TimeBaseStructure);                 // 根据指定的参数初始化TIMx的时间基数单位
 
-    TIM_Cmd(tim_index, ENABLE);                                                 // 使能TIMx
+    TIM_Cmd((TIM_TypeDef*)tim_index[index], ENABLE);                                          // 使能TIMx
 }
+
+
+
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      获取计时器值
+//  @param      timer_ch      选择模块的通道 (选择范围 由TIMERN_enum枚举值的内容确定)
+//  @return     uint32      计数值
+//  Sample usage:             timer_get(TIM_1)  //获取定时器1的计时时间
+//-------------------------------------------------------------------------------------------------------------------
+uint16 timer_get(timer_index_enum index)
+{
+    if(timer_mode_state[index] == TIMER_MS)
+        return ((TIM_TypeDef*)tim_index[index])->CNT/3;
+    return ((TIM_TypeDef*)tim_index[index])->CNT;
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      关闭计时器
+//  @param      timer_ch      选择模块的通道 (选择范围 由TIMERN_enum枚举值的内容确定)
+//  @return     void
+//  Sample usage:             关闭定时器并清除标志位
+//-------------------------------------------------------------------------------------------------------------------
+void timer_stop(timer_index_enum index)
+{
+    TIM_Cmd((TIM_TypeDef*)tim_index[index], DISABLE);  //失能TIM
+}
+
+
 

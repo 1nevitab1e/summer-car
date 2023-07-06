@@ -1,53 +1,39 @@
 /*********************************************************************************************************************
-* CH32V307VCT6 Opensourec Library ¼´£¨CH32V307VCT6 ¿ªÔ´¿â£©ÊÇÒ»¸ö»ùÓÚ¹Ù·½ SDK ½Ó¿ÚµÄµÚÈı·½¿ªÔ´¿â
-* Copyright (c) 2022 SEEKFREE Öğ·É¿Æ¼¼
+* COPYRIGHT NOTICE
+* Copyright (c) 2019,é€é£ç§‘æŠ€
+* All rights reserved.
 *
-* ±¾ÎÄ¼şÊÇCH32V307VCT6 ¿ªÔ´¿âµÄÒ»²¿·Ö
+* ä»¥ä¸‹æ‰€æœ‰å†…å®¹ç‰ˆæƒå‡å±é€é£ç§‘æŠ€æ‰€æœ‰ï¼Œæœªç»å…è®¸ä¸å¾—ç”¨äºå•†ä¸šç”¨é€”ï¼Œ
+* æ¬¢è¿å„ä½ä½¿ç”¨å¹¶ä¼ æ’­æœ¬ç¨‹åºï¼Œä¿®æ”¹å†…å®¹æ—¶å¿…é¡»ä¿ç•™é€é£ç§‘æŠ€çš„ç‰ˆæƒå£°æ˜ã€‚
 *
-* CH32V307VCT6 ¿ªÔ´¿â ÊÇÃâ·ÑÈí¼ş
-* Äú¿ÉÒÔ¸ù¾İ×ÔÓÉÈí¼ş»ù½ğ»á·¢²¼µÄ GPL£¨GNU General Public License£¬¼´ GNUÍ¨ÓÃ¹«¹²Ğí¿ÉÖ¤£©µÄÌõ¿î
-* ¼´ GPL µÄµÚ3°æ£¨¼´ GPL3.0£©»ò£¨ÄúÑ¡ÔñµÄ£©ÈÎºÎºóÀ´µÄ°æ±¾£¬ÖØĞÂ·¢²¼ºÍ/»òĞŞ¸ÄËü
-*
-* ±¾¿ªÔ´¿âµÄ·¢²¼ÊÇÏ£ÍûËüÄÜ·¢»Ó×÷ÓÃ£¬µ«²¢Î´¶ÔÆä×÷ÈÎºÎµÄ±£Ö¤
-* ÉõÖÁÃ»ÓĞÒşº¬µÄÊÊÏúĞÔ»òÊÊºÏÌØ¶¨ÓÃÍ¾µÄ±£Ö¤
-* ¸ü¶àÏ¸½ÚÇë²Î¼û GPL
-*
-* ÄúÓ¦¸ÃÔÚÊÕµ½±¾¿ªÔ´¿âµÄÍ¬Ê±ÊÕµ½Ò»·İ GPL µÄ¸±±¾
-* Èç¹ûÃ»ÓĞ£¬Çë²ÎÔÄ<https://www.gnu.org/licenses/>
-*
-* ¶îÍâ×¢Ã÷£º
-* ±¾¿ªÔ´¿âÊ¹ÓÃ GPL3.0 ¿ªÔ´Ğí¿ÉÖ¤Ğ­Òé ÒÔÉÏĞí¿ÉÉêÃ÷ÎªÒëÎÄ°æ±¾
-* Ğí¿ÉÉêÃ÷Ó¢ÎÄ°æÔÚ libraries/doc ÎÄ¼ş¼ĞÏÂµÄ GPL3_permission_statement.txt ÎÄ¼şÖĞ
-* Ğí¿ÉÖ¤¸±±¾ÔÚ libraries ÎÄ¼ş¼ĞÏÂ ¼´¸ÃÎÄ¼ş¼ĞÏÂµÄ LICENSE ÎÄ¼ş
-* »¶Ó­¸÷Î»Ê¹ÓÃ²¢´«²¥±¾³ÌĞò µ«ĞŞ¸ÄÄÚÈİÊ±±ØĞë±£ÁôÖğ·É¿Æ¼¼µÄ°æÈ¨ÉùÃ÷£¨¼´±¾ÉùÃ÷£©
-*
-* ÎÄ¼şÃû³Æ          zf_driver_exti
-* ¹«Ë¾Ãû³Æ          ³É¶¼Öğ·É¿Æ¼¼ÓĞÏŞ¹«Ë¾
-* °æ±¾ĞÅÏ¢          ²é¿´ libraries/doc ÎÄ¼ş¼ĞÄÚ version ÎÄ¼ş °æ±¾ËµÃ÷
-* ¿ª·¢»·¾³          MounRiver Studio V1.8.1
-* ÊÊÓÃÆ½Ì¨          CH32V307VCT6
-* µêÆÌÁ´½Ó          https://seekfree.taobao.com/
-*
-* ĞŞ¸Ä¼ÇÂ¼
-* ÈÕÆÚ                                      ×÷Õß                             ±¸×¢
-* 2022-09-15        ´óW            first version
+* @file             zf_driver_exti
+* @company          æˆéƒ½é€é£ç§‘æŠ€æœ‰é™å…¬å¸
+* @author           é€é£ç§‘æŠ€(QQ3184284598)
+* @version          æŸ¥çœ‹docå†…versionæ–‡ä»¶ ç‰ˆæœ¬è¯´æ˜
+* @Software         IAR 8.32.4 or MDK 5.28
+* @Target core      MM32F3277
+* @Taobao           https://seekfree.taobao.com/
+* @date             2021-11-11
 ********************************************************************************************************************/
 
 #ifndef _zf_driver_exti_h_
 #define _zf_driver_exti_h_
 
-#include "zf_common_typedef.h"
+
+
+#include "zf_common_interrupt.h"
 
 #include "zf_driver_gpio.h"
+#include "zf_common_typedef.h"
 
-typedef enum{                                                                   // Ã¶¾Ù EXTI ´¥·¢ĞÅºÅ  ´ËÃ¶¾Ù¶¨Òå²»ÔÊĞíÓÃ»§ĞŞ¸Ä
-    EXTI_TRIGGER_RISING = 0x08,                                                        // ÉÏÉıÑØ´¥·¢Ä£Ê½
-    EXTI_TRIGGER_FALLING = 0x0C,                                                       // ÏÂ½µÑØ´¥·¢Ä£Ê½
-    EXTI_TRIGGER_BOTH = 0x10,                                                          // Ë«±ßÑØ´¥·¢Ä£Ê½
+typedef enum{                                                                   // æšä¸¾ EXTI è§¦å‘ä¿¡å·  æ­¤æšä¸¾å®šä¹‰ä¸å…è®¸ç”¨æˆ·ä¿®æ”¹
+    EXTI_TRIGGER_RISING = 0x08,                                                        // ä¸Šå‡æ²¿è§¦å‘æ¨¡å¼
+    EXTI_TRIGGER_FALLING = 0x0C,                                                       // ä¸‹é™æ²¿è§¦å‘æ¨¡å¼
+    EXTI_TRIGGER_BOTH = 0x10,                                                          // åŒè¾¹æ²¿è§¦å‘æ¨¡å¼
 }exti_trigger_enum;
 
+void    exti_init     (gpio_pin_enum pin, exti_trigger_enum trigger);
 void    exti_enable   (gpio_pin_enum pin);
 void    exti_disable  (gpio_pin_enum pin);
-void    exti_init     (gpio_pin_enum pin, exti_trigger_enum trigger);
 
 #endif
