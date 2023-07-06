@@ -37,10 +37,10 @@
 #include "Feed.h"
 #include "SD.h"
 struct page p0,p1,p2;
-uint8 state;
-uint32 test=9;
+uint8 state,buff[1][1];
+uint32 test=9,sectornum;
 float testf=0.8;
-int i;
+int i,j;
 
 int main (void)
 {
@@ -49,27 +49,23 @@ int main (void)
     debug_init();    // 初始化默认 Debug UART
 
     // 此处编写用户代码 例如外设初始化代码等
+    oled_init();
+    oled_clear();
     uart_init(UART_3, 115200, UART3_MAP0_TX_B10, UART3_MAP0_RX_B11);
     uart_rx_interrupt(UART_3,ZF_ENABLE);
 
-//    state=mt9v03x_init();
-//    if(state)
-//        {
-//            oled_show_string(1, 1, "Error");
-//        }
-//    mt9v03x_set_exposure_time(90);
-    gpio_init(MISO, GPI, 1, GPI_PULL_UP);
-    gpio_init(MOSI, GPO, 1, GPO_PUSH_PULL);
-    gpio_init(CS, GPO, 1, GPO_PUSH_PULL);
-    gpio_init(SCK, GPO, 1, GPO_PUSH_PULL);
+    state=mt9v03x_init();
+    if(state)oled_show_string(1, 1, "Error");
+    mt9v03x_set_exposure_time(90);
 
-    oled_init();
-    oled_clear();
-    //state=SDCardReadWriteOneByte(0xff);
-//    for(i=0;i<10;i++)SDCardReadWriteOneByte(0xFF);
-//    state=SendSDCardCmd(SDCard_CMD0,0,0x95);
     state=SD_Init();
     oled_show_int(0, 1, state, 4);
+    sectornum=GetSDCardSectorCount();
+    oled_show_int(0, 0, sectornum, 10);
+    system_delay_ms(1000);
+//    SDCardWriteData(mt9v03x_image[0], DEFAULTSECTOR, 1);
+//    SDCardReadData(read, DEFAULTSECTOR, 1);
+//    oled_show_string(0, 0, read);
 //    MyMenu_Init();
 //    menu_key_init();
     //pit_ms_init(TIM4_PIT,5);
@@ -80,7 +76,14 @@ int main (void)
     while(1)
     {
         // 此处编写需要循环执行的代码
-//        oled_displayimage03x(mt9v03x_image[0], 200);
+        oled_displayimage03x(mt9v03x_image[0], 200);
+        if(j==0)i++;
+        if(i==200)
+        {
+            SDCardWriteData(mt9v03x_image[0], DEFAULTSECTOR, 45);
+            j=1;
+            i=0;
+        }
         // 此处编写需要循环执行的代码
     }
 }

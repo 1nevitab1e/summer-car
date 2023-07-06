@@ -35,13 +35,20 @@
 
 #define SDCard_CMD58 58 //√¸¡Ó58£¨∂¡OCR–≈œ¢
 
-#define CS E2
-#define SCK C1
-#define MOSI C3
-#define MISO C0
+#define CS E0
+#define SCK E1
+#define MOSI E2
+#define MISO E3
 
+#define DEFAULTSECTOR 100
+
+void SD_SPI_GPIO_Init();
 u8 SDCardReadWriteOneByte(u8 DataTx);
 u8 SendSDCardCmd(u8 cmd, u32 arg, u8 crc);
 u8 SD_Init();
-
+u8 SDCardRecvData(u8*buf,u16 len);
+u8 SDCardSendData(u8*buf,u8 cmd);
+u32 GetSDCardSectorCount(void);
+void SDCardReadData(u8*buf,u32 sector,u32 cnt);
+void SDCardWriteData(u8*buf,u32 sector,u32 cnt);
 #endif /* SD_H_ */
