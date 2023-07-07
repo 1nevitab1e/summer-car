@@ -7,12 +7,12 @@
 
 #include "Filter.h"
 
-u16 Filter(u16 angle ,u16 gyro ,u16 acc)
+u16 Filter(int16 angle ,int16 gyro ,int16 acc)
 {
     float angle_o;
 
         angle_o=K*acc+(1.0-K)*(angle+dt*gyro);
 
 
-    return (u16)angle_o;
+    return (int16)angle_o;
 }

@@ -317,7 +317,7 @@ extern u16 angle;
 
 void TIM4_IRQHandler(void)
 {
-    u16 Data[6]={0};
+    int16 Data[6]={0};
 
     if(TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
     {
@@ -326,7 +326,8 @@ void TIM4_IRQHandler(void)
            imu963ra_get_acc();
            Data[1]=Filter(angle, imu963ra_gyro_x, imu963ra_acc_x);
            Data[0]=imu963ra_acc_x;
-           WaveSend(2, Data);
+           Data[2]=imu963ra_gyro_x;
+           WaveSend(3, Data);
            angle=Data[1];
 
     }
