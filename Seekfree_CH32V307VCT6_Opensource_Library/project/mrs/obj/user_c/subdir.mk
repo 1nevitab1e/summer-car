@@ -6,21 +6,27 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 E:/wch307/CHV307_Library-master/summer-car/Seekfree_CH32V307VCT6_Opensource_Library/project/user/src/Feed.c \
+E:/wch307/CHV307_Library-master/summer-car/Seekfree_CH32V307VCT6_Opensource_Library/project/user/src/Filter.c \
 E:/wch307/CHV307_Library-master/summer-car/Seekfree_CH32V307VCT6_Opensource_Library/project/user/src/SD.c \
+E:/wch307/CHV307_Library-master/summer-car/Seekfree_CH32V307VCT6_Opensource_Library/project/user/src/Wave.c \
 E:/wch307/CHV307_Library-master/summer-car/Seekfree_CH32V307VCT6_Opensource_Library/project/user/src/isr.c \
 E:/wch307/CHV307_Library-master/summer-car/Seekfree_CH32V307VCT6_Opensource_Library/project/user/src/main.c \
 E:/wch307/CHV307_Library-master/summer-car/Seekfree_CH32V307VCT6_Opensource_Library/project/user/src/menu.c 
 
 OBJS += \
 ./user_c/Feed.o \
+./user_c/Filter.o \
 ./user_c/SD.o \
+./user_c/Wave.o \
 ./user_c/isr.o \
 ./user_c/main.o \
 ./user_c/menu.o 
 
 C_DEPS += \
 ./user_c/Feed.d \
+./user_c/Filter.d \
 ./user_c/SD.d \
+./user_c/Wave.d \
 ./user_c/isr.d \
 ./user_c/main.d \
 ./user_c/menu.d 
@@ -30,7 +36,13 @@ C_DEPS += \
 user_c/Feed.o: E:/wch307/CHV307_Library-master/summer-car/Seekfree_CH32V307VCT6_Opensource_Library/project/user/src/Feed.c
 	@	@	riscv-none-embed-gcc -march=rv32imafc -mabi=ilp32f -msmall-data-limit=8 -mno-save-restore -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common -pedantic -Wunused -Wuninitialized -Wall  -g -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\Libraries\doc" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Core" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Ld" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Peripheral" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Startup" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\project\user\inc" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_common" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_device" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\project\code" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_driver" -std=gnu11 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -c -o "$@" "$<"
 	@	@
+user_c/Filter.o: E:/wch307/CHV307_Library-master/summer-car/Seekfree_CH32V307VCT6_Opensource_Library/project/user/src/Filter.c
+	@	@	riscv-none-embed-gcc -march=rv32imafc -mabi=ilp32f -msmall-data-limit=8 -mno-save-restore -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common -pedantic -Wunused -Wuninitialized -Wall  -g -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\Libraries\doc" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Core" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Ld" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Peripheral" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Startup" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\project\user\inc" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_common" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_device" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\project\code" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_driver" -std=gnu11 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -c -o "$@" "$<"
+	@	@
 user_c/SD.o: E:/wch307/CHV307_Library-master/summer-car/Seekfree_CH32V307VCT6_Opensource_Library/project/user/src/SD.c
+	@	@	riscv-none-embed-gcc -march=rv32imafc -mabi=ilp32f -msmall-data-limit=8 -mno-save-restore -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common -pedantic -Wunused -Wuninitialized -Wall  -g -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\Libraries\doc" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Core" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Ld" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Peripheral" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Startup" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\project\user\inc" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_common" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_device" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\project\code" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_driver" -std=gnu11 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -c -o "$@" "$<"
+	@	@
+user_c/Wave.o: E:/wch307/CHV307_Library-master/summer-car/Seekfree_CH32V307VCT6_Opensource_Library/project/user/src/Wave.c
 	@	@	riscv-none-embed-gcc -march=rv32imafc -mabi=ilp32f -msmall-data-limit=8 -mno-save-restore -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common -pedantic -Wunused -Wuninitialized -Wall  -g -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\Libraries\doc" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Core" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Ld" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Peripheral" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\sdk\Startup" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\project\user\inc" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_common" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_device" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\project\code" -I"E:\wch307\CHV307_Library-master\summer-car\Seekfree_CH32V307VCT6_Opensource_Library\libraries\zf_driver" -std=gnu11 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -c -o "$@" "$<"
 	@	@
 user_c/isr.o: E:/wch307/CHV307_Library-master/summer-car/Seekfree_CH32V307VCT6_Opensource_Library/project/user/src/isr.c

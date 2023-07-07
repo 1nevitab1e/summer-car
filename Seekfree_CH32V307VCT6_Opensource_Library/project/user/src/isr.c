@@ -34,6 +34,9 @@
 ********************************************************************************************************************/
 
 #include "zf_common_headfile.h"
+#include "Wave.h"
+#include "menu.h"
+#include "Filter.h"
 
 uint16 adc;
 
@@ -310,26 +313,21 @@ void TIM3_IRQHandler(void)
     }
 }
 
+extern u16 angle;
 
 void TIM4_IRQHandler(void)
 {
-    float gyro_x,gyro_y,gyro_z,acc_x,acc_y,acc_z;
+    u16 Data[6]={0};
+
     if(TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
     {
        TIM_ClearITPendingBit(TIM4, TIM_IT_Update );
            imu963ra_get_gyro();
-           gyro_x=imu963ra_gyro_transition(imu963ra_gyro_x);
-           gyro_y=imu963ra_gyro_transition(imu963ra_gyro_y);
-           gyro_z=imu963ra_gyro_transition(imu963ra_gyro_z);
-
            imu963ra_get_acc();
-           acc_x=imu963ra_acc_transition(imu963ra_acc_x);
-           acc_y=imu963ra_acc_transition(imu963ra_acc_y);
-           acc_z=imu963ra_acc_transition(imu963ra_acc_z);
-
-           printf("%f %f %f\r\n",gyro_x,gyro_y,gyro_z);
-           printf("%f %f %f\r\n",acc_x,acc_y,acc_z);
-
+           Data[1]=Filter(angle, imu963ra_gyro_x, imu963ra_acc_x);
+           Data[0]=imu963ra_acc_x;
+           WaveSend(2, Data);
+           angle=Data[1];
 
     }
 }

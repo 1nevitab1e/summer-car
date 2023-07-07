@@ -41,6 +41,7 @@ uint8 state,buff[1][1];
 uint32 test=9,sectornum;
 float testf=0.8;
 int i,j;
+u16 angle=0;
 
 int main (void)
 {
@@ -53,37 +54,15 @@ int main (void)
     oled_clear();
     uart_init(UART_3, 115200, UART3_MAP0_TX_B10, UART3_MAP0_RX_B11);
     uart_rx_interrupt(UART_3,ZF_ENABLE);
-
-    state=mt9v03x_init();
-    if(state)oled_show_string(1, 1, "Error");
-    mt9v03x_set_exposure_time(90);
-
-    state=SD_Init();
-    oled_show_int(0, 1, state, 4);
-    sectornum=GetSDCardSectorCount();
-    oled_show_int(0, 0, sectornum, 10);
-    system_delay_ms(1000);
-//    SDCardWriteData(mt9v03x_image[0], DEFAULTSECTOR, 1);
-//    SDCardReadData(read, DEFAULTSECTOR, 1);
-//    oled_show_string(0, 0, read);
-//    MyMenu_Init();
-//    menu_key_init();
-    //pit_ms_init(TIM4_PIT,5);
-    //pit_ms_init(TIM3_PIT,10);
+    imu963ra_init();
+    pit_ms_init(TIM4_PIT,10);//IMU
+    //pit_ms_init(TIM3_PIT,10);//adc
 
     // 此处编写用户代码 例如外设初始化代码等
 
     while(1)
     {
         // 此处编写需要循环执行的代码
-        oled_displayimage03x(mt9v03x_image[0], 200);
-        if(j==0)i++;
-        if(i==200)
-        {
-            SDCardWriteData(mt9v03x_image[0], DEFAULTSECTOR, 45);
-            j=1;
-            i=0;
-        }
         // 此处编写需要循环执行的代码
     }
 }
