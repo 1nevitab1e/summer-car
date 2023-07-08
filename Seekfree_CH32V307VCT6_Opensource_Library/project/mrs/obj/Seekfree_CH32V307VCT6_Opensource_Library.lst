@@ -29621,17 +29621,15 @@ _sbrk():
     f0b2:	0000                	unimp
     f0b4:	8480                	0x8480
     f0b6:	412e                	lw	sp,200(sp)
-    f0b8:	33333333          	0x33333333
-    f0bc:	3fd33333          	0x3fd33333
-    f0c0:	999a                	add	s3,s3,t1
-    f0c2:	9999                	andi	a1,a1,-26
-    f0c4:	9999                	andi	a1,a1,-26
-    f0c6:	3fb9                	jal	f024 <_sbrk+0x4dc>
-    f0c8:	6666                	flw	fa2,88(sp)
-    f0ca:	6666                	flw	fa2,88(sp)
-    f0cc:	6666                	flw	fa2,88(sp)
-    f0ce:	3fe6                	fld	ft11,120(sp)
-    f0d0:	002d                	c.nop	11
+    f0b8:	6e98                	flw	fa4,24(a3)
+    f0ba:	8312                	mv	t1,tp
+    f0bc:	cac0                	sw	s0,20(a3)
+    f0be:	3fc1                	jal	f08e <_sbrk+0x546>
+    f0c0:	8d4fdf3b          	0x8d4fdf3b
+    f0c4:	3f826e97          	auipc	t4,0x3f826
+    f0c8:	645a                	flw	fs0,148(sp)
+    f0ca:	8d4fdf3b          	0x8d4fdf3b
+    f0ce:	002d3feb          	0x2d3feb
     f0d2:	0000                	unimp
     f0d4:	00006e4f          	fnmadd.s	ft8,ft0,ft0,ft0,unknown
     f0d8:	0066664f          	fnmadd.s	fa2,fa2,ft6,ft0,unknown

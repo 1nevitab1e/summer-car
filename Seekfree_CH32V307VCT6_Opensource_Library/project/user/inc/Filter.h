@@ -10,8 +10,8 @@
 
 #include "zf_common_headfile.h"
 
-#define K 0.3
-#define dt 0.1
+#define K 0.139 //0.14
+#define dt 0.009
 
 u16 Filter(int16 angle ,int16 gyro ,int16 acc);
 
