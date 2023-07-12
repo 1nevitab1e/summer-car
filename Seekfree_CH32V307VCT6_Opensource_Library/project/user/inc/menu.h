@@ -60,12 +60,14 @@ struct page
 
 //按键
 /********************************************My*****************************************************/
-#define KEY_1       D0                      //up
-#define KEY_2       D3                     //down
-#define KEY_3       D4                     //add
-#define KEY_4       D1                     //sub
-#define KEY_5       B12                     //enter
-#define KEY_6       D11                     //leave
+#define KEY_1       E4                      //up
+#define KEY_2       E6                     //down
+#define KEY_3       C13                     //add
+#define KEY_4       E5                     //sub
+#define KEY_5       D9                     //enter
+#define KEY_6       A9                     //leave
+#define KEY_7       A8
+#define KEY_8       A10
 /***************************************************************************************************/
 //#define KEY_1       C7                    //up
 //#define KEY_2       D14                      //down
@@ -74,7 +76,7 @@ struct page
 //#define KEY_5       D13                     //enter
 //#define KEY_6       D12                      //leave
 
-#define KEY_7       D10                      //一键发车
+//#define KEY_7       D10                      //一键发车
 //#define KEY_8       C6                      //
 #define KEY_DelayTime   100                     //按键扫描延时时间
 extern uint32 cntpage;//页数

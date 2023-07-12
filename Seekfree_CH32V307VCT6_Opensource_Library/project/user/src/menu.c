@@ -607,8 +607,8 @@ void menu_key_init(void)
     gpio_init(KEY_4 , GPI, 1, GPIO_INT_CONFIG);
     gpio_init(KEY_5 , GPI, 1, GPIO_INT_CONFIG);
     gpio_init(KEY_6 , GPI, 1, GPIO_INT_CONFIG);
-    //gpio_init(KEY_7 , GPI, 1, GPIO_INT_CONFIG);
-//    gpio_init(KEY_8 , GPI, 1, GPIO_INT_CONFIG);
+    gpio_init(KEY_7 , GPI, 1, GPIO_INT_CONFIG);
+    gpio_init(KEY_8 , GPI, 1, GPIO_INT_CONFIG);
 }
 
 extern uint32 test;

@@ -33,9 +33,9 @@
 * 2022-09-15        大W            first version
 ********************************************************************************************************************/
 #include "zf_common_headfile.h"
-#include "menu.h"
-#include "Feed.h"
-#include "SD.h"
+#include "MyHead.h"
+
+
 struct page p0,p1,p2;
 uint8 state,buff[1][1];
 uint32 test=9,sectornum;
@@ -50,19 +50,35 @@ int main (void)
     debug_init();    // 初始化默认 Debug UART
 
     // 此处编写用户代码 例如外设初始化代码等
+    menu_key_init();
     oled_init();
     oled_clear();
-    uart_init(UART_3, 115200, UART3_MAP0_TX_B10, UART3_MAP0_RX_B11);
-    uart_rx_interrupt(UART_3,ZF_ENABLE);
-    imu963ra_init();
-    pit_ms_init(TIM4_PIT,10);//IMU
-    //pit_ms_init(TIM3_PIT,10);//adc
 
+    oled_show_string(0, 1, "KI");
+    system_delay_ms(1000);
+    oled_show_string(0, 1,"  ");
+    state=SD_Init();
+    oled_show_int(0, 2, state, 3);
+    sectornum=GetSDCardSectorCount();
+    oled_show_int(0, 3, sectornum, 10);
+//    uart_init(UART_3, 115200, UART3_MAP0_TX_B10, UART3_MAP0_RX_B11);
+//    uart_rx_interrupt(UART_3,ZF_ENABLE);
+//    pit_ms_init(TIM4_PIT,10);//IMU
+//    //pit_ms_init(TIM3_PIT,10);//adc
     // 此处编写用户代码 例如外设初始化代码等
 
     while(1)
     {
+
         // 此处编写需要循环执行的代码
+        if((gpio_get_level(KEY_4)==1)&&(gpio_get_level(KEY_1)==1)&&(gpio_get_level(KEY_2)==1)&&(gpio_get_level(KEY_3)==1)&&(gpio_get_level(KEY_7)==1))
+        {
+            oled_show_string(0, 0, "ON ");
+        }
+        else
+        {
+            oled_show_string(0, 0, "OFF");
+        }
         // 此处编写需要循环执行的代码
     }
 }

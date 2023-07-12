@@ -35,10 +35,10 @@
 
 #define SDCard_CMD58 58 //√¸¡Ó58£¨∂¡OCR–≈œ¢
 
-#define CS E0
-#define SCK E1
-#define MOSI E2
-#define MISO E3
+#define CS E2
+#define SCK A5
+#define MOSI A7
+#define MISO A6
 
 #define DEFAULTSECTOR 100
 
