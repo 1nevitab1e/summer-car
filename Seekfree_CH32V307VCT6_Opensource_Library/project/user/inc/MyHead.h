@@ -13,5 +13,6 @@
 #include "SD.h"
 #include "test_module.h"
 #include "Wheel.h"
+#include "DMA.h"
 
 #endif /* MYHEAD_H_ */

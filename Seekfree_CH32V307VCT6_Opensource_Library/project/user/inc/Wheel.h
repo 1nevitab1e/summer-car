@@ -8,6 +8,7 @@
 #ifndef WHEEL_H_
 #define WHEEL_H_
 
+#define Hz 12000
 #define m8 TIM5_PWM_MAP0_CH4_A3
 #define m7 TIM5_PWM_MAP0_CH3_A2
 #define m6 TIM5_PWM_MAP0_CH2_A1
@@ -20,6 +21,11 @@
 #include "zf_common_headfile.h"
 
 void Wheel_Init();
-
+void Wheel_Forge();
+void Wheel_reverse();
+void Wheel_R();
+void Wheel_L();
+void Wheel_RF();
+void Wheel_LF();
 
 #endif /* WHEEL_H_ */

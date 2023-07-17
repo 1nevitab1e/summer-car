@@ -42,6 +42,9 @@ uint32 test=9,sectornum;
 float testf=0.8;
 int i,j;
 u16 angle=0;
+u32 Buffer[120]={0};
+extern uint8 re;
+
 
 int main (void)
 {
@@ -50,35 +53,18 @@ int main (void)
     debug_init();    // 初始化默认 Debug UART
 
     // 此处编写用户代码 例如外设初始化代码等
-    menu_key_init();
+//    menu_key_init();
     oled_init();
     oled_clear();
-
-    oled_show_string(0, 1, "KI");
-    system_delay_ms(1000);
-    oled_show_string(0, 1,"  ");
-    state=SD_Init();
-    oled_show_int(0, 2, state, 3);
-    sectornum=GetSDCardSectorCount();
-    oled_show_int(0, 3, sectornum, 10);
-//    uart_init(UART_3, 115200, UART3_MAP0_TX_B10, UART3_MAP0_RX_B11);
-//    uart_rx_interrupt(UART_3,ZF_ENABLE);
-//    pit_ms_init(TIM4_PIT,10);//IMU
-//    //pit_ms_init(TIM3_PIT,10);//adc
+    oled_show_string(0, 0, "c");
+    uart_init(UART_7, 115200, UART7_MAP0_TX_C2, UART7_MAP0_RX_C3);
+    uart_rx_interrupt(UART_7, ZF_ENABLE);
+    MyDma();
     // 此处编写用户代码 例如外设初始化代码等
-
+    uart_write_byte(UART_7, Buffer[0]);
     while(1)
     {
-
         // 此处编写需要循环执行的代码
-        if((gpio_get_level(KEY_4)==1)&&(gpio_get_level(KEY_1)==1)&&(gpio_get_level(KEY_2)==1)&&(gpio_get_level(KEY_3)==1)&&(gpio_get_level(KEY_7)==1))
-        {
-            oled_show_string(0, 0, "ON ");
-        }
-        else
-        {
-            oled_show_string(0, 0, "OFF");
-        }
         // 此处编写需要循环执行的代码
     }
 }

@@ -39,7 +39,9 @@
 #include "Filter.h"
 
 uint16 adc;
+uint8 re;
 
+void DMA2_Channel9_IRQHandler(void) __attribute__((interrupt()));
 void NMI_Handler(void)       __attribute__((interrupt()));
 void HardFault_Handler(void) __attribute__((interrupt()));
 
@@ -138,7 +140,7 @@ void UART7_IRQHandler (void)
 {
     if(USART_GetITStatus(UART7, USART_IT_RXNE) != RESET)
     {
-        wireless_module_uart_handler();
+        //wireless_module_uart_handler();
         USART_ClearITPendingBit(UART7, USART_IT_RXNE);
     }
 }
@@ -502,4 +504,17 @@ void HardFault_Handler(void)
   }
 }
 
+extern u32 Buffer[120];
+
+void DMA2_Channel9_IRQHandler(void)
+{
+    if(DMA_GetFlagStatus(DMA2_FLAG_TC9)==SET)
+        {
+            uart_write_byte(UART_7, Buffer[1]);
+            DMA_Cmd(DMA2_Channel9,DISABLE);
+            DMA_SetCurrDataCounter(DMA2_Channel9,10);
+            DMA_ClearFlag(DMA2_FLAG_TC9);
+            DMA_Cmd(DMA2_Channel9,ENABLE);
+        }
+}
 
