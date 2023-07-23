@@ -140,6 +140,9 @@ void UART7_IRQHandler (void)
 {
     if(USART_GetITStatus(UART7, USART_IT_RXNE) != RESET)
     {
+        re=-1;
+        re=uart_read_byte(UART_7);
+        oled_show_int(0, 0, re, 4);
         //wireless_module_uart_handler();
         USART_ClearITPendingBit(UART7, USART_IT_RXNE);
     }

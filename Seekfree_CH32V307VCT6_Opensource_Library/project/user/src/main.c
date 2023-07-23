@@ -56,12 +56,12 @@ int main (void)
 //    menu_key_init();
     oled_init();
     oled_clear();
-    oled_show_string(0, 0, "c");
+    oled_show_string(0, 1, "test");
     uart_init(UART_7, 115200, UART7_MAP0_TX_C2, UART7_MAP0_RX_C3);
     uart_rx_interrupt(UART_7, ZF_ENABLE);
-    MyDma();
+//    MyDma();
     // 此处编写用户代码 例如外设初始化代码等
-    uart_write_byte(UART_7, Buffer[0]);
+    //uart_write_byte(UART_7, Buffer[0]);
     while(1)
     {
         // 此处编写需要循环执行的代码
